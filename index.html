@@ -84,6 +84,9 @@ button { font-family: inherit; }
   transition: color 150ms var(--ease-out);
 }
 .dev-nav__links a:hover { color: var(--sp-orange-red); }
+.dev-nav__sep { color: var(--sp-hairline-strong); user-select: none; }
+.dev-nav__page-link { color: var(--sp-orange-red) !important; font-weight: 700; }
+.dev-nav__page-link:hover { opacity: 0.8; }
 .dev-nav__spacer { flex: 1; }
 .dev-nav__toggle {
   display: inline-flex;
@@ -1117,6 +1120,8 @@ body[data-aspect="9:16"] .headline { font-size: 32px; }
       <a href="#narrative-a">A</a>
       <a href="#narrative-b">B</a>
       <a href="#narrative-c">C</a>
+      <span class="dev-nav__sep">|</span>
+      <a href="/founding-cohort/" class="dev-nav__page-link">Founding Cohort ↗</a>
     </div>
     <div class="dev-nav__spacer"></div>
     <div class="dev-nav__toggle" id="aspectToggle" role="tablist" aria-label="Aspect ratio">
