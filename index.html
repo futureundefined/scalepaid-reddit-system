@@ -1,0 +1,2624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ScalePaid — Component Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root {
+  --sp-orange-red: #FF4500;
+  --sp-black: #0E0F11;
+  --sp-charcoal: #18191D;
+  --sp-off-white: #F5F5F0;
+  --sp-gold: #FDC171;
+  --sp-green: #26D100;
+  --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+  --sp-font-serif: 'Instrument Serif', serif;
+  --sp-font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --sp-hairline: rgba(255,255,255,0.08);
+  --sp-hairline-strong: rgba(255,255,255,0.14);
+  --sp-mute: rgba(245,245,240,0.62);
+  --sp-mute-2: rgba(245,245,240,0.45);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--sp-black);
+  color: var(--sp-off-white);
+  font-family: var(--sp-font-sans);
+  font-size: 18px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; }
+button { font-family: inherit; }
+
+/* ----------------------- Dev nav ----------------------- */
+.dev-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(14,15,17,0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--sp-hairline);
+}
+.dev-nav__inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 14px;
+  color: var(--sp-off-white);
+  flex-wrap: wrap;
+}
+.dev-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.dev-nav__brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sp-orange-red); }
+.dev-nav__links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.dev-nav__links a {
+  color: var(--sp-mute);
+  text-decoration: none;
+  transition: color 150ms var(--ease-out);
+}
+.dev-nav__links a:hover { color: var(--sp-orange-red); }
+.dev-nav__spacer { flex: 1; }
+.dev-nav__toggle {
+  display: inline-flex;
+  border: 1px solid var(--sp-hairline-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.dev-nav__toggle button {
+  background: transparent;
+  color: var(--sp-mute);
+  border: 0;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+.dev-nav__toggle button.is-active {
+  background: var(--sp-orange-red);
+  color: white;
+}
+
+body.clean .dev-nav { display: none; }
+body.clean *:focus { outline: none; }
+
+/* ----------------------- Layout ----------------------- */
+.page {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 64px 28px 160px;
+}
+.section-shell {
+  margin: 96px 0;
+  padding: 56px 48px;
+  background: var(--sp-charcoal);
+  border: 1px solid var(--sp-hairline);
+  border-radius: 24px;
+  position: relative;
+}
+.section-shell.no-bg {
+  background: transparent;
+  border: 0;
+  padding: 24px 0;
+}
+.section-shell__tag {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-mute-2);
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+}
+
+.narrative-anchor {
+  margin: 80px 0 24px;
+  padding: 28px 0 24px;
+  border-top: 1px solid var(--sp-hairline);
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.narrative-anchor__chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--sp-orange-red);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.narrative-anchor__title {
+  font-family: var(--sp-font-serif);
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--sp-off-white);
+  margin: 0;
+}
+
+/* ----------------------- Shared bits ----------------------- */
+.kicker {
+  display: inline-block;
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-orange-red);
+  margin-bottom: 20px;
+}
+.headline {
+  font-family: var(--sp-font-serif);
+  font-weight: 400;
+  font-size: clamp(36px, 4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--sp-off-white);
+  margin: 0;
+  max-width: 22ch;
+  text-wrap: pretty;
+}
+.subhead {
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-mute);
+}
+.body {
+  font-family: var(--sp-font-sans);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--sp-mute);
+  max-width: 56ch;
+}
+
+.cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 9999px;
+  background: var(--sp-gradient);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(255, 69, 0, 0.32);
+  transition: transform 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
+}
+.cta-pill:hover { transform: scale(1.02); box-shadow: 0 10px 28px rgba(255, 69, 0, 0.45); }
+.cta-link {
+  color: var(--sp-orange-red);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.cta-link:hover { opacity: 0.8; }
+
+.card {
+  background: var(--sp-charcoal);
+  border-radius: 16px;
+  border: 1px solid var(--sp-hairline);
+}
+
+/* ----------------------- 1. Kicker headline ----------------------- */
+.kh-stack { display: flex; flex-direction: column; gap: 56px; }
+.kh-block .kicker { margin-bottom: 16px; opacity: 0; transform: translateY(6px); }
+.kh-block .headline { opacity: 0; }
+.kh-block .headline .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  margin-right: 0.22em;
+}
+.kh-variants {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.kh-variant {
+  padding: 36px 28px;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 16px;
+  background: var(--sp-black);
+}
+.kh-variant .kicker { font-size: 12px; }
+.kh-variant .headline { font-size: clamp(26px, 2.4vw, 34px); max-width: 18ch; }
+
+/* ----------------------- 2. Vertical process flow ----------------------- */
+.vpf {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.vpf-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 22px;
+  padding: 24px 28px 28px;
+  background: var(--sp-charcoal);
+  border: 1px solid var(--sp-hairline);
+  border-radius: 16px;
+  margin-bottom: 18px;
+  position: relative;
+  transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out), background 200ms var(--ease-out);
+}
+.vpf-card.is-active {
+  border-color: rgba(255, 69, 0, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 69, 0, 0.4), 0 16px 40px rgba(255, 69, 0, 0.14);
+  background: linear-gradient(180deg, #1c1d22, #18191D);
+}
+.vpf-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--sp-orange-red);
+  color: white;
+  font-weight: 700;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sp-font-sans);
+}
+.vpf-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 69, 0, 0.12);
+  color: var(--sp-orange-red);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.vpf-title {
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sp-off-white);
+  margin: 0 0 6px;
+}
+.vpf-desc {
+  font-size: 15.5px;
+  color: var(--sp-mute);
+  margin: 0;
+  line-height: 1.5;
+}
+.vpf-card::after {
+  content: "";
+  position: absolute;
+  left: 51px;
+  bottom: -18px;
+  width: 2px;
+  height: 18px;
+  background: var(--sp-hairline-strong);
+}
+.vpf-card:last-child::after { display: none; }
+.vpf-card.draw-line::after {
+  background: var(--sp-orange-red);
+  box-shadow: 0 0 8px rgba(255,69,0,0.6);
+}
+
+/* ----------------------- 3. Circular full loop ----------------------- */
+.loop-wrap {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.loop-stage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.loop-svg { width: 100%; height: 100%; overflow: visible; }
+.loop-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  opacity: 0;
+}
+.loop-center .label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sp-orange-red);
+  font-weight: 700;
+}
+.loop-center .title {
+  font-family: var(--sp-font-serif);
+  font-size: clamp(28px, 2.6vw, 38px);
+  color: var(--sp-off-white);
+  text-align: center;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.loop-node {
+  cursor: pointer;
+  transition: transform 200ms var(--ease-out);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.loop-node text {
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 16px;
+  fill: white;
+  pointer-events: none;
+}
+.loop-node circle.bg {
+  fill: var(--sp-charcoal);
+  stroke: var(--sp-hairline-strong);
+  stroke-width: 1.5;
+  transition: fill 200ms var(--ease-out), stroke 200ms var(--ease-out);
+}
+.loop-node:hover circle.bg,
+.loop-node.is-active circle.bg {
+  fill: var(--sp-orange-red);
+  stroke: var(--sp-orange-red);
+}
+.loop-tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: 10px 14px;
+  background: var(--sp-black);
+  border: 1px solid var(--sp-hairline-strong);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--sp-off-white);
+  white-space: nowrap;
+  transform: translate(-50%, -120%);
+  opacity: 0;
+  transition: opacity 150ms var(--ease-out);
+  z-index: 5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.loop-tooltip.is-visible { opacity: 1; }
+.loop-side h3 {
+  font-family: var(--sp-font-serif);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+  line-height: 1.05;
+}
+.loop-side p { color: var(--sp-mute); max-width: 38ch; }
+.loop-pulse { fill: var(--sp-orange-red); opacity: 0; }
+
+/* ----------------------- 4. Reddit user journey ----------------------- */
+.ruj-header { margin-bottom: 36px; }
+.ruj-persona {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 999px;
+  background: var(--sp-black);
+  width: fit-content;
+  margin-top: 18px;
+  font-size: 14.5px;
+  color: var(--sp-mute);
+}
+.ruj-persona .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a3a2a, #2a2522);
+  border: 1px solid var(--sp-hairline-strong);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--sp-off-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ruj-persona b { color: var(--sp-off-white); font-weight: 700; }
+.ruj-track {
+  position: relative;
+  margin-top: 32px;
+  padding: 24px 8px 8px;
+}
+.ruj-stops {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 18px;
+  position: relative;
+}
+.ruj-stop {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 200ms var(--ease-out);
+}
+.ruj-stop:hover { transform: translateY(-2px); }
+.ruj-stop.is-anchor .ruj-frame { border-color: var(--sp-orange-red); box-shadow: 0 0 0 1px rgba(255,69,0,0.3), 0 18px 40px rgba(255,69,0,0.18); }
+.ruj-frame {
+  border: 1px solid var(--sp-hairline);
+  border-radius: 14px;
+  background: var(--sp-black);
+  padding: 12px;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.ruj-frame__head {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.ruj-frame__head span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sp-hairline-strong);
+}
+.ruj-step-num {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--sp-orange-red);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ruj-stop-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--sp-off-white);
+}
+.ruj-stop-thought {
+  font-size: 13px;
+  color: var(--sp-mute);
+  line-height: 1.45;
+}
+.ruj-stop-thought b { color: var(--sp-orange-red); font-weight: 700; }
+
+/* mock content inside frames */
+.mock-feed-card {
+  border: 1px solid var(--sp-hairline);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 11px;
+  background: rgba(255,255,255,0.02);
+  margin-bottom: 6px;
+}
+.mock-feed-card .meta { color: var(--sp-mute-2); font-size: 10px; margin-bottom: 4px; }
+.mock-feed-card .title { color: var(--sp-off-white); font-size: 11.5px; line-height: 1.3; }
+.mock-feed-card.is-ad { border-color: rgba(255,69,0,0.4); }
+.mock-feed-card.is-ad .meta { color: var(--sp-orange-red); }
+.mock-comment {
+  font-size: 10.5px;
+  color: var(--sp-mute);
+  padding: 5px 8px;
+  border-left: 2px solid var(--sp-hairline-strong);
+  margin: 4px 0;
+}
+.mock-comment .up { color: var(--sp-orange-red); font-weight: 700; }
+.mock-article {
+  font-size: 11px;
+  color: var(--sp-mute);
+}
+.mock-article .h {
+  font-family: var(--sp-font-serif);
+  color: var(--sp-off-white);
+  font-size: 14px;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+.mock-article .progress {
+  height: 3px;
+  background: var(--sp-hairline);
+  border-radius: 2px;
+  margin: 8px 0 6px;
+  overflow: hidden;
+}
+.mock-article .progress span {
+  display: block;
+  height: 100%;
+  width: 60%;
+  background: var(--sp-orange-red);
+}
+.mock-form input {
+  width: 100%;
+  background: var(--sp-charcoal);
+  border: 1px solid var(--sp-hairline);
+  border-radius: 8px;
+  padding: 7px 9px;
+  color: var(--sp-off-white);
+  font-size: 11px;
+  font-family: inherit;
+  margin-bottom: 8px;
+}
+.mock-form .pill {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  border-radius: 999px;
+  background: var(--sp-gradient);
+  color: white;
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.mock-form .trust { font-size: 10px; color: var(--sp-mute-2); }
+.mock-inbox {
+  border-top: 1px solid var(--sp-hairline);
+  padding: 8px 4px;
+  font-size: 11px;
+}
+.mock-inbox + .mock-inbox { border-top: 1px solid var(--sp-hairline); }
+.mock-inbox.is-new { background: rgba(255,69,0,0.06); border-left: 3px solid var(--sp-orange-red); padding-left: 8px; }
+.mock-inbox .from { color: var(--sp-mute-2); font-size: 10px; }
+.mock-inbox .subj { color: var(--sp-off-white); font-weight: 700; font-size: 11.5px; }
+.mock-inbox .prev { color: var(--sp-mute); font-size: 10.5px; }
+.mock-cal {
+  text-align: center;
+  font-size: 11px;
+  color: var(--sp-mute);
+}
+.mock-cal .check {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(38, 209, 0, 0.14);
+  color: var(--sp-green);
+  display: flex; align-items: center; justify-content: center;
+  margin: 6px auto 8px; font-size: 18px; font-weight: 700;
+}
+.mock-cal .day { color: var(--sp-off-white); font-weight: 700; font-size: 13px; }
+.mock-cal .slot {
+  margin-top: 6px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--sp-orange-red);
+  color: var(--sp-orange-red);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.ruj-path {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 122px;
+  height: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+.ruj-path .line {
+  position: absolute;
+  left: 8.33%;
+  right: 8.33%;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--sp-hairline-strong) 20%, var(--sp-hairline-strong) 80%, transparent);
+}
+.ruj-dot {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sp-orange-red);
+  box-shadow: 0 0 0 4px rgba(255, 69, 0, 0.18), 0 0 18px rgba(255, 69, 0, 0.7);
+}
+
+/* ----------------------- 5. Trust funnel ----------------------- */
+.tf-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.4fr;
+  gap: 36px;
+  align-items: stretch;
+}
+.tf-col {
+  border: 1px solid var(--sp-hairline);
+  border-radius: 16px;
+  padding: 28px;
+  background: var(--sp-black);
+}
+.tf-col.is-dead {
+  opacity: 0.5;
+  filter: saturate(0.4);
+}
+.tf-col h4 {
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  color: var(--sp-mute);
+}
+.tf-col.is-alive h4 { color: var(--sp-orange-red); }
+.tf-col p.note {
+  font-size: 13px;
+  color: var(--sp-mute-2);
+  margin: 4px 0 18px;
+}
+.tf-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tf-step {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 12px;
+  background: var(--sp-charcoal);
+  font-size: 14.5px;
+  color: var(--sp-off-white);
+}
+.tf-step .ico {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,69,0,0.14);
+  color: var(--sp-orange-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tf-arrow {
+  text-align: center;
+  color: var(--sp-mute-2);
+  font-size: 14px;
+  margin: -2px 0;
+}
+.tf-gauge {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px dashed var(--sp-hairline-strong);
+}
+.tf-gauge-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sp-mute);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.tf-gauge-label .state { color: var(--sp-orange-red); }
+.tf-gauge-bar {
+  height: 8px;
+  background: var(--sp-hairline);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.tf-gauge-bar > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--sp-gradient);
+  border-radius: 999px;
+  transition: width 600ms var(--ease-out);
+}
+
+/* ----------------------- 6. Channel stack ----------------------- */
+.cs-head { margin-bottom: 28px; }
+.cs-lanes { display: grid; gap: 20px; position: relative; }
+.cs-lane {
+  border: 1px solid var(--sp-hairline);
+  border-radius: 16px;
+  padding: 24px 28px;
+  background: var(--sp-black);
+  display: grid;
+  grid-template-columns: 200px 1fr 280px;
+  gap: 28px;
+  align-items: center;
+}
+.cs-lane.reddit { border-color: rgba(255,69,0,0.28); background: linear-gradient(180deg, rgba(255,69,0,0.06), rgba(255,69,0,0.01)); }
+.cs-lane__label .tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.06);
+  color: var(--sp-mute);
+  margin-bottom: 10px;
+}
+.cs-lane.reddit .cs-lane__label .tag { background: rgba(255,69,0,0.18); color: var(--sp-orange-red); }
+.cs-lane__label h5 {
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0 0 4px;
+  color: var(--sp-off-white);
+}
+.cs-lane__label .sub {
+  font-size: 13px;
+  color: var(--sp-mute);
+}
+.cs-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cs-node {
+  flex: 1;
+  border: 1px solid var(--sp-hairline-strong);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--sp-charcoal);
+  font-size: 13.5px;
+  color: var(--sp-off-white);
+  text-align: center;
+  font-weight: 500;
+}
+.cs-lane.reddit .cs-node { border-color: rgba(255,69,0,0.35); }
+.cs-arrow { color: var(--sp-mute-2); font-size: 14px; }
+.cs-chart svg { width: 100%; height: 80px; }
+.cs-chart .label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sp-mute-2);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.cs-bridge {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 60px;
+}
+.cs-bridge svg { width: 240px; height: 60px; }
+
+/* ----------------------- 7. Metric stat block ----------------------- */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.metric-card {
+  padding: 28px 26px 24px;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 16px;
+  background: var(--sp-charcoal);
+}
+.metric-card .num-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.metric-card .num {
+  font-family: var(--sp-font-serif);
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--sp-off-white);
+  letter-spacing: -0.01em;
+}
+.metric-card .delta {
+  color: var(--sp-green);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+.metric-card .label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-mute);
+}
+.metric-card .placeholder-note {
+  font-size: 11px;
+  color: var(--sp-mute-2);
+  margin-top: 14px;
+  font-style: italic;
+}
+
+/* ----------------------- 8. Node workflow diagram ----------------------- */
+.nw-wrap {
+  position: relative;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #131418, #0E0F11);
+  padding: 36px 40px 40px;
+  overflow: hidden;
+}
+.nw-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
+}
+.nw-headline {
+  position: relative;
+  font-family: var(--sp-font-serif);
+  font-size: clamp(28px, 3vw, 38px);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--sp-off-white);
+  margin: 0 0 24px;
+  max-width: 24ch;
+}
+.nw-stage {
+  position: relative;
+  width: 100%;
+  height: 460px;
+}
+.nw-stage svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.nw-tile {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--sp-charcoal);
+  border: 1px solid var(--sp-hairline-strong);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--sp-off-white);
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.nw-tile .ico {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,69,0,0.16);
+  color: var(--sp-orange-red);
+  font-size: 12px; font-weight: 700;
+}
+.nw-line-label {
+  position: absolute;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sp-mute-2);
+  background: rgba(14,15,17,0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+}
+
+/* ----------------------- 9. CTA block ----------------------- */
+.cta-block {
+  text-align: center;
+  padding: 64px 28px 56px;
+}
+.cta-block .headline {
+  margin: 0 auto 18px;
+  text-align: center;
+  max-width: 18ch;
+}
+.cta-block .body { margin: 0 auto 32px; text-align: center; }
+.cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ----------------------- 10. Frame wrapper ----------------------- */
+.fw {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--sp-hairline);
+  border-radius: 14px;
+  background: var(--sp-black);
+  overflow: hidden;
+}
+.fw-content {
+  position: absolute;
+  inset: 0;
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.fw-camera {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 200px;
+  height: 130px;
+  border-radius: 12px;
+  border: 1px solid var(--sp-hairline-strong);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sp-mute);
+  font-weight: 700;
+}
+.fw-captions {
+  position: absolute;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  font-family: var(--sp-font-sans);
+  font-weight: 700;
+  font-size: 22px;
+  color: white;
+  text-shadow:
+    -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
+    0 0 8px rgba(0,0,0,0.6);
+  text-align: center;
+  max-width: 80%;
+}
+.fw-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-mute-2);
+  font-weight: 700;
+}
+.fw-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.fw-controls button {
+  background: var(--sp-charcoal);
+  color: var(--sp-off-white);
+  border: 1px solid var(--sp-hairline-strong);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+.fw-controls button.is-active { background: var(--sp-orange-red); color: white; border-color: var(--sp-orange-red); }
+body.clean .fw-controls { display: none; }
+
+/* ----------------------- 9:16 mobile reflow ----------------------- */
+body[data-aspect="9:16"] .page {
+  max-width: 540px;
+  padding: 32px 18px 120px;
+}
+body[data-aspect="9:16"] .section-shell { padding: 36px 22px; margin: 56px 0; }
+body[data-aspect="9:16"] .kh-variants { grid-template-columns: 1fr; gap: 16px; }
+body[data-aspect="9:16"] .loop-wrap { grid-template-columns: 1fr; gap: 32px; }
+body[data-aspect="9:16"] .ruj-stops { grid-template-columns: 1fr; gap: 14px; }
+body[data-aspect="9:16"] .ruj-frame { height: 200px; }
+body[data-aspect="9:16"] .ruj-path { display: none; }
+body[data-aspect="9:16"] .tf-grid { grid-template-columns: 1fr; gap: 22px; }
+body[data-aspect="9:16"] .tf-col.is-dead { display: block; }
+body[data-aspect="9:16"] .cs-lane { grid-template-columns: 1fr; gap: 18px; }
+body[data-aspect="9:16"] .cs-bridge svg { transform: rotate(90deg); width: 80px; height: 60px; }
+body[data-aspect="9:16"] .metrics { grid-template-columns: repeat(2, 1fr); }
+body[data-aspect="9:16"] .metric-card .num { font-size: 48px; }
+body[data-aspect="9:16"] .nw-stage { height: 540px; }
+body[data-aspect="9:16"] .fw { aspect-ratio: 9 / 16; }
+body[data-aspect="9:16"] .fw-content { padding: 28px; }
+body[data-aspect="9:16"] .fw-camera { width: 130px; height: 90px; }
+body[data-aspect="9:16"] .headline { font-size: 32px; }
+
+/* ----------------------- Reduced motion ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .kh-block .kicker, .kh-block .headline, .kh-block .headline .word,
+  .loop-center { opacity: 1 !important; transform: none !important; }
+}
+
+/* ----------------------- Scrollbar small fix ----------------------- */
+@media (max-width: 920px) {
+  .kh-variants { grid-template-columns: 1fr; }
+  .loop-wrap { grid-template-columns: 1fr; }
+  .ruj-stops { grid-template-columns: repeat(2, 1fr); }
+  .tf-grid { grid-template-columns: 1fr; }
+  .cs-lane { grid-template-columns: 1fr; gap: 18px; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body class="sp">
+
+<!-- ============================================================ DEV NAV ============================================================ -->
+<nav class="dev-nav" aria-label="Component navigation">
+  <div class="dev-nav__inner">
+    <div class="dev-nav__brand"><span class="dot"></span> ScalePaid · Component Library</div>
+    <div class="dev-nav__links">
+      <a href="#kicker-headline">Kicker</a>
+      <a href="#performance-fundamentals">Fundamentals</a>
+      <a href="#ad-types-tier-system">Ad Types</a>
+      <a href="#vertical-process-flow">8-Step Flow</a>
+      <a href="#circular-full-loop">Loop</a>
+      <a href="#reddit-user-journey">Journey</a>
+      <a href="#trust-building-funnel">Trust</a>
+      <a href="#trust-awareness-matrix">Matrix</a>
+      <a href="#channel-stack">Channels</a>
+      <a href="#metric-stat-block">Metrics</a>
+      <a href="#reddit-fit">Fit</a>
+      <a href="#node-workflow-diagram">System</a>
+      <a href="#cta-block">CTA</a>
+      <a href="#frame-wrapper">Frame</a>
+      <a href="#narrative-a">A</a>
+      <a href="#narrative-b">B</a>
+      <a href="#narrative-c">C</a>
+    </div>
+    <div class="dev-nav__spacer"></div>
+    <div class="dev-nav__toggle" id="aspectToggle" role="tablist" aria-label="Aspect ratio">
+      <button type="button" data-aspect="16:9" class="is-active">16:9</button>
+      <button type="button" data-aspect="9:16">9:16</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page">
+
+<!-- ============================================================ 1. KICKER HEADLINE ============================================================ -->
+<section id="kicker-headline" data-component="kicker-headline" class="section-shell">
+  <span class="section-shell__tag">01 · kicker-headline</span>
+
+  <div class="kh-stack">
+    <div class="kh-block" data-kh>
+      <span class="kicker">THE EXACT SYSTEM</span>
+      <h1 class="headline" data-headline>The universal opener for every ScalePaid component.</h1>
+    </div>
+
+    <div class="kh-variants">
+      <div class="kh-variant kh-block" data-kh>
+        <span class="kicker">THE REDDIT FUNNEL</span>
+        <h2 class="headline" data-headline>Why traditional ad funnels die on Reddit.</h2>
+      </div>
+      <div class="kh-variant kh-block" data-kh>
+        <span class="kicker">THE FULL LOOP</span>
+        <h2 class="headline" data-headline>What we run for every ScalePaid client.</h2>
+      </div>
+      <div class="kh-variant kh-block" data-kh>
+        <span class="kicker">CHANNEL STACK</span>
+        <h2 class="headline" data-headline>Reddit demand. Google capture. One pipeline.</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 1a. PERFORMANCE FUNNEL FUNDAMENTALS ============================================================ -->
+<section id="performance-fundamentals" data-component="performance-fundamentals" class="section-shell">
+  <span class="section-shell__tag">01a · performance-fundamentals</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 32px;">
+    <span class="kicker">FUNDAMENTALS FIRST</span>
+    <h2 class="headline" data-headline>Performance marketing strategists, before anything else.</h2>
+    <p class="body" style="margin-top:14px;">Reddit is the channel. The fundamentals are the work. Before we touch a campaign, we lock seven inputs — because if any one of them is wrong, the funnel can't compound.</p>
+  </div>
+
+  <style>
+    .pff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .pff-card { position: relative; padding: 20px 20px 22px; border: 1px solid var(--sp-hairline); border-radius: 14px; background: var(--sp-charcoal); cursor: pointer; transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out), transform 200ms var(--ease-out); display: flex; flex-direction: column; gap: 8px; min-height: 150px; }
+    .pff-card:hover { border-color: rgba(255,69,0,0.45); background: linear-gradient(180deg, #1c1d22, #18191D); transform: translateY(-2px); }
+    .pff-card .num { font-family: var(--sp-font-serif); font-size: 22px; color: var(--sp-orange-red); line-height: 1; letter-spacing: -0.01em; }
+    .pff-card h4 { font-family: var(--sp-font-sans); font-weight: 700; font-size: 15.5px; color: var(--sp-off-white); margin: 0; line-height: 1.25; }
+    .pff-card .lead { font-size: 13px; color: var(--sp-mute); line-height: 1.45; }
+    .pff-card .more { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 700; margin-top: auto; }
+    .pff-card .more::after { content: " +"; }
+    .pff-card.is-open .more::after { content: " ×"; }
+    .pff-pop { display: none; padding: 14px; margin-top: 4px; border-top: 1px dashed var(--sp-hairline-strong); font-size: 12.5px; color: var(--sp-mute); line-height: 1.5; }
+    .pff-pop b { color: var(--sp-off-white); font-weight: 700; }
+    .pff-card.is-open .pff-pop { display: block; }
+    .pff-card.is-open { background: linear-gradient(180deg, #1f2027, #18191D); border-color: rgba(255,69,0,0.5); }
+    @media (max-width: 1100px) { .pff-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .pff-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <div class="pff-grid" id="pffGrid">
+    <div class="pff-card"><span class="num">01</span><h4>ICP focus</h4><p class="lead">One ICP at a time. Ads must speak to a single audience and a single pain point.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> ICP intake, persona stack-rank, win/loss reads, subreddit + keyword mining. We pick one and write all creative against it before scaling.</div></div>
+    <div class="pff-card"><span class="num">02</span><h4>Solution mapping</h4><p class="lead">ICP to outcome. The line from their pain to the result we sell.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Map every ICP pain to a concrete before/after outcome. The pre-sell, the offer, and the demo all reference the same outcome — no drift.</div></div>
+    <div class="pff-card"><span class="num">03</span><h4>Unit economics</h4><p class="lead">Make sure the numbers work. Target CPL, CAC, LTV all reverse-engineered before spend.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Build the back-of-envelope: blended CAC ceiling, payback window, channel-level CPL targets. If the math doesn't pencil, the campaign doesn't ship.</div></div>
+    <div class="pff-card"><span class="num">04</span><h4>Testing framework</h4><p class="lead">Understand what to test, in what order, with what sample size — before launch.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Hypothesis stack, learn-rate budget, hold-out vs sequential test plan. We test ICPs, then offers, then creative — never all three at once.</div></div>
+    <div class="pff-card"><span class="num">05</span><h4>Goals &amp; tracking</h4><p class="lead">Digital signals feeding campaigns. Metrics &amp; benchmarks monitored to improve.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Pixel + CAPI install, GA4 + CRM event mapping, dashboard build. Targets and benchmarks set so optimisation is a decision, not an opinion.</div></div>
+    <div class="pff-card"><span class="num">06</span><h4>Ads</h4><p class="lead">Creative built to the ICP, the format, and the funnel tier. Story-led, not offer-led at the top.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Hook libraries by ICP, format briefs (Feed vs Conversation), tone calibration to subreddit norms, monthly creative refresh cadence.</div></div>
+    <div class="pff-card"><span class="num">07</span><h4>Landing pages</h4><p class="lead">The bridge between the click and the offer. Reddit traffic dies on cold pages.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Pre-sell article structure, message-match audit, above-the-fold testing, lead-form micro-conversion paths, mobile-first layout review.</div></div>
+    <div class="pff-card"><span class="num">08</span><h4>Nurture &amp; funnels</h4><p class="lead">What happens after the click — quiz, scorecard, mid-funnel offer, demo routing.</p><span class="more">Strategy phase</span><div class="pff-pop"><b>How we dig in:</b> Branch logic, lead routing rules, email sequences mapped to result-state, mid-funnel offer build, demo-fit gating before sales sees the lead.</div></div>
+  </div>
+
+  <p style="margin-top:18px; font-size: 12.5px; color: var(--sp-mute-2); font-style: italic;">Click any card to see how we dig into that fundamental in the strategy phase.</p>
+
+  <!-- Offer callout — sits on top of fundamentals -->
+  <style>
+    .pff-offer { margin-top: 48px; padding: 36px 36px 32px; border: 1px solid rgba(255,69,0,0.4); border-radius: 18px; background: linear-gradient(180deg, rgba(255,69,0,0.08), rgba(255,69,0,0.02) 60%, var(--sp-charcoal)); position: relative; overflow: hidden; }
+    .pff-offer::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 2px; background: var(--sp-gradient); }
+    .pff-offer-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+    .pff-offer-head .num { font-family: var(--sp-font-serif); font-size: 32px; color: var(--sp-orange-red); line-height: 1; letter-spacing: -0.01em; }
+    .pff-offer-head .label { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 700; }
+    .pff-offer h3 { font-family: var(--sp-font-serif); font-weight: 400; font-size: clamp(28px, 3vw, 38px); line-height: 1.05; letter-spacing: -0.01em; color: var(--sp-off-white); margin: 0 0 10px; max-width: 24ch; }
+    .pff-offer .lead { font-size: 15.5px; color: var(--sp-mute); line-height: 1.55; max-width: 64ch; }
+    .pff-offer .lead b { color: var(--sp-off-white); font-weight: 700; }
+    .pff-offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+    .pff-offer-tile { padding: 22px; border: 1px solid var(--sp-hairline-strong); border-radius: 14px; background: rgba(14,15,17,0.6); display: flex; flex-direction: column; gap: 10px; }
+    .pff-offer-tile .kind { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 700; }
+    .pff-offer-tile h5 { font-family: var(--sp-font-sans); font-weight: 700; font-size: 17px; color: var(--sp-off-white); margin: 0; line-height: 1.2; }
+    .pff-offer-tile p { font-size: 13.5px; color: var(--sp-mute); line-height: 1.5; margin: 0; }
+    .pff-offer-tile .ex { font-size: 12px; color: var(--sp-mute-2); padding: 8px 12px; border-left: 2px solid var(--sp-orange-red); margin-top: 4px; line-height: 1.5; background: rgba(255,69,0,0.04); border-radius: 0 6px 6px 0; }
+    .pff-offer-tile .ex b { color: var(--sp-off-white); font-weight: 700; }
+    .pff-offer-test { margin-top: 26px; padding: 18px 22px; border: 1px dashed var(--sp-hairline-strong); border-radius: 12px; display: flex; gap: 14px; align-items: center; }
+    .pff-offer-test .icon { font-family: var(--sp-font-serif); font-size: 32px; color: var(--sp-orange-red); line-height: 1; }
+    .pff-offer-test .text { font-size: 14px; color: var(--sp-off-white); line-height: 1.45; }
+    .pff-offer-test .text b { color: var(--sp-orange-red); font-weight: 700; }
+    @media (max-width: 800px) { .pff-offer-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <div class="pff-offer">
+    <div class="pff-offer-head">
+      <span class="num">09</span>
+      <span class="label">Building the right offer</span>
+    </div>
+    <h3>The offer is the multiplier on every fundamental above.</h3>
+    <p class="lead">Get the fundamentals right and the funnel runs. Get the <b>offer</b> right and the funnel compounds. We build offers in two layers, and both have to land for the ICP — the kind of offer they'd <b>feel silly refusing</b>.</p>
+
+    <div class="pff-offer-grid">
+      <div class="pff-offer-tile">
+        <span class="kind">Layer 1 · Copy &amp; positioning</span>
+        <h5>The offer in the words.</h5>
+        <p>Often it's not the deliverable that changes — it's the framing. The same demo, repositioned against the ICP's actual pain in their actual language, lifts opt-in rates without changing a single funnel step.</p>
+        <div class="ex"><b>Example:</b> "Book a demo" → "See your day-30 cohort drop, mapped against 40 B2B SaaS funnels we audited last quarter."</div>
+      </div>
+      <div class="pff-offer-tile">
+        <span class="kind">Layer 2 · Conversion offer</span>
+        <h5>The offer in the deliverable.</h5>
+        <p>The actual ask. Free Funnel Map, scorecard, workshop, audit. Big enough to feel like a gift, specific enough that the ICP self-qualifies. The conversion offer is what earns the email, the call, the trial.</p>
+        <div class="ex"><b>Example:</b> Free Funnel Map with lead-opportunity estimates · 30-day Activation Workshop · personalized retention scorecard.</div>
+      </div>
+    </div>
+
+    <div class="pff-offer-test">
+      <span class="icon">"</span>
+      <p class="text">The offer test we run on every campaign: <b>would the ICP feel silly refusing this?</b> If the answer is anything but a clean yes, the offer goes back to the drawing board before media spends.</p>
+    </div>
+  </div>
+
+  <script>
+  (function pff(){
+    const grid = document.getElementById('pffGrid');
+    if (!grid) return;
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.pff-card');
+      if (!card) return;
+      const wasOpen = card.classList.contains('is-open');
+      grid.querySelectorAll('.pff-card').forEach(c => c.classList.remove('is-open'));
+      if (!wasOpen) card.classList.add('is-open');
+    });
+  })();
+  </script>
+</section>
+
+<!-- ============================================================ 1b. AD TYPES & TWO-TIER SYSTEM ============================================================ -->
+<section id="ad-types-tier-system" data-component="ad-types-tier-system" class="section-shell">
+  <span class="section-shell__tag">01b · ad-types-tier-system</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 32px;">
+    <span class="kicker">STAND OUT IN-FEED</span>
+    <h2 class="headline" data-headline>Reddit ads that read like Reddit posts.</h2>
+    <p class="body" style="margin-top:14px;">Two formats. Two modes. The difference between them sets the whole campaign structure — passive scrolling browsing vs active in-comment discussion.</p>
+  </div>
+
+  <style>
+    .att-types { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 36px; }
+    .att-card { padding: 28px; border: 1px solid var(--sp-hairline); border-radius: 16px; background: var(--sp-black); display: flex; flex-direction: column; gap: 14px; }
+    .att-card .tag { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(255,69,0,0.14); color: var(--sp-orange-red); width: fit-content; }
+    .att-card h3 { font-family: var(--sp-font-serif); font-size: 28px; line-height: 1.05; letter-spacing: -0.01em; color: var(--sp-off-white); margin: 0; font-weight: 400; }
+    .att-card .desc { font-size: 14.5px; color: var(--sp-mute); line-height: 1.5; }
+    .att-mock { border: 1px solid var(--sp-hairline-strong); border-radius: 12px; padding: 14px; background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 8px; }
+    .att-mock .promoted { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 700; }
+    .att-mock .meta { font-size: 11px; color: var(--sp-mute-2); }
+    .att-mock .post-title { font-size: 14px; color: var(--sp-off-white); font-weight: 700; line-height: 1.3; }
+    .att-mock .post-body { font-size: 12.5px; color: var(--sp-mute); line-height: 1.5; }
+    .att-mock .actions { display: flex; gap: 14px; font-size: 11px; color: var(--sp-mute-2); padding-top: 6px; border-top: 1px solid var(--sp-hairline); }
+    .att-mock.freeform .post-body { font-family: var(--sp-font-serif); font-size: 14px; color: var(--sp-off-white); border-left: 2px solid var(--sp-orange-red); padding-left: 10px; }
+    .att-pros { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--sp-off-white); }
+    .att-pros li { list-style: none; padding-left: 22px; position: relative; }
+    .att-pros li::before { content: "+"; position: absolute; left: 0; top: 0; color: var(--sp-orange-red); font-weight: 700; }
+
+    .tier-system { border: 1px solid var(--sp-hairline); border-radius: 20px; padding: 32px; background: linear-gradient(180deg, #131418, #0E0F11); position: relative; overflow: hidden; }
+    .tier-head { font-family: var(--sp-font-serif); font-size: 28px; line-height: 1.05; color: var(--sp-off-white); letter-spacing: -0.01em; margin: 0 0 8px; }
+    .tier-sub { font-size: 14px; color: var(--sp-mute); margin-bottom: 28px; max-width: 60ch; }
+    .tier-grid { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 12px; align-items: stretch; }
+    .tier-col { padding: 22px 22px 24px; border-radius: 14px; border: 1px solid var(--sp-hairline-strong); background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 12px; }
+    .tier-col .num { font-family: var(--sp-font-serif); font-size: 38px; color: var(--sp-orange-red); line-height: 1; letter-spacing: -0.01em; }
+    .tier-col h4 { font-family: var(--sp-font-sans); font-size: 18px; font-weight: 700; color: var(--sp-off-white); margin: 0; }
+    .tier-col .role { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 700; }
+    .tier-col .what { font-size: 13.5px; color: var(--sp-mute); line-height: 1.5; }
+    .tier-col .stack { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+    .tier-col .stack-item { font-size: 12px; color: var(--sp-off-white); padding: 7px 10px; border: 1px solid var(--sp-hairline); border-radius: 8px; background: var(--sp-black); }
+    .tier-col .focus { padding-top: 12px; margin-top: auto; border-top: 1px dashed var(--sp-hairline-strong); font-size: 12px; color: var(--sp-mute-2); }
+    .tier-col .focus b { color: var(--sp-off-white); font-weight: 700; }
+    .tier-bridge { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+    .tier-bridge .arrow { font-size: 24px; color: var(--sp-orange-red); }
+    .tier-bridge .label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sp-mute-2); font-weight: 700; text-align: center; line-height: 1.2; }
+    @media (max-width: 920px) {
+      .att-types { grid-template-columns: 1fr; }
+      .tier-grid { grid-template-columns: 1fr; }
+      .tier-bridge { flex-direction: row; padding: 8px 0; }
+      .tier-bridge .arrow { transform: rotate(90deg); }
+    }
+  </style>
+
+  <div class="att-types">
+    <div class="att-card">
+      <span class="tag">▤ Feed ads</span>
+      <h3>Passive browsing mode.</h3>
+      <p class="desc">The standard promoted post unit — image, video, or carousel — served in the main scrolling feed alongside organic posts. Built for reach against users who are skimming, not engaging.</p>
+      <div class="att-mock">
+        <div class="promoted">Promoted · r/SaaS</div>
+        <div class="meta">u/scalepaid · 4h</div>
+        <div class="post-title">The 30-day activation loop we'd run if we were starting from scratch.</div>
+        <div class="post-body" style="font-size:11.5px;">Image / video card · up to 150-char headline · CTA button below.</div>
+        <div class="actions"><span>↑ 247</span><span>💬 off</span><span>↗ Share</span></div>
+      </div>
+      <ul class="att-pros">
+        <li>Placement: main scrolling feed</li>
+        <li>Headline: up to 150 characters</li>
+        <li>Comments: optional (off by default at ScalePaid)</li>
+        <li>Engagement: standalone content</li>
+      </ul>
+    </div>
+
+    <div class="att-card">
+      <span class="tag">◉ Conversation ads</span>
+      <h3>Active discussion mode.</h3>
+      <p class="desc">Reddit's most native unit. The ad sits at the top of the comment section on real organic posts — your message lands while the user is already in discussion mode, reading and voting.</p>
+      <div class="att-mock">
+        <div class="promoted">Promoted · in-comments</div>
+        <div class="meta">Top of comment section · r/SaaS</div>
+        <div class="post-title">we audited 40 B2B funnels — three patterns showed up every time.</div>
+        <div class="post-body" style="font-size:11.5px;">Threaded card styled like a top comment · 100-char headline · comments enabled.</div>
+        <div class="actions"><span>↑ 412</span><span>💬 156</span><span>↗ Share</span></div>
+      </div>
+      <ul class="att-pros">
+        <li>Placement: 100+ comment-section thread caps</li>
+        <li>Headline: 100 characters max</li>
+        <li>Comments: enabled by default</li>
+        <li>Engagement: part of the conversation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tier-system">
+    <div class="kh-block" data-kh>
+      <span class="kicker">CAMPAIGN STRUCTURE</span>
+      <h3 class="tier-head">The two-tier system.</h3>
+    </div>
+    <p class="tier-sub">We split spend across two campaign groups with different jobs. Tier 1 builds the audience. Tier 2 mines it. The same dollar earns its yield twice.</p>
+
+    <div class="tier-grid">
+      <div class="tier-col">
+        <span class="num">01</span>
+        <span class="role">Top of funnel</span>
+        <h4>Traffic &amp; engagement</h4>
+        <p class="what">Feed ads against curated subreddit + interest audiences. The job: get into the scroll, earn the impression, build the retargeting pool.</p>
+        <div class="stack">
+          <div class="stack-item">▤ Feed ad format</div>
+          <div class="stack-item">Subreddit + keyword targeting</div>
+          <div class="stack-item">Story-led creative · no offer</div>
+        </div>
+        <div class="focus"><b>Optimised for:</b> CPM, click-through, on-platform engagement.</div>
+      </div>
+
+      <div class="tier-bridge">
+        <div class="label">audience<br/>built</div>
+        <div class="arrow">→</div>
+        <div class="label">audience<br/>activated</div>
+      </div>
+
+      <div class="tier-col">
+        <span class="num">02</span>
+        <span class="role">Mid &amp; lower funnel</span>
+        <h4>Retargeting &amp; conversion</h4>
+        <p class="what">Conversation ads against the warmed pool from Tier 1. Placement is in the comment section on organic posts, where the offer lands in active-discussion mode. Higher intent, lower CPA.</p>
+        <div class="stack">
+          <div class="stack-item">◉ Conversation ad format</div>
+          <div class="stack-item">Tier-1 engagers + site visitors</div>
+          <div class="stack-item">Offer-led creative · CTA-forward</div>
+        </div>
+        <div class="focus"><b>Optimised for:</b> CPL, demo bookings, pipeline ROI.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. VERTICAL PROCESS FLOW ============================================================ -->
+<section id="vertical-process-flow" data-component="vertical-process-flow" class="section-shell">
+  <span class="section-shell__tag">02 · vertical-process-flow</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 48px;">
+    <span class="kicker">THE FULL LOOP</span>
+    <h2 class="headline" data-headline>Eight steps. One Reddit funnel.</h2>
+  </div>
+
+  <div class="vpf" id="vpfList">
+    <!-- 1 -->
+    <div class="vpf-card" data-step="1">
+      <div class="vpf-badge">1</div>
+      <div>
+        <span class="vpf-pill">Discovery</span>
+        <h3 class="vpf-title">Subreddit Native Ad</h3>
+        <p class="vpf-desc">Story-driven creative that earns attention in-feed, not interrupts it.</p>
+      </div>
+    </div>
+    <!-- 2 -->
+    <div class="vpf-card" data-step="2">
+      <div class="vpf-badge">2</div>
+      <div>
+        <span class="vpf-pill">Priming</span>
+        <h3 class="vpf-title">Pre-Sell Article</h3>
+        <p class="vpf-desc">Long-form context bridge. Reddit users won't tolerate cold offer pages.</p>
+      </div>
+    </div>
+    <!-- 3 -->
+    <div class="vpf-card" data-step="3">
+      <div class="vpf-badge">3</div>
+      <div>
+        <span class="vpf-pill">Trust</span>
+        <h3 class="vpf-title">Mid-Funnel Lead Magnet</h3>
+        <p class="vpf-desc">Free guide, calculator, or tool. We earn the email before we ask for the call.</p>
+      </div>
+    </div>
+    <!-- 4 -->
+    <div class="vpf-card" data-step="4">
+      <div class="vpf-badge">4</div>
+      <div>
+        <span class="vpf-pill">Education</span>
+        <h3 class="vpf-title">Email Nurture Sequence</h3>
+        <p class="vpf-desc">5–7 emails framing the pain, the alternative, and the path forward.</p>
+      </div>
+    </div>
+    <!-- 5 -->
+    <div class="vpf-card" data-step="5">
+      <div class="vpf-badge">5</div>
+      <div>
+        <span class="vpf-pill">Conversion</span>
+        <h3 class="vpf-title">Demo Booking / Webinar</h3>
+        <p class="vpf-desc">Live or evergreen. Built around the qualified question.</p>
+      </div>
+    </div>
+    <!-- 6 -->
+    <div class="vpf-card" data-step="6">
+      <div class="vpf-badge">6</div>
+      <div>
+        <span class="vpf-pill">Pipeline</span>
+        <h3 class="vpf-title">Sales-Qualified Hand-off</h3>
+        <p class="vpf-desc">Booked, fit-checked, brief in the AE's hands.</p>
+      </div>
+    </div>
+    <!-- 7 -->
+    <div class="vpf-card" data-step="7">
+      <div class="vpf-badge">7</div>
+      <div>
+        <span class="vpf-pill">Retargeting</span>
+        <h3 class="vpf-title">Reddit + Google Search Capture</h3>
+        <p class="vpf-desc">Branded search RSAs catch the warmed traffic.</p>
+      </div>
+    </div>
+    <!-- 8 -->
+    <div class="vpf-card" data-step="8">
+      <div class="vpf-badge">8</div>
+      <div>
+        <span class="vpf-pill">Optimisation</span>
+        <h3 class="vpf-title">Iterate &amp; Improve</h3>
+        <p class="vpf-desc">CPL, CPBC, CAC. Every step feeds back. The loop never stops.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 3. CIRCULAR FULL LOOP ============================================================ -->
+<section id="circular-full-loop" data-component="circular-full-loop" class="section-shell">
+  <span class="section-shell__tag">03 · circular-full-loop</span>
+
+  <div class="loop-wrap">
+    <div class="loop-stage" id="loopStage">
+      <svg class="loop-svg" viewBox="0 0 600 600" aria-hidden="true">
+        <defs>
+          <radialGradient id="loopGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FF4500" stop-opacity="0.35"/>
+            <stop offset="80%" stop-color="#FF4500" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="300" cy="300" r="220" fill="url(#loopGlow)" opacity="0.4"/>
+        <circle id="loopRing" cx="300" cy="300" r="220" fill="none"
+                stroke="#FF4500" stroke-width="1.5" stroke-dasharray="6 8" opacity="0.65"/>
+        <circle id="loopPulse" class="loop-pulse" cx="300" cy="80" r="6"/>
+        <g id="loopNodes"></g>
+      </svg>
+      <div class="loop-center" id="loopCenter">
+        <span class="label">Full System</span>
+        <span class="title">The ScalePaid<br/>Reddit Loop</span>
+      </div>
+      <div class="loop-tooltip" id="loopTooltip"></div>
+    </div>
+
+    <div class="loop-side">
+      <div class="kh-block" data-kh>
+        <span class="kicker">THE FULL LOOP</span>
+        <h3 class="headline" data-headline>Eight nodes, one closed system.</h3>
+      </div>
+      <p class="body" style="margin-top:18px;">
+        Each node feeds the next, and every loop tightens the one before. The optimisation node isn't a destination — it's the gravity that pulls the whole thing forward.
+      </p>
+      <p style="margin-top:14px; color: var(--sp-mute-2); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">
+        Hover any node · Set <code style="color:var(--sp-orange-red);">data-active</code> to highlight
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ NARRATIVE B HEADER (placed early so anchors flow naturally) ============================================================ -->
+
+<!-- ============================================================ 4. REDDIT USER JOURNEY ============================================================ -->
+<section id="reddit-user-journey" data-component="reddit-user-journey" class="section-shell">
+  <span class="section-shell__tag">04 · reddit-user-journey</span>
+
+  <div class="ruj-header">
+    <div class="kh-block" data-kh>
+      <span class="kicker">ONE USER, ONE PATH</span>
+      <h2 class="headline" data-headline>How a Redditor  becomes a booked demo.</h2>
+    </div>
+    <div class="ruj-persona">
+      <div class="avatar">M</div>
+      <div><b>Marcus</b> · B2B SaaS founder · $2M ARR · scrolling Reddit at 9pm</div>
+    </div>
+  </div>
+
+  <div class="ruj-track">
+    <div class="ruj-path"><div class="line"></div><div class="ruj-dot" id="rujDot"></div></div>
+
+    <div class="ruj-stops" id="rujStops">
+
+      <!-- Stop 1 -->
+      <div class="ruj-stop" data-stop="1">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">1</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sp-mute-2); margin-bottom:8px; font-weight:700;">r/SaaS</div>
+          <div class="mock-feed-card"><div class="meta">u/buildinpublic · 3h</div><div class="title">how do you handle churn in year 2?</div></div>
+          <div class="mock-feed-card is-ad"><div class="meta">Promoted</div><div class="title">we wrote down what we'd do differently if we started over.</div></div>
+          <div class="mock-feed-card"><div class="meta">u/devmoses · 5h</div><div class="title">stack we use to ship faster</div></div>
+        </div>
+        <div class="ruj-stop-label">r/SaaS browse</div>
+        <div class="ruj-stop-thought"><b>Thought:</b> "wait, this isn't an ad."</div>
+      </div>
+
+      <!-- Stop 2 -->
+      <div class="ruj-stop" data-stop="2">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">2</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sp-mute-2); margin-bottom:8px; font-weight:700;">r/SaaS · top this week</div>
+          <div class="mock-comment"><span class="up">↑ 312</span> &nbsp;"churn in year 2 is a positioning problem"</div>
+          <div class="mock-comment"><span class="up">↑ 184</span> &nbsp;"we ran a retention audit in q3, here's what shipped"</div>
+          <div class="mock-comment"><span class="up">↑ 97</span> &nbsp;"this matches the curve we saw post-PMF"</div>
+          <div class="mock-comment"><span class="up">↑ 62</span> &nbsp;"saving — we're at the same stage"</div>
+        </div>
+        <div class="ruj-stop-label">Native context</div>
+        <div class="ruj-stop-thought"><b>Saw:</b> The ad sitting inside a real, upvoted conversation — not standalone.</div>
+      </div>
+
+      <!-- Stop 3 -->
+      <div class="ruj-stop" data-stop="3">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">3</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div class="mock-article">
+            <div class="h">The 7 retention plays we'd run again — even on a $2M ARR budget.</div>
+            <div class="progress"><span></span></div>
+            <div>By the time most B2B teams notice churn, the cohort that's leaving has been quietly checking out for six weeks. Here's the loop we use to catch it earlier…</div>
+          </div>
+        </div>
+        <div class="ruj-stop-label">Pre-sell article</div>
+        <div class="ruj-stop-thought"><b>Thought:</b> "okay, I want the framework."</div>
+      </div>
+
+      <!-- Stop 4 -->
+      <div class="ruj-stop" data-stop="4">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">4</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div style="font-family:var(--sp-font-serif); font-size:13px; line-height:1.15; color:var(--sp-off-white); margin-bottom:8px;">2-min Retention Risk Assessment</div>
+          <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sp-orange-red); margin-bottom:10px; font-weight:700;">Question 3 of 6</div>
+          <div style="font-size:11.5px; color:var(--sp-off-white); margin-bottom:8px; line-height:1.3;">Where does churn show up first in your data?</div>
+          <div style="display:flex; flex-direction:column; gap:5px; margin-bottom:8px;">
+            <div style="padding:6px 9px; border:1px solid var(--sp-orange-red); border-radius:8px; font-size:10.5px; color:var(--sp-off-white); background:rgba(255,69,0,0.08);">Day-30 cohort drop</div>
+            <div style="padding:6px 9px; border:1px solid var(--sp-hairline); border-radius:8px; font-size:10.5px; color:var(--sp-mute);">Seat expansion stalls</div>
+            <div style="padding:6px 9px; border:1px solid var(--sp-hairline); border-radius:8px; font-size:10.5px; color:var(--sp-mute);">Renewal-quarter losses</div>
+          </div>
+          <div style="height:3px; background:var(--sp-hairline); border-radius:2px; overflow:hidden;"><span style="display:block; width:50%; height:100%; background:var(--sp-gradient);"></span></div>
+        </div>
+        <div class="ruj-stop-label">Quiz / qualification</div>
+        <div class="ruj-stop-thought"><b>Did:</b> Answered 6 questions — branched by stage, ARR band, and pain.</div>
+      </div>
+
+      <!-- Stop 5 -->
+      <div class="ruj-stop" data-stop="5">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">5</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sp-orange-red); margin-bottom:8px; font-weight:700;">Your result · personalized</div>
+          <div style="font-family:var(--sp-font-serif); font-size:14px; line-height:1.15; color:var(--sp-off-white); margin-bottom:6px;">You're a Day-30 Cohort Leak.</div>
+          <div style="font-size:10.5px; color:var(--sp-mute); line-height:1.45; margin-bottom:8px;">Most $2M ARR B2B teams in your bucket lose 18–24% of new logos before activation. Here's the loop we'd run for you.</div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:10px; color:var(--sp-mute-2); padding:5px 8px; border-left:2px solid var(--sp-orange-red); background:rgba(255,69,0,0.05);">→ Routed: AE Sara (B2B SaaS pod)</div>
+            <div style="font-size:10px; color:var(--sp-mute-2); padding:5px 8px; border-left:2px solid var(--sp-hairline-strong);">→ 3-email sequence queued</div>
+          </div>
+        </div>
+        <div class="ruj-stop-label">Personalized result</div>
+        <div class="ruj-stop-thought"><b>Got:</b> A scored result, branch-routed to the right pod, primed with his actual answers.</div>
+      </div>
+
+      <!-- Stop 6 — mid-funnel offer -->
+      <div class="ruj-stop" data-stop="6">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">6</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div style="font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--sp-orange-red); margin-bottom:8px; font-weight:700;">Free · Mid-funnel offer</div>
+          <div style="font-family:var(--sp-font-serif); font-size:14px; line-height:1.15; color:var(--sp-off-white); margin-bottom:6px;">The 30-Day Activation Workshop.</div>
+          <div style="font-size:10.5px; color:var(--sp-mute); line-height:1.45; margin-bottom:8px;">Live, 45 min. We rebuild your day-1 to day-30 motion against your own funnel. No pitch.</div>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+            <div style="font-size:10px; color:var(--sp-mute-2); padding:4px 8px; border:1px solid var(--sp-hairline); border-radius:6px;">+ Cohort scorecard template</div>
+            <div style="font-size:10px; color:var(--sp-mute-2); padding:4px 8px; border:1px solid var(--sp-hairline); border-radius:6px;">+ Win-back trigger map</div>
+          </div>
+          <div style="text-align:center; padding:6px; border-radius:999px; background:var(--sp-gradient); color:white; font-weight:700; font-size:11px;">Save My Seat</div>
+        </div>
+        <div class="ruj-stop-label">Mid-funnel offer</div>
+        <div class="ruj-stop-thought"><b>Got:</b> A second value drop that solves the next block — before any sales ask.</div>
+      </div>
+
+      <!-- Stop 7 -->
+      <div class="ruj-stop" data-stop="7">
+        <div class="ruj-frame">
+          <div class="ruj-step-num">7</div>
+          <div class="ruj-frame__head"><span></span><span></span><span></span></div>
+          <div class="mock-cal">
+            <div class="check">✓</div>
+            <div class="day">Tuesday, May 14</div>
+            <div style="margin-top:4px; font-size:11px; color:var(--sp-mute);">Free Funnel Map review</div>
+            <div class="slot">2:30 PM EDT</div>
+            <div style="margin-top:10px; font-size:10px; color:var(--sp-mute-2);">Calendar invite sent to marcus@…</div>
+          </div>
+        </div>
+        <div class="ruj-stop-label">Demo booked</div>
+        <div class="ruj-stop-thought"><b>Thought:</b> "fifteen minutes, fine, let's see."</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5. TRUST BUILDING FUNNEL ============================================================ -->
+<section id="trust-building-funnel" data-component="trust-building-funnel" class="section-shell">
+  <span class="section-shell__tag">05 · trust-building-funnel</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 36px;">
+    <span class="kicker">WHY REDDIT BREAKS FUNNELS</span>
+    <h2 class="headline" data-headline>Reddit users don't trust ads. They trust threads.</h2>
+    <p class="body" style="margin-top:14px;">Our funnel earns the click before it asks for it.</p>
+  </div>
+
+  <div class="tf-grid" id="tfGrid">
+    <!-- LEFT: standard funnel -->
+    <div class="tf-col is-dead">
+      <h4>Standard funnel</h4>
+      <p class="note">Works on Meta. Dies on Reddit.</p>
+      <div class="tf-steps">
+        <div class="tf-step"><div class="ico">▦</div><div>Cold ad</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step"><div class="ico">▤</div><div>Landing page</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step"><div class="ico">▣</div><div>Demo</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Reddit funnel -->
+    <div class="tf-col is-alive">
+      <h4>The Reddit funnel</h4>
+      <p class="note">Seven steps. Each one earns the next.</p>
+      <div class="tf-steps">
+        <div class="tf-step" data-tf-step="1"><div class="ico">◉</div><div>Native subreddit ad</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="2"><div class="ico">◌</div><div>Native context &amp; social proof</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="3"><div class="ico">▤</div><div>Pre-sell article</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="4"><div class="ico">◇</div><div>Quiz / qualification</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="5"><div class="ico">✉</div><div>Personalized result + nurture</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="6" style="border-color: rgba(255,69,0,0.45); background: rgba(255,69,0,0.08);"><div class="ico" style="background: rgba(255,69,0,0.28);">★</div><div><b style="color:var(--sp-orange-red);">Mid-funnel offer</b> · workshop / scorecard</div></div>
+        <div class="tf-arrow">↓</div>
+        <div class="tf-step" data-tf-step="7"><div class="ico">▥</div><div>Demo / strategy call</div></div>
+      </div>
+
+      <div class="tf-gauge">
+        <div class="tf-gauge-label">
+          <span>Trust</span>
+          <span class="state" id="tfState">Cold</span>
+        </div>
+        <div class="tf-gauge-bar"><span id="tfBar"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5b. TRUST × AWARENESS MATRIX ============================================================ -->
+<section id="trust-awareness-matrix" data-component="trust-awareness-matrix" class="section-shell">
+  <span class="section-shell__tag">05b · trust-awareness-matrix</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 28px;">
+    <span class="kicker">HOW TRUST CONVERTS</span>
+    <h2 class="headline" data-headline>Trust × awareness. The matrix that picks the tactic.</h2>
+    <p class="body" style="margin-top:14px;">Every prospect sits somewhere on two axes: how much they trust us, and how aware they are of the problem. The funnel we build them depends on both.</p>
+  </div>
+
+  <style>
+    .tam-wrap { display: grid; grid-template-columns: 140px repeat(5, 1fr) 160px; gap: 8px; align-items: stretch; }
+    .tam-h { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--sp-mute); padding: 8px 4px; text-align: center; }
+    .tam-row-label { display: flex; align-items: center; padding: 14px 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--sp-mute); border-right: 1px dashed var(--sp-hairline-strong); }
+    .tam-cell { padding: 14px 12px; border-radius: 12px; border: 1px solid var(--sp-hairline); background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 4px; min-height: 86px; }
+    .tam-cell .lvl { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sp-mute-2); font-weight: 700; }
+    .tam-cell .val { font-size: 13.5px; font-weight: 700; color: var(--sp-off-white); line-height: 1.25; }
+    .tam-t-1 { background: rgba(255,69,0,0.04); }
+    .tam-t-2 { background: rgba(255,69,0,0.08); }
+    .tam-t-3 { background: rgba(255,69,0,0.14); }
+    .tam-t-4 { background: rgba(255,69,0,0.22); border-color: rgba(255,69,0,0.3); }
+    .tam-t-5 { background: rgba(255,69,0,0.34); border-color: rgba(255,69,0,0.45); }
+    .tam-cap { padding: 14px 12px; border-radius: 12px; border: 1px solid var(--sp-hairline-strong); background: var(--sp-black); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-orange-red); }
+    .tam-cap.is-close { color: var(--sp-success-green); border-color: rgba(38,209,0,0.4); background: rgba(38,209,0,0.06); }
+    .tam-foot { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .tam-note { padding: 14px 16px; border: 1px solid var(--sp-hairline); border-radius: 12px; background: var(--sp-black); font-size: 13px; color: var(--sp-mute); }
+    .tam-note b { color: var(--sp-orange-red); font-weight: 700; }
+    @media (max-width: 1100px) { .tam-wrap { grid-template-columns: 1fr; } .tam-row-label { border: 0; padding: 8px 0; } .tam-h { display: none; } }
+  </style>
+
+  <div class="tam-wrap">
+    <div></div>
+    <div class="tam-h">No trust · 0%</div>
+    <div class="tam-h">Low · 0–20%</div>
+    <div class="tam-h">Medium · 20–50%</div>
+    <div class="tam-h">Med-High · 50–80%</div>
+    <div class="tam-h">High · 80–100%</div>
+    <div class="tam-h">Outcome</div>
+
+    <div class="tam-row-label">Action</div>
+    <div class="tam-cell tam-t-1"><span class="lvl">Unaware</span><span class="val">Will respond to something familiar.</span></div>
+    <div class="tam-cell tam-t-2"><span class="lvl">Problem aware</span><span class="val">Willing to consume — read content.</span></div>
+    <div class="tam-cell tam-t-3"><span class="lvl">Solution aware</span><span class="val">Willing to research — actively comparing.</span></div>
+    <div class="tam-cell tam-t-4"><span class="lvl">Product aware</span><span class="val">Willing to seek advice — open to a call.</span></div>
+    <div class="tam-cell tam-t-5"><span class="lvl">Most aware</span><span class="val">Willing to talk price — ready to buy.</span></div>
+    <div class="tam-cap is-close">Sales call &amp; close</div>
+
+    <div class="tam-row-label">ScalePaid play</div>
+    <div class="tam-cell tam-t-1"><span class="lvl">Hook</span><span class="val">Native subreddit ad. Story-led, conversational.</span></div>
+    <div class="tam-cell tam-t-2"><span class="lvl">Educate</span><span class="val">Pre-sell article. Reframe the problem.</span></div>
+    <div class="tam-cell tam-t-3"><span class="lvl">Qualify</span><span class="val">Quiz / scorecard. Branch by stage and pain.</span></div>
+    <div class="tam-cell tam-t-4"><span class="lvl">Deepen</span><span class="val">Mid-funnel offer. Workshop, audit, scorecard.</span></div>
+    <div class="tam-cell tam-t-5"><span class="lvl">Convert</span><span class="val">Demo / strategy call. Routed to the right pod.</span></div>
+    <div class="tam-cap">Engaged leads</div>
+  </div>
+
+  <div class="tam-foot">
+    <div class="tam-note"><b>Big-ticket ICPs</b> — sit longer at low-medium trust. Heavy on pre-sell, quizzes, mid-funnel offers. The call comes after the second value drop, not the first.</div>
+    <div class="tam-note"><b>Smaller-ticket ICPs</b> — can move from problem-aware to ready-to-buy in one session. Lighter funnel, but the trust beats are still required — just compressed.</div>
+  </div>
+</section>
+
+<!-- ============================================================ 6. CHANNEL STACK ============================================================ -->
+<section id="channel-stack" data-component="channel-stack" class="section-shell">
+  <span class="section-shell__tag">06 · channel-stack</span>
+
+  <div class="cs-head kh-block" data-kh>
+    <span class="kicker">CHANNEL STACK</span>
+    <h2 class="headline" data-headline>We don't run Reddit in a vacuum.</h2>
+    <p class="body" style="margin-top:14px;">Reddit creates the demand. Google captures the search. Same brief, same offer, same dashboard.</p>
+  </div>
+
+  <div class="cs-lanes">
+
+    <!-- Reddit lane -->
+    <div class="cs-lane reddit">
+      <div class="cs-lane__label">
+        <span class="tag">Demand creation</span>
+        <h5>Reddit Ads</h5>
+        <div class="sub">Where the conversation starts.</div>
+      </div>
+      <div class="cs-flow">
+        <div class="cs-node">Subreddit ad</div>
+        <span class="cs-arrow">→</span>
+        <div class="cs-node">Pre-sell</div>
+        <span class="cs-arrow">→</span>
+        <div class="cs-node">Brand search lifts</div>
+      </div>
+      <div class="cs-chart">
+        <div class="label">Branded search · 90 days</div>
+        <svg viewBox="0 0 320 80" preserveAspectRatio="none">
+          <path id="csChartReddit" d="M0,68 C40,66 80,62 120,52 C160,42 200,30 240,22 C270,16 295,12 320,10"
+                fill="none" stroke="#FF4500" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M0,68 C40,66 80,62 120,52 C160,42 200,30 240,22 C270,16 295,12 320,10 L320,80 L0,80 Z"
+                fill="#FF4500" opacity="0.12"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Bridge -->
+    <div class="cs-bridge" aria-hidden="true">
+      <svg viewBox="0 0 240 60">
+        <path id="csBridge" d="M20,4 C 80,4 80,56 220,56" fill="none" stroke="#FF4500" stroke-width="2"
+              stroke-dasharray="4 6"/>
+        <polygon points="220,52 232,56 220,60" fill="#FF4500"/>
+      </svg>
+    </div>
+
+    <!-- Google lane -->
+    <div class="cs-lane google">
+      <div class="cs-lane__label">
+        <span class="tag">Demand capture</span>
+        <h5>Google Ads</h5>
+        <div class="sub">Where the warmed search lands.</div>
+      </div>
+      <div class="cs-flow">
+        <div class="cs-node">Branded RSA</div>
+        <span class="cs-arrow">→</span>
+        <div class="cs-node">Competitor RSA</div>
+        <span class="cs-arrow">→</span>
+        <div class="cs-node">Demo LP</div>
+      </div>
+      <div class="cs-chart">
+        <div class="label">Search CTR · 90 days</div>
+        <svg viewBox="0 0 320 80" preserveAspectRatio="none">
+          <path id="csChartGoogle" d="M0,72 C40,70 80,66 120,58 C160,48 200,36 240,28 C270,22 295,16 320,14"
+                fill="none" stroke="#F5F5F0" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+          <path d="M0,72 C40,70 80,66 120,58 C160,48 200,36 240,28 C270,22 295,16 320,14 L320,80 L0,80 Z"
+                fill="#F5F5F0" opacity="0.06"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ 7. METRIC STAT BLOCK ============================================================ -->
+<section id="metric-stat-block" data-component="metric-stat-block" class="section-shell">
+  <span class="section-shell__tag">07 · metric-stat-block</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 32px;">
+    <span class="kicker">OUR REDDIT CLIENT WINS</span>
+    <h2 class="headline" data-headline>Results we've driven.</h2>
+  </div>
+
+  <style>
+    .metrics-real { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .mr-card { position: relative; padding: 26px 24px 26px; border: 1px solid var(--sp-hairline); border-radius: 14px; background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+    .mr-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
+    .mr-card[data-accent="orange"]   { --accent: #FF4500; }
+    .mr-card[data-accent="gold"]     { --accent: #F5B800; }
+    .mr-card[data-accent="teal"]     { --accent: #1FB89A; }
+    .mr-card[data-accent="lavender"] { --accent: #B5A8D6; }
+    .mr-vertical { font-family: var(--sp-font-sans); font-weight: 700; font-size: 14.5px; color: var(--accent); line-height: 1.2; letter-spacing: 0.005em; }
+    .mr-audience { font-size: 12.5px; color: var(--sp-mute); font-weight: 500; line-height: 1.2; }
+    .mr-headline { display: flex; align-items: baseline; gap: 4px; margin-top: 6px; }
+    .mr-headline .big { font-family: var(--sp-font-serif); font-weight: 400; font-size: 64px; line-height: 0.95; letter-spacing: -0.02em; color: var(--sp-off-white); }
+    .mr-unit { font-family: var(--sp-font-sans); font-weight: 700; font-size: 16.5px; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+    .mr-context { font-size: 13px; color: var(--sp-mute); line-height: 1.55; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--sp-hairline); }
+    @media (max-width: 1100px) { .metrics-real { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .metrics-real { grid-template-columns: 1fr; } }
+    body[data-aspect="9:16"] .metrics-real { grid-template-columns: repeat(2, 1fr); }
+    body[data-aspect="9:16"] .mr-card .big { font-size: 52px; }
+  </style>
+
+  <div class="metrics-real">
+    <div class="mr-card" data-accent="orange">
+      <div class="mr-vertical">IT &amp; Security</div>
+      <div class="mr-audience">B2B Lead Gen</div>
+      <div class="mr-headline"><span class="big">$39</span></div>
+      <div class="mr-unit">CPL</div>
+      <p class="mr-context">150+ leads in Month 1. CPMs under $9, CPCs under $2.</p>
+    </div>
+
+    <div class="mr-card" data-accent="gold">
+      <div class="mr-vertical">Consumer Apps</div>
+      <div class="mr-audience">B2C Sales</div>
+      <div class="mr-headline"><span class="big">2:1</span></div>
+      <div class="mr-unit">ROAS</div>
+      <p class="mr-context">$95K revenue from 632 attributed sales at $74 CAC.</p>
+    </div>
+
+    <div class="mr-card" data-accent="teal">
+      <div class="mr-vertical">Financial Services</div>
+      <div class="mr-audience">B2C Lead Gen</div>
+      <div class="mr-headline"><span class="big">$10</span></div>
+      <div class="mr-unit">CPL</div>
+      <p class="mr-context">286 leads. 2.2:1 ROAS over a 2-week optimization period.</p>
+    </div>
+
+    <div class="mr-card" data-accent="lavender">
+      <div class="mr-vertical">Payroll SaaS</div>
+      <div class="mr-audience">B2B Pipeline</div>
+      <div class="mr-headline"><span class="big">$300</span></div>
+      <div class="mr-unit">CPMQL</div>
+      <p class="mr-context">Higher lead quality than Meta. Scaled from 3-month $50K pilot to evergreen always-on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7b. REDDIT FIT ============================================================ -->
+<section id="reddit-fit" data-component="reddit-fit" class="section-shell">
+  <span class="section-shell__tag">07b · reddit-fit</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 28px;">
+    <span class="kicker">WHO REDDIT IS BUILT FOR</span>
+    <h2 class="headline" data-headline>Reddit owns the mid-funnel. Some businesses live there.</h2>
+    <p class="body" style="margin-top:14px; max-width: 72ch;">Reddit is where buyers go to <b style="color:var(--sp-off-white);">read other people's opinions</b> and <b style="color:var(--sp-off-white);">get questions answered</b>. It's the leader in mid-funnel consideration — the trust layer between awareness and purchase. Some businesses are massively over-indexed on that consideration phase. For those, Reddit isn't a channel; it's the channel.</p>
+  </div>
+
+  <style>
+    /* ----- Reddit fit scoring strip ----- */
+    .rf-score { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 28px 0 40px; }
+    .rf-score-card { padding: 18px 18px 20px; border: 1px solid var(--sp-hairline); border-radius: 12px; background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 8px; min-height: 168px; position: relative; }
+    .rf-score-card .rf-num { font-family: var(--sp-font-serif); font-size: 18px; color: var(--sp-orange-red); line-height: 1; }
+    .rf-score-card h4 { font-family: var(--sp-font-sans); font-weight: 700; font-size: 14.5px; color: var(--sp-off-white); margin: 0; line-height: 1.25; }
+    .rf-score-card p { font-size: 12.5px; color: var(--sp-mute); line-height: 1.45; margin: 0; }
+    .rf-score-card .rf-weight { margin-top: auto; display: flex; align-items: center; gap: 8px; }
+    .rf-bar { position: relative; flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .rf-bar-fill { position: absolute; inset: 0; background: var(--sp-orange-red); border-radius: 2px; transform-origin: left; transform: scaleX(var(--w, 0.6)); }
+    .rf-weight-label { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-mute-2); font-weight: 700; min-width: 36px; text-align: right; }
+
+    /* ----- Section title ----- */
+    .rf-subhead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 8px; margin-bottom: 18px; padding-top: 24px; border-top: 1px dashed var(--sp-hairline); }
+    .rf-subhead h3 { font-family: var(--sp-font-serif); font-weight: 400; font-size: clamp(22px, 2.2vw, 28px); color: var(--sp-off-white); margin: 0; letter-spacing: -0.005em; }
+    .rf-subhead .rf-meta { font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sp-mute-2); font-weight: 700; }
+
+    /* ----- Niche grid ----- */
+    .rf-niches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .rf-niche { padding: 18px 18px 18px; border: 1px solid var(--sp-hairline); border-radius: 12px; background: var(--sp-charcoal); display: flex; flex-direction: column; gap: 10px; position: relative; transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out); }
+    .rf-niche:hover { border-color: rgba(255,69,0,0.4); transform: translateY(-2px); }
+    .rf-niche-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .rf-niche h5 { font-family: var(--sp-font-sans); font-weight: 700; font-size: 15px; color: var(--sp-off-white); margin: 0; line-height: 1.2; }
+    .rf-fit { font-family: var(--sp-font-serif); font-size: 18px; color: var(--sp-orange-red); line-height: 1; letter-spacing: -0.01em; }
+    .rf-fit small { font-size: 11px; color: var(--sp-mute-2); font-family: var(--sp-font-sans); font-weight: 700; letter-spacing: 0.06em; }
+    .rf-why { font-size: 12.5px; color: var(--sp-mute); line-height: 1.5; margin: 0; }
+    .rf-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .rf-tag { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sp-mute-2); padding: 4px 8px; border: 1px solid var(--sp-hairline-strong); border-radius: 4px; font-weight: 700; }
+
+    @media (max-width: 1100px) { .rf-score { grid-template-columns: repeat(2, 1fr); } .rf-niches { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px)  { .rf-score, .rf-niches { grid-template-columns: 1fr; } }
+    body[data-aspect="9:16"] .rf-score, body[data-aspect="9:16"] .rf-niches { grid-template-columns: repeat(2, 1fr); }
+  </style>
+
+  <!-- 5-criteria scoring -->
+  <div class="rf-subhead" style="border-top:0; padding-top:0;">
+    <h3>The Reddit Fit Score — 5 inputs.</h3>
+    <span class="rf-meta">scored 1–5 · weighted</span>
+  </div>
+
+  <div class="rf-score">
+    <div class="rf-score-card">
+      <span class="rf-num">01</span>
+      <h4>Consideration intensity</h4>
+      <p>How much research happens before purchase. The longer the deliberation, the bigger the Reddit lift.</p>
+      <div class="rf-weight"><div class="rf-bar"><div class="rf-bar-fill" style="--w:0.95;"></div></div><span class="rf-weight-label">25%</span></div>
+    </div>
+    <div class="rf-score-card">
+      <span class="rf-num">02</span>
+      <h4>Subreddit density</h4>
+      <p>Are there active subs, threads, and recurring questions where the ICP already lives?</p>
+      <div class="rf-weight"><div class="rf-bar"><div class="rf-bar-fill" style="--w:0.85;"></div></div><span class="rf-weight-label">25%</span></div>
+    </div>
+    <div class="rf-score-card">
+      <span class="rf-num">03</span>
+      <h4>Trust gap</h4>
+      <p>Is the category one where buyers distrust ads and look for peer opinion before deciding?</p>
+      <div class="rf-weight"><div class="rf-bar"><div class="rf-bar-fill" style="--w:0.8;"></div></div><span class="rf-weight-label">20%</span></div>
+    </div>
+    <div class="rf-score-card">
+      <span class="rf-num">04</span>
+      <h4>Unit economics</h4>
+      <p>Does the LTV × close-rate ceiling support a CPL above the benchmark for the format?</p>
+      <div class="rf-weight"><div class="rf-bar"><div class="rf-bar-fill" style="--w:0.7;"></div></div><span class="rf-weight-label">15%</span></div>
+    </div>
+    <div class="rf-score-card">
+      <span class="rf-num">05</span>
+      <h4>Story surface</h4>
+      <p>Is there a real point of view, framework, or asset to put into a thread — not just a discount?</p>
+      <div class="rf-weight"><div class="rf-bar"><div class="rf-bar-fill" style="--w:0.65;"></div></div><span class="rf-weight-label">15%</span></div>
+    </div>
+  </div>
+
+  <!-- Top niches -->
+  <div class="rf-subhead">
+    <h3>Where Reddit punches hardest.</h3>
+    <span class="rf-meta">top niches · by fit score</span>
+  </div>
+
+  <div class="rf-niches">
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Home Services</h5><div class="rf-fit">9.4<small>/10</small></div></div>
+      <p class="rf-why">High-consideration purchases researched in r/HomeImprovement, r/Plumbing, r/HVAC. Buyers want pre-vetted opinions before letting a stranger into their house.</p>
+      <div class="rf-tags"><span class="rf-tag">Local intent</span><span class="rf-tag">High AOV</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Consumer Services</h5><div class="rf-fit">9.1<small>/10</small></div></div>
+      <p class="rf-why">Insurance, mortgage, financial advice, fitness, mental health. Categories where the ICP wants peer validation, not a pitch — and where Reddit threads outrank brand sites.</p>
+      <div class="rf-tags"><span class="rf-tag">Trust gap</span><span class="rf-tag">Long deliberation</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Niche products</h5><div class="rf-fit">9.0<small>/10</small></div></div>
+      <p class="rf-why">DTC categories with passionate sub-communities — mechanical keyboards, audio, EDC, supplements, hobby gear. Subreddits act as the de-facto buying guide.</p>
+      <div class="rf-tags"><span class="rf-tag">Sub-density</span><span class="rf-tag">Enthusiast ICP</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Science-based marketing</h5><div class="rf-fit">8.9<small>/10</small></div></div>
+      <p class="rf-why">Anything that wins on evidence — supplements, skincare with claims, nutrition, biotech tools. Reddit rewards mechanism explanations and citations; ad copy that reads like a study lands.</p>
+      <div class="rf-tags"><span class="rf-tag">Mechanism-led</span><span class="rf-tag">Citable claims</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>B2B</h5><div class="rf-fit">9.2<small>/10</small></div></div>
+      <p class="rf-why">Operators research vendors in r/sysadmin, r/devops, r/marketing, r/sales, r/PPC — then bring the shortlist to procurement. Reddit is the hidden vendor-discovery layer in B2B.</p>
+      <div class="rf-tags"><span class="rf-tag">Operator ICP</span><span class="rf-tag">Hidden discovery</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>SaaS</h5><div class="rf-fit">9.5<small>/10</small></div></div>
+      <p class="rf-why">High-LTV products, long evaluation cycles, dense category subs (r/SaaS, r/Entrepreneur, vertical subs). The CPMQL economics work because one closed-won pays for the cohort.</p>
+      <div class="rf-tags"><span class="rf-tag">High LTV</span><span class="rf-tag">Long cycle</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Services</h5><div class="rf-fit">8.8<small>/10</small></div></div>
+      <p class="rf-why">Agencies, consultancies, professional services. Buyers want to see thinking before they get on a call — the framework, the audit, the worked example. Reddit is the perfect surface.</p>
+      <div class="rf-tags"><span class="rf-tag">Thought leadership</span><span class="rf-tag">Framework-led</span></div>
+    </div>
+
+    <div class="rf-niche">
+      <div class="rf-niche-top"><h5>Coaching</h5><div class="rf-fit">8.6<small>/10</small></div></div>
+      <p class="rf-why">Career, fitness, finance, mindset, executive coaching. The buyer is mid-research, comparing methodologies. A pre-sell article + free assessment converts cold attention into qualified discovery calls.</p>
+      <div class="rf-tags"><span class="rf-tag">Methodology pitch</span><span class="rf-tag">Assessment offer</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8. NODE WORKFLOW DIAGRAM ============================================================ -->
+<section id="node-workflow-diagram" data-component="node-workflow-diagram" class="section-shell no-bg">
+  <span class="section-shell__tag" style="color: var(--sp-mute-2);">08 · node-workflow-diagram</span>
+
+  <div class="nw-wrap" id="nwWrap">
+    <div class="nw-grid-bg"></div>
+
+    <h2 class="nw-headline">This isn't a media buy. It's an instrumented system.</h2>
+
+    <div class="nw-stage" id="nwStage">
+      <svg id="nwLines" viewBox="0 0 1200 460" preserveAspectRatio="none">
+        <defs>
+          <marker id="nwArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#FF4500"/>
+          </marker>
+        </defs>
+        <!-- connector paths drawn via JS based on tile coords -->
+      </svg>
+
+      <!-- 6 tiles positioned in % so they reflow -->
+      <div class="nw-tile" data-id="pixel"  style="left:14%;  top:22%;"><span class="ico">◉</span> Reddit Pixel</div>
+      <div class="nw-tile" data-id="capi"   style="left:42%;  top:14%;"><span class="ico">↯</span> CAPI Server</div>
+      <div class="nw-tile" data-id="ga4"    style="left:14%;  top:62%;"><span class="ico">G</span> GA4</div>
+      <div class="nw-tile" data-id="bq"     style="left:46%;  top:54%;"><span class="ico">▦</span> CRM (HubSpot / Salesforce)</div>
+      <div class="nw-tile" data-id="looker" style="left:78%;  top:34%;"><span class="ico">◐</span> Looker dashboard</div>
+      <div class="nw-tile" data-id="hook"   style="left:78%;  top:78%;"><span class="ico">⤳</span> Lead routing webhook</div>
+
+      <!-- floating line labels -->
+      <div class="nw-line-label" style="left:28%; top:18%;">event</div>
+      <div class="nw-line-label" style="left:28%; top:62%;">user_id</div>
+      <div class="nw-line-label" style="left:60%; top:34%;">conversion</div>
+      <div class="nw-line-label" style="left:60%; top:66%;">lead</div>
+      <div class="nw-line-label" style="left:78%; top:56%;">report</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9. CTA BLOCK ============================================================ -->
+<section id="cta-block" data-component="cta-block" class="section-shell">
+  <span class="section-shell__tag">09 · cta-block</span>
+
+  <div class="cta-block">
+    <div class="kh-block" data-kh>
+      <h2 class="headline" data-headline>See your opportunity in Reddit — free.</h2>
+    </div>
+    <p class="body" style="margin-top: 16px;">Get your <b style="color:var(--sp-off-white);">Free Funnel Map</b> with lead opportunity estimates. We'll build your funnel map and show you your path to success.</p>
+    <div class="cta-row" style="margin-top: 28px;">
+      <button class="cta-pill" type="button">Get My Free Funnel Map</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10. FRAME WRAPPER ============================================================ -->
+<section id="frame-wrapper" data-component="frame-wrapper" class="section-shell">
+  <span class="section-shell__tag">10 · frame-wrapper</span>
+
+  <div class="kh-block" data-kh style="margin-bottom: 28px;">
+    <span class="kicker">RECORDING-READY</span>
+    <h2 class="headline" data-headline>Drop any component into a 16:9 or 9:16 capture frame.</h2>
+  </div>
+
+  <div class="fw" id="fwFrame">
+    <span class="fw-tag">16:9 · capture</span>
+    <div class="fw-content">
+      <span class="kicker">THE FULL LOOP</span>
+      <h3 class="headline" style="font-size: clamp(32px, 3.4vw, 44px);">What we run for every ScalePaid client.</h3>
+      <p class="body" style="margin-top:18px;">Eight steps. One Reddit funnel. The full system, instrumented end-to-end.</p>
+    </div>
+    <div class="fw-camera" id="fwCam">Wistia · facecam</div>
+    <div class="fw-captions" id="fwCaps" style="display:none;">Reddit users don't trust ads. They trust threads.</div>
+  </div>
+
+  <div class="fw-controls" id="fwControls">
+    <button type="button" data-fw="aspect" data-val="16:9" class="is-active">16:9</button>
+    <button type="button" data-fw="aspect" data-val="9:16">9:16</button>
+    <button type="button" data-fw="caps" data-val="off" class="is-active">Captions off</button>
+    <button type="button" data-fw="caps" data-val="on">Captions on</button>
+    <button type="button" data-fw="cam" data-val="on" class="is-active">Facecam on</button>
+    <button type="button" data-fw="cam" data-val="off">Facecam off</button>
+  </div>
+</section>
+
+<!-- ============================================================ NARRATIVE ANCHORS ============================================================ -->
+<section id="narrative-a" class="section-shell no-bg">
+  <div class="narrative-anchor">
+    <span class="narrative-anchor__chip">Narrative A</span>
+    <h2 class="narrative-anchor__title">"We build Reddit Funnels that convert."</h2>
+  </div>
+  <p class="body" style="margin-bottom:24px;">Open: <a class="cta-link" href="#kicker-headline">kicker A</a>. Show the path: <a class="cta-link" href="#reddit-user-journey">user journey</a>. Land it: <a class="cta-link" href="#metric-stat-block">metrics</a>.</p>
+</section>
+
+<section id="narrative-b" class="section-shell no-bg">
+  <div class="narrative-anchor">
+    <span class="narrative-anchor__chip">Narrative B</span>
+    <h2 class="narrative-anchor__title">"Funnels are the unlock — trust is the variable Reddit demands."</h2>
+  </div>
+  <p class="body" style="margin-bottom:24px;">Open: <a class="cta-link" href="#kicker-headline">kicker B</a>. Contrast: <a class="cta-link" href="#trust-building-funnel">trust funnel</a>. Detail: <a class="cta-link" href="#vertical-process-flow">8-step flow</a>.</p>
+</section>
+
+<section id="narrative-c" class="section-shell no-bg">
+  <div class="narrative-anchor">
+    <span class="narrative-anchor__chip">Narrative C</span>
+    <h2 class="narrative-anchor__title">"Reddit doesn't run alone — Google Ads expansion compounds it."</h2>
+  </div>
+  <p class="body" style="margin-bottom:24px;">Open: <a class="cta-link" href="#kicker-headline">kicker C</a>. Pair: <a class="cta-link" href="#channel-stack">channel stack</a>. Credibility: <a class="cta-link" href="#node-workflow-diagram">system diagram</a>.</p>
+</section>
+
+</main>
+
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const cleanMode = params.get('clean') === '1';
+  const initialAspect = params.get('aspect') === '9:16' ? '9:16' : '16:9';
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (cleanMode) document.body.classList.add('clean');
+  document.body.dataset.aspect = initialAspect;
+
+  // ---------------- Aspect toggle ----------------
+  const aspectToggle = document.getElementById('aspectToggle');
+  if (aspectToggle) {
+    [...aspectToggle.querySelectorAll('button')].forEach(btn => {
+      if (btn.dataset.aspect === initialAspect) btn.classList.add('is-active');
+      else btn.classList.remove('is-active');
+      btn.addEventListener('click', () => {
+        const val = btn.dataset.aspect;
+        document.body.dataset.aspect = val;
+        [...aspectToggle.querySelectorAll('button')].forEach(b => b.classList.toggle('is-active', b === btn));
+        const url = new URL(location.href);
+        url.searchParams.set('aspect', val);
+        history.replaceState(null, '', url);
+        // re-layout dependent components
+        layoutNodeWorkflow();
+      });
+    });
+  }
+
+  // ---------------- Helper: split words for kicker headlines ----------------
+  document.querySelectorAll('[data-headline]').forEach(h => {
+    if (h.dataset.split === '1') return;
+    const text = h.textContent;
+    h.dataset.split = '1';
+    h.textContent = '';
+    text.split(/\s+/).forEach((w, i) => {
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.textContent = w;
+      h.appendChild(span);
+      h.appendChild(document.createTextNode(' '));
+    });
+  });
+
+  // ---------------- IntersectionObserver helper ----------------
+  function onceVisible(el, fn, threshold = 0.25) {
+    if (!el) return;
+    if (reduced) { fn(); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          fn();
+          io.disconnect();
+        }
+      });
+    }, { threshold });
+    io.observe(el);
+  }
+
+  function whileVisible(el, onEnter, onLeave, threshold = 0.4) {
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) onEnter && onEnter(e);
+        else onLeave && onLeave(e);
+      });
+    }, { threshold });
+    io.observe(el);
+  }
+
+  // ---------------- Kicker headline animations ----------------
+  document.querySelectorAll('[data-kh]').forEach(block => {
+    const kicker = block.querySelector('.kicker');
+    const headline = block.querySelector('.headline');
+    if (reduced) {
+      if (kicker) { kicker.style.opacity = 1; kicker.style.transform = 'none'; }
+      if (headline) {
+        headline.style.opacity = 1;
+        headline.querySelectorAll('.word').forEach(w => { w.style.opacity = 1; w.style.transform = 'none'; });
+      }
+      return;
+    }
+    onceVisible(block, () => {
+      const tl = gsap.timeline();
+      if (kicker) tl.to(kicker, { opacity: 1, y: 0, duration: 0.1, ease: 'power2.out' });
+      if (headline) {
+        tl.set(headline, { opacity: 1 }, '<');
+        const words = headline.querySelectorAll('.word');
+        tl.to(words, {
+          opacity: 1, y: 0, duration: 0.3,
+          stagger: 0.04, ease: 'power2.out'
+        }, '+=0.2');
+      }
+    });
+  });
+
+  // ---------------- 2. Vertical process flow ----------------
+  (function vpf() {
+    const cards = document.querySelectorAll('#vpfList .vpf-card');
+    if (!cards.length) return;
+    const setActive = (idx) => {
+      cards.forEach((c, i) => {
+        c.classList.toggle('is-active', i === idx);
+        c.classList.toggle('draw-line', i < idx);
+      });
+    };
+    cards.forEach((card, i) => {
+      whileVisible(card, () => setActive(i), null, 0.5);
+    });
+  })();
+
+  // ---------------- 3. Circular full loop ----------------
+  (function loop() {
+    const stage = document.getElementById('loopStage');
+    if (!stage) return;
+    const nodesG = document.getElementById('loopNodes');
+    const ringEl = document.getElementById('loopRing');
+    const center = document.getElementById('loopCenter');
+    const tooltip = document.getElementById('loopTooltip');
+    const pulse = document.getElementById('loopPulse');
+
+    const steps = [
+      { n: 1, title: 'Subreddit Native Ad', cat: 'Discovery' },
+      { n: 2, title: 'Pre-Sell Article', cat: 'Priming' },
+      { n: 3, title: 'Mid-Funnel Lead Magnet', cat: 'Trust' },
+      { n: 4, title: 'Email Nurture Sequence', cat: 'Education' },
+      { n: 5, title: 'Demo / Webinar', cat: 'Conversion' },
+      { n: 6, title: 'Sales-Qualified Hand-off', cat: 'Pipeline' },
+      { n: 7, title: 'Search Capture', cat: 'Retargeting' },
+      { n: 8, title: 'Iterate & Improve', cat: 'Optimisation' }
+    ];
+    const cx = 300, cy = 300, r = 220;
+    const nodeEls = [];
+    steps.forEach((s, i) => {
+      // start at 12 o'clock (-90deg) and go clockwise
+      const angle = (-Math.PI / 2) + (i / steps.length) * Math.PI * 2;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'loop-node');
+      g.setAttribute('data-step', s.n);
+      g.setAttribute('transform', `translate(${x} ${y})`);
+      g.innerHTML = `
+        <circle class="bg" r="26"></circle>
+        <text x="0" y="6" text-anchor="middle">${s.n}</text>
+      `;
+      g.addEventListener('mouseenter', (e) => {
+        tooltip.textContent = `${s.cat.toUpperCase()} · ${s.title}`;
+        const rect = stage.getBoundingClientRect();
+        tooltip.style.left = ((x / 600) * rect.width) + 'px';
+        tooltip.style.top = ((y / 600) * rect.height) + 'px';
+        tooltip.classList.add('is-visible');
+      });
+      g.addEventListener('mouseleave', () => tooltip.classList.remove('is-visible'));
+      nodesG.appendChild(g);
+      nodeEls.push(g);
+    });
+
+    // honor data-active
+    const dataActive = parseInt(stage.getAttribute('data-active') || '0', 10);
+    if (dataActive >= 1 && dataActive <= 8) {
+      nodeEls[dataActive - 1].classList.add('is-active');
+    }
+
+    // ring length for stroke-dasharray reveal
+    const circumference = 2 * Math.PI * r;
+
+    if (reduced) {
+      gsap.set(center, { opacity: 1 });
+      gsap.set(nodeEls, { opacity: 1, scale: 1 });
+      return;
+    }
+
+    // initial states
+    gsap.set(nodeEls, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' });
+    ringEl.setAttribute('stroke-dasharray', `${circumference}`);
+    ringEl.setAttribute('stroke-dashoffset', `${circumference}`);
+
+    onceVisible(stage, () => {
+      const tl = gsap.timeline();
+      tl.to(center, { opacity: 1, duration: 0.2, ease: 'power2.out' });
+      tl.to(ringEl, {
+        attr: { 'stroke-dashoffset': 0 },
+        duration: 0.8, ease: 'power2.out'
+      }, '<');
+      tl.to(nodeEls, {
+        opacity: 1, scale: 1.05, duration: 0.18,
+        stagger: 0.06, ease: 'power2.out'
+      }, '-=0.4');
+      tl.to(nodeEls, { scale: 1, duration: 0.18, stagger: 0.06, ease: 'power2.out' }, '-=0.4');
+
+      // continuous orange pulse along the ring
+      const pulseAnim = { t: 0 };
+      gsap.to(pulseAnim, {
+        t: 1, duration: 8, repeat: -1, ease: 'none',
+        onUpdate: () => {
+          const a = (-Math.PI / 2) + pulseAnim.t * Math.PI * 2;
+          pulse.setAttribute('cx', cx + Math.cos(a) * r);
+          pulse.setAttribute('cy', cy + Math.sin(a) * r);
+          pulse.setAttribute('opacity', 0.08 + 0.05 * Math.sin(pulseAnim.t * Math.PI * 4));
+        }
+      });
+    });
+  })();
+
+  // ---------------- 4. Reddit user journey ----------------
+  (function ruj() {
+    const stops = document.querySelectorAll('#rujStops .ruj-stop');
+    const dot = document.getElementById('rujDot');
+    if (!stops.length || !dot) return;
+
+    function positionDot(stop, animate = true) {
+      const track = document.querySelector('.ruj-track');
+      if (!track) return;
+      const tRect = track.getBoundingClientRect();
+      const sRect = stop.getBoundingClientRect();
+      const x = (sRect.left + sRect.width / 2) - tRect.left - 7;
+      if (reduced || !animate) {
+        dot.style.left = x + 'px';
+      } else {
+        gsap.to(dot, { left: x + 'px', duration: 0.5, ease: 'power2.inOut' });
+      }
+    }
+
+    let active = 0;
+    function setActive(i) {
+      active = i;
+      stops.forEach((s, idx) => s.classList.toggle('is-anchor', idx === i));
+      positionDot(stops[i]);
+    }
+
+    stops.forEach((stop, i) => {
+      stop.addEventListener('click', () => setActive(i));
+    });
+
+    // initialize
+    setActive(0);
+    setTimeout(() => positionDot(stops[active], false), 100);
+
+    // auto-advance on visibility
+    let visIdx = 0;
+    stops.forEach((stop, i) => {
+      whileVisible(stop, () => {
+        if (i > visIdx) {
+          visIdx = i;
+          setActive(i);
+        }
+      }, null, 0.55);
+    });
+
+    // re-position on resize
+    window.addEventListener('resize', () => positionDot(stops[active], false));
+  })();
+
+  // ---------------- 5. Trust funnel gauge ----------------
+  (function tf() {
+    const grid = document.getElementById('tfGrid');
+    const bar = document.getElementById('tfBar');
+    const stateEl = document.getElementById('tfState');
+    if (!grid || !bar) return;
+    const states = ['Cold', 'Curious', 'Engaged', 'Qualified', 'Routed', 'Trust-deepened', 'Sales-ready'];
+    const steps = grid.querySelectorAll('[data-tf-step]');
+
+    function setStep(idx) {
+      const pct = ((idx + 1) / states.length) * 100;
+      bar.style.width = pct + '%';
+      stateEl.textContent = states[idx];
+      steps.forEach((s, i) => s.style.opacity = i <= idx ? '1' : '0.55');
+    }
+
+    if (reduced) { setStep(states.length - 1); return; }
+
+    // initial state
+    bar.style.width = '0%';
+    stateEl.textContent = states[0];
+    steps.forEach(s => s.style.opacity = '0.4');
+
+    onceVisible(grid, () => {
+      let i = 0;
+      setStep(i);
+      const tick = () => {
+        i++;
+        if (i < states.length) {
+          setStep(i);
+          setTimeout(tick, 420);
+        }
+      };
+      setTimeout(tick, 200);
+    }, 0.35);
+  })();
+
+  // ---------------- 6. Channel stack chart line draw ----------------
+  (function cs() {
+    const r = document.getElementById('csChartReddit');
+    const g = document.getElementById('csChartGoogle');
+    const b = document.getElementById('csBridge');
+    [r, g, b].forEach(p => {
+      if (!p) return;
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = reduced ? 0 : len;
+    });
+
+    const lane = document.querySelector('#channel-stack');
+    if (!lane) return;
+    if (reduced) return;
+    onceVisible(lane, () => {
+      gsap.to([r, g], {
+        strokeDashoffset: 0, duration: 0.9, ease: 'power2.out', stagger: 0.15
+      });
+      gsap.to(b, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out', delay: 0.6 });
+    }, 0.3);
+  })();
+
+  // ---------------- 7. Metric count-up ----------------
+  (function metrics() {
+    const nums = document.querySelectorAll('[data-count]');
+    if (!nums.length) return;
+    nums.forEach(el => {
+      const target = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const fmt = v => prefix + (decimals ? v.toFixed(decimals) : Math.round(v).toLocaleString()) + suffix;
+      if (reduced) { el.textContent = fmt(target); return; }
+      const obj = { v: 0 };
+      onceVisible(el, () => {
+        gsap.to(obj, {
+          v: target, duration: 1.2, ease: 'power2.out',
+          onUpdate: () => { el.textContent = fmt(obj.v); }
+        });
+      });
+    });
+  })();
+
+  // ---------------- 8. Node workflow diagram ----------------
+  function layoutNodeWorkflow() {
+    const stage = document.getElementById('nwStage');
+    const svg = document.getElementById('nwLines');
+    if (!stage || !svg) return;
+    const rect = stage.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+    const tiles = stage.querySelectorAll('.nw-tile');
+    const pos = {};
+    tiles.forEach(t => {
+      const tr = t.getBoundingClientRect();
+      pos[t.dataset.id] = {
+        x: (tr.left + tr.width / 2) - rect.left,
+        y: (tr.top + tr.height / 2) - rect.top
+      };
+    });
+
+    // edges: pixel->capi, ga4->bq, capi->looker, bq->looker, capi->hook, bq->hook
+    const edges = [
+      ['pixel', 'capi'], ['ga4', 'bq'],
+      ['capi', 'looker'], ['bq', 'looker'],
+      ['capi', 'hook'], ['bq', 'hook'],
+      ['pixel', 'ga4']
+    ];
+
+    // clear existing paths
+    svg.querySelectorAll('path.nw-edge').forEach(p => p.remove());
+
+    edges.forEach(([a, b], idx) => {
+      const A = pos[a], B = pos[b];
+      if (!A || !B) return;
+      const mx = (A.x + B.x) / 2;
+      const dy = (B.y - A.y) * 0.4;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M ${A.x} ${A.y} C ${mx} ${A.y + dy}, ${mx} ${B.y - dy}, ${B.x} ${B.y}`;
+      path.setAttribute('d', d);
+      path.setAttribute('class', 'nw-edge');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', '#FF4500');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('opacity', '0.6');
+      path.setAttribute('marker-end', 'url(#nwArrow)');
+      svg.appendChild(path);
+
+      // animate stroke
+      if (!reduced) {
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+        // staggered draw on first paint, instant on relayout
+        if (!path.dataset.drawn) {
+          path.dataset.drawn = '1';
+          gsap.to(path, {
+            strokeDashoffset: 0, duration: 0.8, ease: 'power2.out',
+            delay: 0.1 + idx * 0.08
+          });
+        } else {
+          path.style.strokeDashoffset = 0;
+        }
+      }
+    });
+  }
+
+  (function nwInit() {
+    const stage = document.getElementById('nwStage');
+    if (!stage) return;
+    onceVisible(stage, () => {
+      layoutNodeWorkflow();
+      // subtle parallax drift
+      if (!reduced) {
+        const tiles = stage.querySelectorAll('.nw-tile');
+        tiles.forEach((t, i) => {
+          gsap.to(t, {
+            x: '+=4', y: '+=2',
+            duration: 4 + i * 0.4,
+            yoyo: true, repeat: -1, ease: 'sine.inOut'
+          });
+        });
+      }
+    }, 0.2);
+    window.addEventListener('resize', () => {
+      clearTimeout(window.__nwT);
+      window.__nwT = setTimeout(layoutNodeWorkflow, 100);
+    });
+  })();
+
+  // ---------------- 10. Frame wrapper controls ----------------
+  (function fw() {
+    const ctrl = document.getElementById('fwControls');
+    const frame = document.getElementById('fwFrame');
+    const cam = document.getElementById('fwCam');
+    const caps = document.getElementById('fwCaps');
+    const tag = frame && frame.querySelector('.fw-tag');
+    if (!ctrl || !frame) return;
+    ctrl.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-fw]');
+      if (!btn) return;
+      const kind = btn.dataset.fw;
+      const val = btn.dataset.val;
+      // active state per group
+      ctrl.querySelectorAll(`button[data-fw="${kind}"]`).forEach(b => {
+        b.classList.toggle('is-active', b === btn);
+      });
+      if (kind === 'aspect') {
+        if (val === '9:16') { frame.style.aspectRatio = '9 / 16'; frame.style.maxWidth = '420px'; frame.style.margin = '0 auto'; }
+        else { frame.style.aspectRatio = '16 / 9'; frame.style.maxWidth = ''; frame.style.margin = ''; }
+        if (tag) tag.textContent = `${val} · capture`;
+      }
+      if (kind === 'caps') caps.style.display = val === 'on' ? 'block' : 'none';
+      if (kind === 'cam') cam.style.display = val === 'on' ? 'flex' : 'none';
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
