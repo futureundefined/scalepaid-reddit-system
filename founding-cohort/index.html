@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Founding Cohort · ScalePaid · Reddit Ads pilot for 5 brands</title>
+<meta name="description" content="A 90-day Reddit Ads pilot for 5 hand-picked brands. $1,500/month flat. Senior execution, founder access, no setup fee. Closes June 30, 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', 'Times New Roman', serif;
+    --sp-font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+    --sp-line: rgba(255,255,255,0.10);
+    --sp-line-light: rgba(14,15,17,0.10);
+    --sp-muted-on-dark: rgba(255,255,255,0.65);
+    --sp-muted-on-light: rgba(14,15,17,0.62);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sp-font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    background: var(--sp-black);
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
+
+  /* Sticky scarcity bar */
+  .stickybar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--sp-charcoal);
+    color: #fff;
+    padding: 12px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--sp-line);
+  }
+  .stickybar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .stickybar .left { display: flex; align-items: center; gap: 18px; }
+  .stickybar .pulse {
+    width: 8px; height: 8px; background: var(--sp-orange-red); border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(255,69,0,0.7);
+    animation: pulse 2s infinite;
+    display: inline-block;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,69,0,0.7);}
+    70% { box-shadow: 0 0 0 8px rgba(255,69,0,0);}
+    100% { box-shadow: 0 0 0 0 rgba(255,69,0,0);}
+  }
+  .stickybar .pill-mini {
+    background: var(--sp-gradient);
+    color: #fff; padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* Nav */
+  .nav { padding: 26px 0; border-bottom: 1px solid var(--sp-line); }
+  .nav .wrap { display: flex; justify-content: space-between; align-items: center; }
+  .brand {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    border: 2px solid var(--sp-orange-red);
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .brand span { color: var(--sp-orange-red); }
+  .nav-links { display: flex; gap: 28px; font-size: 15px; }
+  .nav-links a { color: var(--sp-muted-on-dark); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--sp-orange-red); }
+
+  /* Buttons (CTA hierarchy) */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 14px 30px;
+    border-radius: 999px;
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--sp-gradient);
+    color: #fff;
+    box-shadow: 0 8px 24px -10px rgba(255,69,0,0.6);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -10px rgba(255,69,0,0.7); }
+  .btn-secondary-dark {
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid #fff;
+  }
+  .btn-secondary-dark:hover { background: rgba(255,255,255,0.06); }
+  .btn-tertiary {
+    background: transparent;
+    color: var(--sp-orange-red);
+    padding: 8px 0;
+    font-weight: 700;
+  }
+  .btn-tertiary:hover { opacity: 0.8; }
+
+  /* Hero */
+  .hero { padding: 88px 0 72px; }
+  .hero-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--sp-orange-red);
+    padding: 7px 14px;
+    border: 1px solid rgba(255,69,0,0.35);
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+  h1 em { font-style: italic; color: var(--sp-orange-red); }
+  .lede {
+    font-family: var(--sp-font-sans);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--sp-muted-on-dark);
+    margin-bottom: 32px;
+    max-width: 580px;
+  }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .hero-trust { font-size: 14px; color: var(--sp-muted-on-dark); margin-top: 22px; }
+  .hero-trust strong { color: #fff; font-weight: 700; }
+
+  /* Hero card */
+  .hero-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-line);
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,0.6);
+  }
+  .hero-card h3 {
+    font-family: var(--sp-font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--sp-orange-red);
+    margin-bottom: 22px;
+  }
+  .stat-row { display: flex; gap: 22px; margin-bottom: 24px; }
+  .stat { flex: 1; }
+  .stat .num {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--sp-green);
+  }
+  .stat .lbl {
+    font-family: var(--sp-font-sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: var(--sp-muted-on-dark);
+    margin-top: 8px;
+  }
+  .countdown { padding: 18px; background: rgba(255,255,255,0.04); border-radius: 12px; }
+  .countdown .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.6px; color: var(--sp-muted-on-dark); }
+  .countdown .date { font-family: var(--sp-font-sans); font-size: 22px; font-weight: 700; margin-top: 6px; color: #fff; }
+  .countdown .sub { font-size: 13px; color: var(--sp-muted-on-dark); margin-top: 6px; }
+
+  /* Section base */
+  section { padding: 88px 0; }
+  section.alt { background: var(--sp-charcoal); border-top: 1px solid var(--sp-line); border-bottom: 1px solid var(--sp-line); }
+  section.light { background: var(--sp-off-white); color: var(--sp-black); border-top: 1px solid var(--sp-line-light); border-bottom: 1px solid var(--sp-line-light); }
+  .section-head { max-width: 780px; margin: 0 auto 56px; text-align: center; }
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.15;
+    letter-spacing: -0.6px;
+    margin-bottom: 16px;
+  }
+  section.light h2 { color: var(--sp-black); }
+  .section-sub {
+    font-family: var(--sp-font-sans);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--sp-muted-on-dark);
+    line-height: 1.55;
+  }
+  section.light .section-sub { color: var(--sp-muted-on-light); }
+
+  /* Pain / promise */
+  .pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .pp { padding: 32px; border-radius: 16px; }
+  .pp.pain { background: var(--sp-charcoal); border: 1px solid var(--sp-line); }
+  .pp.promise { background: var(--sp-black); border: 1px solid rgba(255,69,0,0.25); }
+  .pp h3 {
+    font-family: var(--sp-font-sans);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 22px;
+    color: var(--sp-orange-red);
+  }
+  .pp ul { list-style: none; }
+  .pp li {
+    padding: 9px 0 9px 28px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--sp-muted-on-dark);
+  }
+  .pp.pain li:before { content: '×'; position: absolute; left: 4px; color: var(--sp-orange-red); font-weight: 800; font-size: 18px; line-height: 1.4; }
+  .pp.promise li:before { content: '→'; position: absolute; left: 0; color: var(--sp-orange-red); font-weight: 800; }
+  .pp.promise li { color: rgba(255,255,255,0.92); }
+
+  /* Qualifier (light section) */
+  .qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 940px; margin: 0 auto; }
+  .qual {
+    background: #fff;
+    border: 1px solid var(--sp-line-light);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .qual h3 {
+    font-family: var(--sp-font-sans);
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 22px;
+    color: var(--sp-orange-red);
+  }
+  .qual ul { list-style: none; }
+  .qual li {
+    font-size: 16px;
+    padding: 9px 0 9px 30px;
+    position: relative;
+    color: var(--sp-black);
+    line-height: 1.5;
+  }
+  .qual.in li:before {
+    content: '✓';
+    position: absolute; left: 0; top: 9px;
+    color: var(--sp-green);
+    font-weight: 800;
+    font-size: 18px;
+  }
+  .qual.out li:before {
+    content: '×';
+    position: absolute; left: 4px; top: 7px;
+    color: var(--sp-orange-red);
+    font-weight: 800;
+    font-size: 20px;
+  }
+
+  /* Includes */
+  .includes-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-line);
+    border-radius: 20px;
+    padding: 48px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .includes-block + .includes-block { margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--sp-line); }
+  .includes-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.6px;
+    color: var(--sp-orange-red);
+    padding: 6px 12px;
+    border: 1px solid rgba(255,69,0,0.35);
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  .includes ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 36px; }
+  .includes li {
+    font-size: 15px;
+    color: var(--sp-muted-on-dark);
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .includes li:before { content: '→'; position: absolute; left: 0; color: var(--sp-orange-red); font-weight: 800; }
+  .includes li strong { color: #fff; font-weight: 700; }
+
+  /* Roadmap */
+  .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 1040px; margin: 0 auto; }
+  .phase {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-line);
+    border-radius: 16px;
+    padding: 28px 24px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .phase:hover { border-color: rgba(255,69,0,0.4); }
+  .phase .days {
+    font-family: var(--sp-font-sans);
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 12px;
+  }
+  .phase h4 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .phase p {
+    font-size: 14px;
+    color: var(--sp-muted-on-dark);
+    line-height: 1.6;
+  }
+
+  /* Pricing */
+  .pricing {
+    background: var(--sp-black);
+    border: 1px solid rgba(255,69,0,0.25);
+    border-radius: 24px;
+    padding: 56px 60px;
+    max-width: 940px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--sp-gradient);
+  }
+  .pricing-row {
+    display: flex; gap: 48px; align-items: flex-end;
+    padding-bottom: 36px; border-bottom: 1px solid var(--sp-line);
+  }
+  .anchor .lbl, .offer-price .lbl {
+    font-family: var(--sp-font-sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+  .anchor .lbl { color: var(--sp-muted-on-dark); }
+  .anchor .val {
+    font-family: var(--sp-font-sans);
+    font-size: 24px;
+    color: rgba(255,255,255,0.45);
+    text-decoration: line-through;
+    margin-top: 8px;
+  }
+  .offer-price .lbl { color: var(--sp-orange-red); }
+  .offer-price .val {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 1;
+    margin-top: 10px;
+    letter-spacing: -2px;
+    color: #fff;
+  }
+  .offer-price .val small {
+    font-family: var(--sp-font-sans);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--sp-muted-on-dark);
+    letter-spacing: 0;
+  }
+  .offer-price .sub-val { font-size: 14px; color: var(--sp-muted-on-dark); margin-top: 10px; }
+  .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
+  .opt {
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--sp-line);
+    border-radius: 12px;
+  }
+  .opt .opt-num {
+    font-size: 11px; font-weight: 700;
+    color: var(--sp-orange-red);
+    letter-spacing: 1.4px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .opt p { font-size: 14px; color: rgba(255,255,255,0.88); line-height: 1.55; }
+  .pricing-cta { text-align: center; margin-top: 40px; }
+
+  /* Founder */
+  .founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .founder-photo {
+    aspect-ratio: 4/5;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-line-light);
+    box-shadow: 0 30px 60px -25px rgba(14,15,17,0.4);
+  }
+  .founder-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .founder-content h2 { font-size: 38px; }
+  .founder-quote {
+    font-family: var(--sp-font-serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--sp-black);
+    border-left: 3px solid var(--sp-orange-red);
+    padding-left: 24px;
+    margin: 24px 0;
+  }
+  .founder-sig { font-size: 14px; color: var(--sp-muted-on-light); margin-top: 18px; }
+  .founder-sig strong { color: var(--sp-black); font-weight: 700; }
+
+  /* FAQ */
+  .faq { max-width: 820px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid var(--sp-line); padding: 26px 0; }
+  .faq-q {
+    font-family: var(--sp-font-sans);
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .faq-a {
+    font-size: 16px;
+    color: var(--sp-muted-on-dark);
+    line-height: 1.65;
+  }
+  .faq-a strong { color: #fff; font-weight: 700; }
+
+  /* Final CTA */
+  .final-cta {
+    background: var(--sp-charcoal);
+    border: 1px solid rgba(255,69,0,0.3);
+    border-radius: 24px;
+    padding: 72px 48px;
+    text-align: center;
+    max-width: 940px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 3px;
+    background: var(--sp-gradient);
+    border-radius: 0 0 999px 999px;
+  }
+  .final-cta h2 { color: #fff; margin-bottom: 18px; }
+  .final-cta p {
+    color: var(--sp-muted-on-dark);
+    font-size: 18px;
+    max-width: 620px;
+    margin: 0 auto 32px;
+    font-weight: 500;
+  }
+  .final-cta .micro { font-size: 13px; color: var(--sp-muted-on-dark); margin-top: 22px; }
+
+  /* Footer */
+  footer { padding: 44px 0; border-top: 1px solid var(--sp-line); margin-top: 0; background: var(--sp-black); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer .copyright { font-size: 13px; color: var(--sp-muted-on-dark); }
+
+  /* Responsive */
+  @media (max-width: 920px) {
+    h1 { font-size: 44px; }
+    h2 { font-size: 32px; }
+    .hero { padding: 56px 0 48px; }
+    .hero-grid, .pp-grid, .qual-grid, .founder-grid { grid-template-columns: 1fr; gap: 36px; }
+    .roadmap { grid-template-columns: 1fr 1fr; }
+    .options { grid-template-columns: 1fr; }
+    .includes ul { grid-template-columns: 1fr; }
+    .pricing { padding: 36px 28px; }
+    .pricing-row { flex-direction: column; align-items: flex-start; gap: 26px; }
+    .offer-price .val { font-size: 56px; }
+    .nav-links { display: none; }
+    .stat-row { flex-wrap: wrap; }
+    .includes-card { padding: 32px; }
+  }
+  @media (max-width: 540px) {
+    .roadmap { grid-template-columns: 1fr; }
+    .stickybar .wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stickybar">
+  <div class="wrap">
+    <div class="left">
+      <span><span class="pulse"></span> &nbsp;<strong>4 of 5 spots remaining</strong></span>
+      <span style="opacity:0.5">·</span>
+      <span>Closes June 30, 2026</span>
+    </div>
+    <a class="pill-mini" href="https://form.typeform.com/to/lf3pnicO">Get Your Growth Plan →</a>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">SCALE<span>PAID</span></div>
+    <div class="nav-links">
+      <a href="#what">What's included</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#apply">Apply</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">● Restricted access · 5 brands only</span>
+        <h1>The 5 brands we want to <em>win with</em>.</h1>
+        <p class="lede">A 90-day Reddit Ads pilot for hand-picked brands. Senior execution. Founder access. $1,500/month flat. Pricing that won't run again after June 30.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/lf3pnicO">Get Your Growth Plan →</a>
+          <a class="btn btn-secondary-dark" href="#what">See what's included</a>
+        </div>
+        <p class="hero-trust">Standard ScalePaid retainer is <strong>$4,500/mo + $7,500 setup</strong>. This is one cohort, one time, until June 30.</p>
+      </div>
+      <div class="hero-card">
+        <h3>The Founding Cohort</h3>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="num">5</div>
+            <div class="lbl">Total spots</div>
+          </div>
+          <div class="stat">
+            <div class="num">4</div>
+            <div class="lbl">Remaining</div>
+          </div>
+          <div class="stat">
+            <div class="num">90</div>
+            <div class="lbl">Day pilot</div>
+          </div>
+        </div>
+        <div class="countdown">
+          <div class="lbl">Hard close</div>
+          <div class="date">June 30, 2026</div>
+          <div class="sub">After this date, this offer is gone. Period.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Why most brands fail on Reddit</div>
+      <h2>You can't run Reddit like Meta. Most agencies don't know that.</h2>
+      <p class="section-sub">Reddit is the unfair-advantage channel for considered-purchase brands, and the graveyard for everyone else.</p>
+    </div>
+    <div class="pp-grid">
+      <div class="pp pain">
+        <h3>What kills most Reddit campaigns</h3>
+        <ul>
+          <li>Repurposed Meta creative that gets roasted in the comments</li>
+          <li>Generic landing pages that don't match Reddit's research-heavy buyer</li>
+          <li>Bottom-funnel offers shoved at top-funnel audiences</li>
+          <li>No CAPI integration. Attribution flies blind.</li>
+          <li>Subreddit targeting picked by gut instead of data</li>
+          <li>"Set it and forget it" optimization on a platform that punishes it</li>
+        </ul>
+      </div>
+      <div class="pp promise">
+        <h3>How we win on Reddit</h3>
+        <ul>
+          <li>Reddit-native creative built for how Redditors actually read</li>
+          <li>Offer-first thinking. We architect what to sell before we run ads.</li>
+          <li>Subreddit research mapped to your ICP, not the other way around</li>
+          <li>CAPI plus tracking infrastructure on Day 1, not retrofitted</li>
+          <li>Mid-funnel intent capture. Reddit's strongest performance window.</li>
+          <li>Senior performance marketers, never juniors learning on your dollar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Who this is for</div>
+      <h2>We turn down brands that aren't a fit.</h2>
+      <p class="section-sub">That's the point of the pilot. We can only win with you if Reddit can win for you.</p>
+    </div>
+    <div class="qual-grid">
+      <div class="qual in">
+        <h3>You qualify if</h3>
+        <ul>
+          <li>$1M+ in annual revenue</li>
+          <li>Past product-market fit. The product sells.</li>
+          <li>You're in B2B SaaS, fintech / personal finance, or considered-purchase services</li>
+          <li>Willing to commit a real test budget (we'll scope it together)</li>
+          <li>New to Reddit, or running it without traction</li>
+        </ul>
+      </div>
+      <div class="qual out">
+        <h3>This isn't for you if</h3>
+        <ul>
+          <li>You need clicks today, not pipeline in 90 days</li>
+          <li>You can't commit to a 90-day evaluation window</li>
+          <li>Your offer doesn't pass our Reddit Fit Score</li>
+          <li>You want a pure media-buying vendor, not a strategic partner</li>
+          <li>You're allergic to honest "this won't work" feedback</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">What's included</div>
+      <h2>Senior execution. Reddit-native. Founder in the room.</h2>
+      <p class="section-sub">Everything we'd build for a $4,500/mo retainer client, at $1,500/mo, for 90 days.</p>
+    </div>
+    <div class="includes-card includes">
+
+      <div class="includes-block">
+        <div class="includes-label">Before you commit · free, no strings</div>
+        <ul>
+          <li><strong>Reddit Fit Analysis</strong>, an honest read on whether Reddit will work for you</li>
+          <li><strong>Reddit Ads Audit</strong>, if you're already running, what's broken vs. salvageable</li>
+        </ul>
+      </div>
+
+      <div class="includes-block">
+        <div class="includes-label">Inside the 90-day pilot</div>
+        <ul>
+          <li><strong>Offer architecture</strong>, designed for how Reddit users actually buy</li>
+          <li><strong>Subreddit research and audience mapping</strong>, your ICP by community</li>
+          <li><strong>Reddit-native creative</strong>, built for the platform, not repurposed</li>
+          <li><strong>CAPI plus tracking infrastructure</strong>, proper attribution from Day 1</li>
+          <li><strong>CRM pipeline integration</strong>, so leads actually move</li>
+          <li><strong>Reddit ad credit secured</strong>, where your account is eligible</li>
+          <li><strong>Senior performance marketer</strong>, your account, not a junior's</li>
+          <li><strong>Founder access</strong>, direct strategic input from Ben every cycle</li>
+          <li><strong>Fractional CMO direction</strong>, across the full funnel, not just ads</li>
+          <li><strong>Async weekly connects</strong>, real numbers, no status-meeting theater</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="roadmap" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The 90-day roadmap</div>
+      <h2>Fire bullets, then cannonballs.</h2>
+      <p class="section-sub">Small bets, validated learning, then aggressive scaling. No wasted cycles.</p>
+    </div>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="days">Days 1–14</div>
+        <h4>Foundation</h4>
+        <p>Account access, tracking infrastructure, attribution model. Reddit Fit Score finalized. Offer architecture drafted.</p>
+      </div>
+      <div class="phase">
+        <div class="days">Days 15–30</div>
+        <h4>Build</h4>
+        <p>Subreddit research locked. Campaign structure built. Reddit-native creative produced. Landing page wired to CAPI.</p>
+      </div>
+      <div class="phase">
+        <div class="days">Days 31–60</div>
+        <h4>Test</h4>
+        <p>Live with explicit hypotheses. Bullet-style spend. Small bets, fast learning. Async weekly connects with Ben.</p>
+      </div>
+      <div class="phase">
+        <div class="days">Days 61–90</div>
+        <h4>Optimize and decide</h4>
+        <p>Scale what works. Kill what doesn't. End-of-pilot review with numbers vs. targets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>$1,500/month flat. No setup fee. No long contracts.</h2>
+      <p class="section-sub">After the 90-day pilot, you choose. Month-to-month from Day 91.</p>
+    </div>
+    <div class="pricing">
+      <div class="pricing-row">
+        <div class="anchor">
+          <div class="lbl">Standard ScalePaid retainer</div>
+          <div class="val">$4,500/mo + $7,500 setup</div>
+        </div>
+        <div class="offer-price">
+          <div class="lbl">Founding Cohort pilot</div>
+          <div class="val">$1,500<small>/month flat · 90 days</small></div>
+          <div class="sub-val">No setup fee. Equivalent of $13,500 in standard pricing for $4,500 total.</div>
+        </div>
+      </div>
+      <div class="options">
+        <div class="opt">
+          <div class="opt-num">After Day 90 · Option 1</div>
+          <p>Continue at $1,500/mo flat with a performance bonus tier we agree on together.</p>
+        </div>
+        <div class="opt">
+          <div class="opt-num">After Day 90 · Option 2</div>
+          <p>Graduate to standard retainer pricing. No surprise increases. You choose when.</p>
+        </div>
+        <div class="opt">
+          <div class="opt-num">After Day 90 · Option 3</div>
+          <p>Walk away with everything we built. Strategy, creative, accounts, learnings.</p>
+        </div>
+      </div>
+      <div class="pricing-cta">
+        <a class="btn btn-primary" href="https://form.typeform.com/to/lf3pnicO">Get Your Growth Plan →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="f
