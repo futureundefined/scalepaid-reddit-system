@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reddit Fit Analysis: Boddle Learning — ScalePaid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sp-orange-red: #FF4500;
+      --sp-black: #0E0F11;
+      --sp-charcoal: #18191D;
+      --sp-off-white: #F5F5F0;
+      --sp-gold: #FDC171;
+      --sp-green: #26D100;
+      --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+      --sp-font-serif: 'Instrument Serif', Georgia, serif;
+      --sp-font-sans: 'Instrument Sans', system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--sp-black);
+      color: var(--sp-off-white);
+      font-family: var(--sp-font-sans);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--sp-charcoal);
+      border-bottom: 1px solid rgba(255,69,0,.18);
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo {
+      font-family: var(--sp-font-serif);
+      font-size: 1.2rem;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .doc-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(245,245,240,.35);
+      margin-top: .15rem;
+    }
+    .header-right {
+      font-size: .8rem;
+      color: rgba(245,245,240,.35);
+      text-align: right;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── Hero ── */
+    .prospect-name {
+      font-family: var(--sp-font-serif);
+      font-size: 2.6rem;
+      font-weight: 400;
+      margin-bottom: .2rem;
+    }
+    .prospect-meta {
+      font-size: .82rem;
+      color: rgba(245,245,240,.38);
+      margin-bottom: 2rem;
+    }
+    .prospect-meta a { color: var(--sp-orange-red); text-decoration: none; }
+    .prospect-meta a:hover { text-decoration: underline; }
+
+    .score-card {
+      background: var(--sp-charcoal);
+      border: 1px solid rgba(255,69,0,.15);
+      border-radius: 14px;
+      padding: 2.25rem 2.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+    .score-number {
+      font-family: var(--sp-font-serif);
+      font-size: 5.5rem;
+      line-height: 1;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      flex-shrink: 0;
+    }
+    .score-right { flex: 1; padding-top: .5rem; }
+    .score-denom {
+      font-size: .75rem;
+      color: rgba(245,245,240,.35);
+      margin-bottom: .25rem;
+    }
+    .score-tier {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: .75rem;
+    }
+    .score-summary {
+      font-size: .875rem;
+      color: rgba(245,245,240,.7);
+      line-height: 1.65;
+    }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 2.75rem; }
+
+    h2 {
+      font-family: var(--sp-font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--sp-off-white);
+      padding-bottom: .5rem;
+      border-bottom: 1px solid rgba(255,69,0,.13);
+      margin-bottom: 1.25rem;
+    }
+    h3 {
+      font-size: .72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--sp-orange-red);
+      margin: 1.4rem 0 .5rem;
+    }
+    p {
+      font-size: .875rem;
+      color: rgba(245,245,240,.75);
+      margin-bottom: .75rem;
+    }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--sp-off-white); }
+    a { color: var(--sp-orange-red); }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 10px; border: 1px solid rgba(255,255,255,.06); }
+    table { width: 100%; border-collapse: collapse; font-size: .845rem; }
+    thead tr { background: rgba(255,69,0,.08); }
+    th {
+      padding: .7rem 1rem;
+      text-align: left;
+      font-size: .67rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: rgba(245,245,240,.4);
+      white-space: nowrap;
+    }
+    td {
+      padding: .75rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: rgba(245,245,240,.75);
+      vertical-align: top;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(255,255,255,.02); }
+    tr.row-highlight td { background: rgba(38,209,0,.06); color: var(--sp-off-white); font-weight: 600; }
+    tr.row-total td { background: rgba(255,69,0,.07); font-weight: 700; color: var(--sp-off-white); border-top: 1px solid rgba(255,69,0,.18); }
+    .val-green { color: var(--sp-green); font-weight: 700; }
+    .val-orange { color: var(--sp-orange-red); font-weight: 700; }
+    .val-dim { color: rgba(245,245,240,.4); }
+
+    /* ── Audit grid ── */
+    .audit-grid { display: grid; gap: .75rem; }
+    .audit-item {
+      background: var(--sp-charcoal);
+      border-radius: 9px;
+      padding: 1rem 1.25rem;
+    }
+    .audit-label {
+      font-size: .67rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: rgba(245,245,240,.35);
+      margin-bottom: .35rem;
+    }
+    .audit-value { font-size: .875rem; color: rgba(245,245,240,.78); }
+
+    /* ── Callout ── */
+    .callout {
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      font-size: .875rem;
+      color: rgba(245,245,240,.82);
+      margin: 1.1rem 0;
+      line-height: 1.6;
+    }
+    .callout-green { background: rgba(38,209,0,.06); border: 1px solid rgba(38,209,0,.2); }
+    .callout-orange { background: rgba(255,69,0,.07); border: 1px solid rgba(255,69,0,.22); }
+    .callout-icon { margin-right: .5rem; }
+
+    /* ── Creative angles ── */
+    .angle-block {
+      background: var(--sp-charcoal);
+      border-radius: 9px;
+      padding: 1rem 1.25rem;
+      margin-bottom: .6rem;
+      font-size: .875rem;
+      color: rgba(245,245,240,.78);
+    }
+    .angle-label {
+      font-size: .67rem;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: rgba(245,245,240,.35);
+      font-weight: 600;
+      margin-bottom: .35rem;
+    }
+    .angle-block.featured { border-left: 3px solid var(--sp-orange-red); }
+
+    /* ── Red flags ── */
+    .flag-list { list-style: none; padding: 0; }
+    .flag-list li {
+      padding: .85rem 0 .85rem 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: .875rem;
+      color: rgba(245,245,240,.72);
+      position: relative;
+    }
+    .flag-list li::before { content: "–"; position: absolute; left: 0; color: var(--sp-orange-red); }
+    .flag-list li:last-child { border-bottom: none; }
+
+    /* ── Pilot timeline ── */
+    .timeline { display: grid; gap: .75rem; }
+    .tl-item {
+      background: var(--sp-charcoal);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      border-left: 3px solid transparent;
+    }
+    .tl-item.kickoff { border-color: rgba(245,245,240,.2); }
+    .tl-item.test    { border-color: var(--sp-orange-red); }
+    .tl-item.peak    { border-color: var(--sp-green); }
+    .tl-item.conclude{ border-color: var(--sp-gold); }
+    .tl-period {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(245,245,240,.32);
+      margin-bottom: .25rem;
+    }
+    .tl-title {
+      font-family: var(--sp-font-serif);
+      font-size: 1.1rem;
+      color: var(--sp-off-white);
+      margin-bottom: .6rem;
+    }
+    .tl-body { font-size: .865rem; color: rgba(245,245,240,.7); }
+
+    .investment-bar {
+      background: var(--sp-gradient);
+      border-radius: 10px;
+      padding: 1.1rem 1.75rem;
+      margin-top: 1rem;
+      color: #fff;
+    }
+    .investment-bar .amount {
+      font-family: var(--sp-font-serif);
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: .2rem;
+    }
+    .investment-bar .terms { font-size: .8rem; opacity: .85; }
+
+    /* ── Next step ── */
+    .next-step-box {
+      background: var(--sp-charcoal);
+      border: 1px solid rgba(255,69,0,.28);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+    .next-step-box h2 {
+      border: none;
+      padding: 0;
+      margin-bottom: .75rem;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: .75rem;
+      color: rgba(245,245,240,.2);
+      border-top: 1px solid rgba(255,255,255,.04);
+    }
+    .footer-logo {
+      font-family: var(--sp-font-serif);
+      font-size: 1.05rem;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: .4rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .score-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+      .score-number { font-size: 4rem; }
+    }
+    @media print {
+      header { position: relative; }
+      .tl-item, .callout, .score-card { break-inside: avoid; }
+      body { background: #fff; color: #111; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">ScalePaid</div>
+    <div class="doc-label">Reddit Fit Analysis</div>
+  </div>
+  <div class="header-right">
+    May 22, 2026<br>Confidential
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <h1 class="prospect-name">Boddle Learning</h1>
+  <p class="prospect-meta">
+    <a href="https://www.boddlelearning.com/" target="_blank">boddlelearning.com</a>
+    &nbsp;·&nbsp; K-6 math and ELA platform
+    &nbsp;·&nbsp; Free teacher signup
+    &nbsp;·&nbsp; <a href="https://www.boddlelearning.com/teachers-page-v1" target="_blank">Teacher lander</a>
+  </p>
+
+  <div class="score-card">
+    <div class="score-number">8.2</div>
+    <div class="score-right">
+      <div class="score-denom">Fit score out of 10</div>
+      <div class="score-tier">STRONG FIT</div>
+      <div class="score-summary">
+        Boddle is one of the cleanest Reddit Ads fits in the education vertical. The ICP is active and self-organizing on Reddit, the offer is free with SSO so conversion friction is minimal, and the product solves problems teachers discuss publicly every week. The channel is unvalidated by competitors but also uncrowded. The economics work and the back-to-school window makes timing urgent.
+      </div>
+    </div>
+  </div>
+
+  <!-- Product and Audience -->
+  <div class="section">
+    <h2>Product and Audience</h2>
+
+    <h3>What They Sell</h3>
+    <p>Boddle is a free game-based math and ELA platform for K-6 students, trusted by 650,000+ educators across all 50 states. Teachers get standards-aligned adaptive learning (1,700+ skills), student progress dashboards, and zero cost. The business monetizes through parent premium subscriptions, but the teacher acquisition funnel is entirely free and friction-minimal.</p>
+
+    <h3>Target Audience</h3>
+    <p><strong>Focus: classroom teachers, K-6, US only.</strong></p>
+    <p>The ideal user is an elementary school teacher who wants a tool students engage with, that does not require lesson planning, and that produces data she can use with administrators. Reddit's teacher communities are exactly this person: US-based, 25-40 years old, actively searching for classroom tools and sharing recommendations with peers. The audience overlap is direct and specific.</p>
+  </div>
+
+  <!-- Subreddit Landscape -->
+  <div class="section">
+    <h2>Subreddit Landscape</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Subreddit</th>
+            <th>Subscribers</th>
+            <th>Targeting</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>r/Teachers</strong></td>
+            <td>~350K</td>
+            <td>Community</td>
+            <td>Largest teacher community on Reddit. Constant threads on classroom tools and student engagement. Highest-priority placement.</td>
+          </tr>
+          <tr>
+            <td>r/education</td>
+            <td>~200K</td>
+            <td>Community</td>
+            <td>Broader discussion including policy and curriculum. Lower intent than r/Teachers but large reach for awareness.</td>
+          </tr>
+          <tr>
+            <td>r/matheducation</td>
+            <td>~21K</td>
+            <td>Community</td>
+            <td>Smaller but extremely high intent. Teachers specifically discussing math tools and pedagogy.</td>
+          </tr>
+          <tr>
+            <td>r/ELATeachers</td>
+            <td>~13K</td>
+            <td>Community</td>
+            <td>Relevant for Boddle's ELA product line. Niche and engaged.</td>
+          </tr>
+          <tr>
+            <td>r/ECEProfessionals</td>
+            <td>~17K</td>
+            <td>Community</td>
+            <td>Early childhood educators. Overlaps with K-2 portion of Boddle's grade range.</td>
+          </tr>
+          <tr>
+            <td><span class="val-dim">Keyword targeting</span></td>
+            <td class="val-dim">—</td>
+            <td>Keyword</td>
+            <td>"math games", "classroom apps", "elementary math", "Prodigy Math", "Freckle", "Khan Academy"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.8rem; color:rgba(245,245,240,.38); margin-top:.5rem;">
+      <strong style="color:rgba(245,245,240,.55);">Total addressable reach:</strong> ~600K across core teacher communities, plus keyword intercept across broader Reddit.
+    </p>
+  </div>
+
+  <!-- Reddit Presence Audit -->
+  <div class="section">
+    <h2>Reddit Presence Audit</h2>
+    <div class="audit-grid">
+      <div class="audit-item">
+        <div class="audit-label">Brand mentions</div>
+        <div class="audit-value">Minimal on Reddit directly. Strong presence on Common Sense Education, Trustpilot, and FeaturedCustomers with positive teacher sentiment. No negative threads to suppress.</div>
+      </div>
+      <div class="audit-item">
+        <div class="audit-label">Competitor Reddit ads</div>
+        <div class="audit-value">None confirmed. No paid Reddit ads detected from Prodigy Math, Freckle, Khan Academy Kids, or IXL. The category is uncrowded on Reddit.</div>
+      </div>
+      <div class="audit-item">
+        <div class="audit-label">Organic community fit</div>
+        <div class="audit-value">Teachers on Reddit regularly recommend tools in threads like "what apps do your students actually use?" Boddle's product category comes up constantly even without the brand name. The community is pre-conditioned to act on tool recommendations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fit Score Breakdown -->
+  <div class="section">
+    <h2>Fit Score Breakdown</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Criteria</th>
+            <th>Score</th>
+            <th>Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Audience presence</td>
+            <td class="val-green">9/10</td>
+            <td>r/Teachers alone is 350K+ active educators. Multiple niche communities add depth. Teachers on Reddit actively share tool recommendations.</td>
+          </tr>
+          <tr>
+            <td>Offer and product fit</td>
+            <td class="val-green">9/10</td>
+            <td>Free signup with SSO is the ideal Reddit offer. No payment, no sales call, no demo required. Teachers can start in under 2 minutes.</td>
+          </tr>
+          <tr>
+            <td>Creative angle potential</td>
+            <td class="val-green">8/10</td>
+            <td>Strong native angles: peer recommendation format, result-led proof ("30% above district scores"), and repurposed influencer content.</td>
+          </tr>
+          <tr>
+            <td>Competition signal</td>
+            <td class="val-orange">6/10</td>
+            <td>No competitors confirmed on Reddit. Removes channel validation but opens a first-mover window.</td>
+          </tr>
+          <tr>
+            <td>Budget and commitment alignment</td>
+            <td class="val-green">9/10</td>
+            <td>$70K/week Meta spend means $10K/mo Reddit media is a trivial test allocation. Well above the $3K/mo minimum and in the $10K-$15K/mo preferred range. Budget is not the obstacle.</td>
+          </tr>
+          <tr class="row-total">
+            <td>Overall</td>
+            <td>8.2/10</td>
+            <td>Strong Fit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Economics -->
+  <div class="section">
+    <h2>Reddit Ad Economics: Teacher Free Signup CPA</h2>
+    <div class="callout callout-orange" style="margin-bottom:1.25rem;">
+      Reddit pilots do not convert at full efficiency out of the gate. Month 1 builds audiences and trains the algorithm on cold traffic. <strong>Expect launch CPAs of $30-50 in Month 1.</strong> That is on plan. The CPAs below are optimized-state targets reached after retargeting is live (Month 2-3). Pilot success in Month 1 is measured by traffic quality, CTR, and audience build rate, not CPA alone.
+    </div>
+
+    <p>Recommended media budget: <strong>$10,000/mo</strong> (in addition to the $1,500/mo management fee). CTR benchmarks calibrated to industry data: B2B SaaS 0.2-0.5%, Gaming 0.5-1.0%. Teacher targeting behaves like B2B with modest uplift from the free gamified product, landing at <strong>0.3-0.7%</strong>. Baseline CVR: <strong>16%</strong> (Boddle's own Meta registration rate).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>CPM</th>
+            <th>CTR</th>
+            <th>CPC</th>
+            <th>CVR</th>
+            <th>CPA (optimized state)</th>
+            <th>Signups at $10k/mo media</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Conservative</td>
+            <td>$9</td>
+            <td>0.3%</td>
+            <td>$3.00</td>
+            <td>14%</td>
+            <td>$21.43</td>
+            <td>~467</td>
+          </tr>
+          <tr class="row-highlight">
+            <td><strong>Mid (baseline)</strong></td>
+            <td><strong>$7</strong></td>
+            <td><strong>0.5%</strong></td>
+            <td><strong>$1.40</strong></td>
+            <td><strong>16%</strong></td>
+            <td class="val-green">$8.75</td>
+            <td><strong>~1,143</strong></td>
+          </tr>
+          <tr>
+            <td>Optimistic</td>
+            <td>$5</td>
+            <td>0.7%</td>
+            <td>$0.71</td>
+            <td>19%</td>
+            <td class="val-green">$3.74</td>
+            <td>~2,674</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-green">
+      <span class="callout-icon">💡</span>
+      In the optimized state (Month 2-3), Reddit can deliver teacher signups in the <strong>$8.75 to $21.43 range</strong>. The mid scenario ($8.75) sits just above the $7 profitable threshold at the outset. The path below $7 comes from retargeting efficiency, creative iteration, and algorithm maturation. At $10,000/mo, the pilot generates <strong>467 to 1,143 signups per month</strong> in the optimized state. Signs of strength to watch: retargeting CPAs 40-60% below prospecting, CTR above 0.4%, declining CPA trend from Week 4 onward.
+    </div>
+  </div>
+
+  <!-- Creative Angle -->
+  <div class="section">
+    <h2>Recommended Creative Angle</h2>
+    <p>Run native promoted posts in r/Teachers formatted to read like a peer recommendation. The hook leads with a result, not a feature. Use repurposed teacher influencer content (already produced for Meta) and adapt the copy to match Reddit's informal, direct tone.</p>
+
+    <div class="angle-block featured">
+      <div class="angle-label">Primary angle</div>
+      "My students' scores jumped 30% this year. The only thing I changed was adding this free math game."
+    </div>
+    <div class="angle-block">
+      <div class="angle-label">Secondary test angle (keyword targeting)</div>
+      "Free math game that actually keeps kids focused. Standards-aligned, no setup needed."
+    </div>
+    <div class="angle-block">
+      <div class="angle-label">Example headline for r/Teachers</div>
+      "This free math game has my 4th graders fighting to practice fractions. Here's why it works."
+    </div>
+  </div>
+
+  <!-- Red Flags -->
+  <div class="section">
+    <h2>Red Flags</h2>
+    <ul class="flag-list">
+      <li><strong>No competitors confirmed on Reddit.</strong> The channel is unvalidated for this category. Treat Month 1 as a true test, not a proven playbook.</li>
+      <li><strong>Teacher-to-paid conversion is 1%.</strong> Reddit drives free signups; monetization depends on what happens in weeks 1-4 after signup. The $4-9 CPA is for a free signup, not a paying teacher.</li>
+      <li><strong>40% month-1 dropoff is the biggest LTV risk.</strong> The highest-value teachers create assignments. If the onboarding flow does not push teachers toward assignment creation in week 1, Reddit CAC is undermined by churn, not the channel.</li>
+      <li><strong>July launch hits a lower-intent window.</strong> CPA will trend conservative in July. August and September are where real volume and LTV come from. Set expectations accordingly.</li>
+    </ul>
+  </div>
+
+  <!-- Pilot Structure -->
+  <div class="section">
+    <h2>Proposed 90-Day Pilot Structure</h2>
+
+    <div class="timeline">
+      <div class="tl-item kickoff">
+        <div class="tl-period">June</div>
+        <div class="tl-title">Kickoff — No paid spend</div>
+        <div class="tl-body">Strategy session, campaign build, creative production. Adapt Boddle's existing influencer content into Reddit-native promoted post formats. Set up community targeting on r/Teachers and r/matheducation. Configure keyword targeting. Connect Boddle's custom audience list for lookalike setup.</div>
+      </div>
+      <div class="tl-item test">
+        <div class="tl-period">Month 1 — July</div>
+        <div class="tl-title">Audience Building + Qualified Traffic</div>
+        <div class="tl-body">The goal is not conversions: it is driving qualified teacher traffic and building retargeting audiences. Launch traffic and conversion-objective campaigns on r/Teachers, r/matheducation, and keyword targeting. Do not optimize for CPA yet. Expect launch CPAs of $30-50 — this is on plan. Budget split: 60% community, 40% keyword. Track CTR, cost-per-lander-visit, and retargeting audience build rate.</div>
+      </div>
+      <div class="tl-item peak">
+        <div class="tl-period">Month 2 — August</div>
+        <div class="tl-title">Layer Retargeting + Back-to-School Push</div>
+        <div class="tl-body">Layer retargeting campaigns against audiences built in July. The algorithm now has 4 weeks of signal. Teacher intent peaks at back-to-school, bringing the highest-LTV cohort of the year into the funnel. CPAs should decline week-over-week as retargeting converts warmer visitors. Test a second creative angle. CPA target by end of August: trending toward $10-15.</div>
+      </div>
+      <div class="tl-item conclude">
+        <div class="tl-period">Month 3 — September</div>
+        <div class="tl-title">Optimize and Evaluate</div>
+        <div class="tl-body">Evaluate on three signals: (1) CPA trajectory — declining week-over-week is a green flag even if above $7; (2) retargeting CPA vs. prospecting CPA — should be 40-60% lower; (3) teacher activation rate. Under $9 CPA with strong activation: scale to $20-30k/mo. $9-15 with declining trend and strong retargeting signal: extend 30 days. Flat or rising above $15 with no improvement signals: conclude.</div>
+      </div>
+    </div>
+
+    <div class="investment-bar">
+      <span class="amount">$11,500/mo total</span>
+      <span class="terms">Management fee: $1,500/mo (founding cohort rate, until June 30, 2026. Standard: $2,500/mo.) &nbsp;+&nbsp; Media budget: $10,000/mo &nbsp;·&nbsp; No performance fees. No long-term contract.</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="section">
+    <div class="next-step-box">
+      <h2>Ready to start your pilot?</h2>
+      <p>The June kickoff window is open now. Starting in June means the full campaign build is complete before teacher intent drops for summer, and Boddle enters the back-to-school window at full speed with a live retargeting pool. Five founding cohort spots. Hard close: June 30, 2026.</p>
+      <div style="margin-top:1.5rem;">
+        <a href="https://form.typeform.com/to/lf3pnicO" target="_blank" style="display:inline-block;background:var(--sp-gradient);color:#fff;font-family:var(--sp-font-sans);font-weight:700;font-size:.95rem;padding:.8rem 2rem;border-radius:999px;text-decoration:none;">Apply for a spot</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-logo">ScalePaid</span>
+  Reddit Ads that actually convert &nbsp;·&nbsp; Prepared May 22, 2026 &nbsp;·&nbsp; Confidential
+</footer>
+
+</body>
+</html>
