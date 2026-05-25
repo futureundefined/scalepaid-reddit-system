@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Fit Analysis: Trade Coffee | ScalePaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* STICKY HEADER */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--sp-charcoal);
+    border-bottom: 2px solid var(--sp-orange-red);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site-header .wordmark {
+    font-family: var(--sp-font-serif);
+    font-size: 22px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.02em;
+  }
+  .site-header .header-label {
+    font-family: var(--sp-font-sans);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.5);
+    margin-top: 2px;
+  }
+  .site-header .header-right {
+    text-align: right;
+  }
+  .site-header .header-date {
+    font-size: 13px;
+    color: rgba(245, 245, 240, 0.5);
+  }
+  .site-header .header-confidential {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.3);
+    margin-top: 2px;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 56px 0;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.08);
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-family: var(--sp-font-serif);
+    font-size: 26px;
+    color: var(--sp-off-white);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-family: var(--sp-font-sans);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  p {
+    color: rgba(245, 245, 240, 0.82);
+    margin-bottom: 14px;
+    font-size: 15.5px;
+  }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--sp-orange-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HERO */
+  .hero {
+    padding: 64px 0 56px;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.08);
+  }
+  .hero-meta {
+    font-size: 13px;
+    color: rgba(245, 245, 240, 0.45);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta a { color: rgba(245, 245, 240, 0.5); }
+  .hero-meta a:hover { color: var(--sp-orange-red); }
+  .hero-name {
+    font-family: var(--sp-font-serif);
+    font-size: 52px;
+    color: var(--sp-off-white);
+    line-height: 1.1;
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+
+  .score-card {
+    background: var(--sp-charcoal);
+    border-radius: 12px;
+    padding: 32px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 36px;
+  }
+  .score-number {
+    font-family: var(--sp-font-serif);
+    font-size: 72px;
+    line-height: 1;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .score-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.45);
+    margin-bottom: 6px;
+  }
+  .score-tier {
+    font-family: var(--sp-font-sans);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--sp-green);
+    margin-bottom: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .score-summary {
+    font-size: 15px;
+    color: rgba(245, 245, 240, 0.78);
+    line-height: 1.65;
+  }
+
+  /* TWO-COLUMN */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .card {
+    background: var(--sp-charcoal);
+    border-radius: 10px;
+    padding: 24px 28px;
+  }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  thead th {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.4);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.1);
+    font-weight: 600;
+  }
+  tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.06);
+    color: rgba(245, 245, 240, 0.82);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .top-row td { font-weight: 600; color: var(--sp-off-white); }
+  .total-row td {
+    background: rgba(255, 69, 0, 0.08);
+    font-weight: 700;
+    color: var(--sp-off-white);
+  }
+  .score-green { color: var(--sp-green); font-weight: 600; }
+  .score-orange { color: var(--sp-orange-red); font-weight: 600; }
+  .mid-row td { background: rgba(38, 209, 0, 0.07); }
+
+  /* AUDIT CARDS */
+  .audit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .audit-card {
+    background: var(--sp-charcoal);
+    border-radius: 10px;
+    padding: 22px 22px;
+  }
+  .audit-card .audit-icon {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .audit-card .audit-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.4);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .audit-card .audit-status {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sp-green);
+    margin-bottom: 8px;
+  }
+  .audit-card .audit-status.neutral { color: var(--sp-gold); }
+  .audit-card p {
+    font-size: 13.5px;
+    color: rgba(245, 245, 240, 0.65);
+    line-height: 1.55;
+  }
+
+  /* ECONOMICS CALLOUT */
+  .economics-callout {
+    background: rgba(38, 209, 0, 0.07);
+    border: 1px solid rgba(38, 209, 0, 0.25);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 20px;
+  }
+  .economics-callout p {
+    font-size: 14.5px;
+    color: rgba(245, 245, 240, 0.82);
+  }
+  .economics-callout strong { color: var(--sp-green); }
+
+  /* CREATIVE ANGLES */
+  .angle-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .angle-card {
+    background: var(--sp-charcoal);
+    border-radius: 10px;
+    padding: 22px 24px;
+    border-left: 4px solid rgba(245, 245, 240, 0.15);
+  }
+  .angle-card.primary { border-left-color: var(--sp-orange-red); }
+  .angle-title {
+    font-weight: 700;
+    color: var(--sp-off-white);
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .angle-meta {
+    font-size: 12px;
+    color: rgba(245, 245, 240, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .angle-hook {
+    font-style: italic;
+    color: rgba(245, 245, 240, 0.7);
+    font-size: 14.5px;
+    margin-bottom: 8px;
+  }
+  .angle-cta {
+    font-size: 13px;
+    color: var(--sp-orange-red);
+  }
+
+  .headline-example {
+    background: var(--sp-charcoal);
+    border: 1px solid rgba(245, 245, 240, 0.1);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 14.5px;
+    font-style: italic;
+    color: rgba(245, 245, 240, 0.7);
+  }
+  .headline-example .label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.35);
+    margin-bottom: 6px;
+    font-style: normal;
+  }
+
+  /* RED FLAGS */
+  .red-flags-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .red-flags-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .red-flags-list .flag-dash {
+    color: var(--sp-orange-red);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .red-flags-list .flag-content { flex: 1; }
+  .red-flags-list strong {
+    color: var(--sp-off-white);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 15px;
+  }
+  .red-flags-list p {
+    font-size: 14.5px;
+    color: rgba(245, 245, 240, 0.65);
+    margin: 0;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .timeline-card {
+    background: var(--sp-charcoal);
+    border-radius: 10px;
+    padding: 22px 20px;
+    border-left: 4px solid rgba(245, 245, 240, 0.15);
+  }
+  .timeline-card.month-0 { border-left-color: rgba(245, 245, 240, 0.3); }
+  .timeline-card.month-1 { border-left-color: var(--sp-orange-red); }
+  .timeline-card.month-2 { border-left-color: var(--sp-green); }
+  .timeline-card.month-3 { border-left-color: var(--sp-gold); }
+  .timeline-card .month-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 245, 240, 0.4);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .timeline-card .month-title {
+    font-family: var(--sp-font-serif);
+    font-size: 16px;
+    color: var(--sp-off-white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .timeline-card p {
+    font-size: 13px;
+    color: rgba(245, 245, 240, 0.6);
+    line-height: 1.55;
+  }
+
+  .investment-bar {
+    background: var(--sp-gradient);
+    border-radius: 10px;
+    padding: 22px 28px;
+    display: flex;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+  .inv-item .inv-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(14, 15, 17, 0.65);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .inv-item .inv-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--sp-black);
+  }
+  .inv-item .inv-note {
+    font-size: 11.5px;
+    color: rgba(14, 15, 17, 0.6);
+    margin-top: 2px;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-orange-red);
+    border-radius: 14px;
+    padding: 48px 44px;
+    text-align: center;
+  }
+  .cta-heading {
+    font-family: var(--sp-font-serif);
+    font-size: 36px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .cta-body {
+    font-size: 16px;
+    color: rgba(245, 245, 240, 0.75);
+    max-width: 540px;
+    margin: 0 auto 28px;
+    line-height: 1.65;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--sp-gradient);
+    color: var(--sp-black);
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px 40px;
+    border-radius: 999px;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.88; text-decoration: none; }
+  .cta-footnote {
+    font-size: 13px;
+    color: rgba(245, 245, 240, 0.35);
+    margin-top: 18px;
+  }
+
+  /* FOOTER */
+  .site-footer {
+    background: var(--sp-charcoal);
+    border-top: 1px solid rgba(245, 245, 240, 0.08);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .footer-wordmark {
+    font-family: var(--sp-font-serif);
+    font-size: 20px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-size: 13px;
+    color: rgba(245, 245, 240, 0.35);
+    margin-bottom: 6px;
+  }
+  .footer-meta {
+    font-size: 12px;
+    color: rgba(245, 245, 240, 0.25);
+  }
+
+  /* PRINT */
+  @media print {
+    .site-header { position: static; }
+    section { page-break-inside: avoid; }
+    .score-card, .timeline-card, .angle-card, .audit-card { page-break-inside: avoid; }
+    .cta-btn { background: #FF4500 !important; color: white !important; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .site-header { padding: 12px 16px; }
+    .container { padding: 0 16px; }
+    .hero-name { font-size: 34px; }
+    .score-card { flex-direction: column; gap: 16px; }
+    .score-number { font-size: 52px; }
+    .two-col { grid-template-columns: 1fr; }
+    .audit-grid { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 1fr 1fr; }
+    .investment-bar { flex-direction: column; gap: 16px; }
+    .cta-section { padding: 32px 20px; }
+    .cta-heading { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <div>
+    <div class="wordmark">ScalePaid</div>
+    <div class="header-label">Reddit Fit Analysis</div>
+  </div>
+  <div class="header-right">
+    <div class="header-date">May 22, 2026</div>
+    <div class="header-confidential">Confidential</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="container">
+<section class="hero">
+  <div class="hero-meta">
+    <a href="https://www.drinktrade.com/" target="_blank">drinktrade.com</a>
+    &nbsp;&middot;&nbsp; Specialty Coffee Subscription &nbsp;&middot;&nbsp; Direct-to-Consumer
+  </div>
+  <h1 class="hero-name">Trade Coffee</h1>
+  <div class="score-card">
+    <div class="score-number">8.8</div>
+    <div>
+      <div class="score-label">Fit Score / 10</div>
+      <div class="score-tier">Strong Fit</div>
+      <p class="score-summary">Trade Coffee is one of the best-positioned consumer brands we have seen for Reddit Ads. Their core customer actively lives on r/espresso and r/Coffee, Reddit already drives 6-8% of new customer discovery organically every week, and the brand's education-first content strategy maps directly to how these communities behave. A structured paid program with community and keyword targeting, native creative, and a June 15 kickoff gives Trade a live retargeting pool before the August demand ramp and a fully optimized campaign entering peak Q4.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT AND AUDIENCE -->
+<section>
+  <div class="section-label">Product and Audience</div>
+  <div class="two-col">
+    <div>
+      <h3>What They Sell</h3>
+      <p>Trade Coffee is a specialty coffee subscription service connecting US customers with fresh beans from 55+ independent small-batch roasters across the country. Subscriptions start at $40/month and scale to $211/year, with a quiz-based matching system that personalizes every shipment. Trade also sells equipment and gift subscriptions, with holiday gifting representing a significant revenue spike in November and December.</p>
+    </div>
+    <div>
+      <h3>Target Audience</h3>
+      <p>Trade's customer is a millennial, US-based coffee enthusiast who has moved past grocery-store beans and wants to explore specialty roasters they cannot access locally. Many are home espresso machine owners, particularly Breville and similar prosumer equipment buyers who are deep in the "how do I get the most out of my machine" research phase. This profile maps almost exactly to Reddit's core demographic: 18-44, US-skewed, high-intent on niche passion topics, willing to go deep on product research before buying.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SUBREDDIT LANDSCAPE -->
+<section>
+  <div class="section-label">Subreddit Landscape</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Subreddit</th>
+          <th>Subscribers</th>
+          <th>Targeting type</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="top-row">
+          <td>r/espresso</td>
+          <td>1.01M</td>
+          <td>Community + Keyword</td>
+          <td>Primary target. Education-focused on technique, beans, and dialing in shots. Trade's core acquisition audience lives here organically.</td>
+        </tr>
+        <tr>
+          <td>r/Coffee</td>
+          <td>2.43M</td>
+          <td>Interest + Community</td>
+          <td>Largest coffee community. High volume, lower intent than r/espresso but essential for reach and retargeting pool building.</td>
+        </tr>
+        <tr>
+          <td>r/nespresso</td>
+          <td>173K</td>
+          <td>Community</td>
+          <td>High-value upgrade path. Nespresso users researching their next step are pre-qualified specialty coffee buyers. Strong fit for the "ready to go beyond capsules" angle.</td>
+        </tr>
+        <tr>
+          <td>r/barista</td>
+          <td>143K</td>
+          <td>Community</td>
+          <td>Coffee professionals and serious home brewers. High baseline knowledge and strong affinity for independent roasters. Education-led creative lands well here.</td>
+        </tr>
+        <tr>
+          <td>r/latteart</td>
+          <td>55K</td>
+          <td>Community</td>
+          <td>Visually engaged espresso enthusiasts. Good for aesthetic creative and brand awareness with the home barista crowd.</td>
+        </tr>
+        <tr style="opacity: 0.6;">
+          <td>Machine brand subreddits<br><small style="color: rgba(245,245,240,0.4);">r/breville (3K), r/espressomachines (5K)</small></td>
+          <td>3K&ndash;5K each</td>
+          <td>Keyword only</td>
+          <td>Too small for community targeting, but keyword targeting around brand terms ("breville bambino beans," "sage barista express," "delonghi dedica") captures post-purchase research intent across all of Reddit.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top: 18px; font-size: 14px; color: rgba(245,245,240,0.5);">Total addressable reach: r/espresso (1.01M) + r/Coffee (2.43M) + r/nespresso (173K) + r/barista (143K) + r/latteart (55K) = approximately 3.8M members across primary targets, before audience overlap.</p>
+  <div class="card" style="margin-top: 20px;">
+    <h3>Targeting Recommendation</h3>
+    <p style="font-size: 14.5px;">Launch Month 1 with community targeting on r/espresso and r/Coffee plus keyword targeting ("espresso beans," "specialty coffee subscription," "breville bambino beans"). Add r/nespresso and r/barista in Month 2 as retargeting pools build. Machine brand keyword targeting runs throughout the pilot to capture post-purchase research intent wherever it surfaces across Reddit.</p>
+  </div>
+</section>
+
+<!-- REDDIT PRESENCE AUDIT -->
+<section>
+  <div class="section-label">Reddit Presence Audit</div>
+  <div class="audit-grid">
+    <div class="audit-card">
+      <div class="audit-label">Brand Mentions</div>
+      <div class="audit-status">Active and Positive</div>
+      <p>Trade Coffee is recommended organically on Reddit with users citing variety, roaster discovery, and fast shipping. Organic Reddit mentions already drive 6-8% of new customers per week, confirmed via internal customer survey.</p>
+    </div>
+    <div class="audit-card">
+      <div class="audit-label">Competitor Reddit Ads</div>
+      <div class="audit-status">Paid Ads Detected</div>
+      <p>Perk Coffee, one of Trade's own partner roasters, is actively running Reddit ads inside relevant coffee threads. This validates the channel for exactly Trade's product category and audience. Major subscription competitors are not yet advertising at scale.</p>
+    </div>
+    <div class="audit-card">
+      <div class="audit-label">Organic Community Fit</div>
+      <div class="audit-status">Strong</div>
+      <p>Espresso technique, roaster recommendations, and "where do I start" posts appear constantly across r/espresso and r/Coffee. Trade's quiz and education content map directly to the questions these communities ask every day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIT SCORE BREAKDOWN -->
+<section>
+  <div class="section-label">Fit Score Breakdown</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Criteria</th>
+          <th>Score</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Audience presence</td>
+          <td class="score-green">9/10</td>
+          <td>2.4M+ across confirmed communities, organic 6-8% weekly discovery rate, exact demographic match to Reddit's core base.</td>
+        </tr>
+        <tr>
+          <td>Offer and product fit</td>
+          <td class="score-green">9/10</td>
+          <td>Coffee subscription is a research-heavy, passion-driven purchase. The quiz funnel and espresso education hub are built for Reddit's intent-driven audience.</td>
+        </tr>
+        <tr>
+          <td>Creative angle potential</td>
+          <td class="score-green">9/10</td>
+          <td>The "just got my espresso machine, now what?" moment is a native Reddit conversation. Trade's roaster discovery story is exactly what this audience wants.</td>
+        </tr>
+        <tr>
+          <td>Competition signal</td>
+          <td class="score-orange">7/10</td>
+          <td>Perk Coffee (a Trade partner roaster) is running Reddit ads in-category, validating the channel. Larger subscription competitors are not yet advertising at scale.</td>
+        </tr>
+        <tr>
+          <td>Budget and commitment alignment</td>
+          <td class="score-green">10/10</td>
+          <td>$10-15k/mo test budget scaling 2x for Q4, total media spend across channels exceeding $200k/mo, and Elevar server-side tracking ready for Reddit CAPI.</td>
+        </tr>
+        <tr class="total-row">
+          <td>Overall</td>
+          <td>8.8/10</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- REDDIT AD ECONOMICS -->
+<section>
+  <div class="section-label">Reddit Ad Economics</div>
+  <p>These projections model Trade's optimized state at Month 3, not Month 1. Month 1 CPAs will run materially higher (typically 3-5x the optimized-state mid benchmark) while the algorithm learns on cold traffic and retargeting pools are empty. All scenarios model a $12,500/mo media budget. CVR baseline set at 1.2%, reflecting the multi-step subscription funnel (click, quiz, checkout).</p>
+  <p style="font-size: 13.5px; color: rgba(245,245,240,0.45); margin-bottom: 20px;">CTR benchmark: 0.35-0.55%, within the 0.3-0.6% consumer products range. Lower end applied to conservative (cold broad audience); upper end applied to optimistic (tight community targeting, warm retargeting mix). CPC = CPM / (CTR x 1000).</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>CPM</th>
+          <th>CTR</th>
+          <th>CPC</th>
+          <th>Clicks</th>
+          <th>CVR</th>
+          <th>Subscriptions</th>
+          <th>CPA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conservative</td>
+          <td>$7.00</td>
+          <td>0.35%</td>
+          <td>$2.00</td>
+          <td>6,250</td>
+          <td>0.7%</td>
+          <td>44</td>
+          <td>$284</td>
+        </tr>
+        <tr class="mid-row">
+          <td><strong>Mid (baseline)</strong></td>
+          <td><strong>$6.00</strong></td>
+          <td><strong>0.45%</strong></td>
+          <td><strong>$1.33</strong></td>
+          <td><strong>9,398</strong></td>
+          <td><strong>1.2%</strong></td>
+          <td><strong>113</strong></td>
+          <td><strong>$111</strong></td>
+        </tr>
+        <tr>
+          <td>Optimistic</td>
+          <td>$5.00</td>
+          <td>0.55%</td>
+          <td>$0.91</td>
+          <td>13,736</td>
+          <td>1.8%</td>
+          <td>247</td>
+          <td>$51</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="economics-callout">
+    <p>At the mid scenario, <strong>113 new subscribers per month at $111 CPA</strong> in the optimized state. With Trade's LTV turning profitable at order 4-5 and 70-80% retention, the channel pays back well within a single subscription year. The conservative scenario at $284 CPA represents the ceiling, not the norm: it reflects cold traffic with basic creative and no retargeting. By Month 3, the expectation is mid-to-optimistic range with a clear downward CPA trajectory week-over-week.</p>
+  </div>
+</section>
+
+<!-- CREATIVE ANGLE -->
+<section>
+  <div class="section-label">Recommended Creative Angle</div>
+  <p>Trade's strongest angle on Reddit is meeting the espresso machine buyer at the exact moment of their first question: "I just bought this machine, now what?" This is not a manufactured insight. The Breville Bambino buyer flows directly into Trade's customer base. The Reddit thread is the research session right after unboxing.</p>
+  <div class="angle-grid">
+    <div class="angle-card primary">
+      <div class="angle-title">The Machine Is Ready. Now Get the Beans Right.</div>
+      <div class="angle-meta">Primary &nbsp;&middot;&nbsp; r/espresso, r/homebarista &nbsp;&middot;&nbsp; Promoted post (text + image)</div>
+      <div class="angle-hook">"Your espresso machine will only be as good as the beans you put in it. Here is where most people start."</div>
+      <div class="angle-cta">CTA: Espresso quiz (not the subscription page). Capture the lead, then convert.</div>
+    </div>
+    <div class="angle-card">
+      <div class="angle-title">55 Roasters. Your Local Shop Has Three.</div>
+      <div class="angle-meta">Secondary &nbsp;&middot;&nbsp; r/Coffee, r/SpecialtyCoffee &nbsp;&middot;&nbsp; Promoted post</div>
+      <div class="angle-hook">"We work with 55 independent roasters. Most people have heard of maybe five of them. That is the whole point."</div>
+      <div class="angle-cta">CTA: Quiz or featured roaster spotlight page.</div>
+    </div>
+    <div class="angle-card">
+      <div class="angle-title">The Gift They Actually Want.</div>
+      <div class="angle-meta">Seasonal (October to December) &nbsp;&middot;&nbsp; r/Coffee, r/espresso &nbsp;&middot;&nbsp; Promoted post</div>
+      <div class="angle-hook">"They bought the espresso machine. Now get them the beans that make it worth it."</div>
+      <div class="angle-cta">CTA: Gift subscription landing page with seasonal offer.</div>
+    </div>
+  </div>
+  <div class="headline-example">
+    <div class="label">Example headline direction</div>
+    "Just pulled your first espresso shots and they taste off? It is almost always the beans. Here is how to fix it."
+  </div>
+</section>
+
+<!-- RED FLAGS -->
+<section>
+  <div class="section-label">Red Flags</div>
+  <ul class="red-flags-list">
+    <li>
+      <span class="flag-dash">-</span>
+      <div class="flag-content">
+        <strong>Seasonal timing.</strong>
+        <p>June-July is Trade's lowest-demand window. This is the right time to build audiences, but Month 1 CPAs will look worse than they will in August-September. Do not evaluate Month 1 CPA against the annual benchmark.</p>
+      </div>
+    </li>
+    <li>
+      <span class="flag-dash">-</span>
+      <div class="flag-content">
+        <strong>Quiz CVR dependency.</strong>
+        <p>Email capture currently happens at the end of the quiz funnel. Moving lead capture earlier will significantly increase the value of Reddit traffic as a mid-funnel retargeting source. This upgrade is confirmed in-progress and should be prioritized before or during the pilot.</p>
+      </div>
+    </li>
+    <li>
+      <span class="flag-dash">-</span>
+      <div class="flag-content">
+        <strong>Community sensitivity.</strong>
+        <p>r/espresso has high standards and limited tolerance for promotional content. Ads that feel like ads will underperform. All creative must be education-first, honest about what Trade is, and free of superlative claims.</p>
+      </div>
+    </li>
+    <li>
+      <span class="flag-dash">-</span>
+      <div class="flag-content">
+        <strong>Subscription LTV lag.</strong>
+        <p>First-order ROAS will look poor. Any stakeholder review at 30 days must benchmark against CPA trajectory and retargeting signal, not first-order ROAS. Set this expectation before launch.</p>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- 90-DAY PILOT -->
+<section>
+  <div class="section-label">Proposed 90-Day Pilot Structure</div>
+  <div class="timeline">
+    <div class="timeline-card month-0">
+      <div class="month-label">Pre-Launch</div>
+      <div class="month-title">June 15 to July 15</div>
+      <p>Strategy session, campaign architecture, and creative production. Build community targeting sets. Set up keyword targeting. Connect Reddit CAPI via Elevar. QA conversion events against GA4. No paid spend.</p>
+    </div>
+    <div class="timeline-card month-1">
+      <div class="month-label">Month 1</div>
+      <div class="month-title">Audience Building and Qualified Traffic</div>
+      <p>Launch traffic and engagement campaigns on r/espresso and r/Coffee with education-first creative. Primary KPI: CTR above 0.4% on community placements and retargeting audience build rate. CPAs will run 3-5x the optimized-state benchmark. Do not judge the channel on Month 1 CPA.</p>
+    </div>
+    <div class="timeline-card month-2">
+      <div class="month-label">Month 2</div>
+      <div class="month-title">Retargeting and Algorithm Optimization</div>
+      <p>Activate retargeting campaigns against the Month 1 pool. Back-to-school organic tailwinds amplify results. CPAs should decline week-over-week. Test the secondary creative angle. Introduce lookalike expansion if audience volume allows. Target: trending toward $111 mid-scenario CPA.</p>
+    </div>
+    <div class="timeline-card month-3">
+      <div class="month-label">Month 3</div>
+      <div class="month-title">Optimize and Evaluate</div>
+      <p>Evaluate on three signals: (1) CPA trajectory declining week-over-week, (2) retargeting CPA running 40-60% below prospecting, (3) quiz completion and subscription activation rate. Enter Q4 gifting season with 60 days of live signal and a fully built retargeting audience.</p>
+    </div>
+  </div>
+  <div class="investment-bar">
+    <div class="inv-item">
+      <div class="inv-label">Management Fee</div>
+      <div class="inv-value">$1,500/mo</div>
+      <div class="inv-note">Founding cohort rate. Hard close: June 30, 2026.</div>
+    </div>
+    <div class="inv-item">
+      <div class="inv-label">Recommended Media Budget</div>
+      <div class="inv-value">$12,500/mo</div>
+      <div class="inv-note">Scaling to $25-30k/mo in Q4. Minimum $10k/mo.</div>
+    </div>
+    <div class="inv-item">
+      <div class="inv-label">Total Monthly Commitment</div>
+      <div class="inv-value">$14,000/mo</div>
+      <div class="inv-note">No performance fees. No long-term contract beyond the 90-day pilot.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="border: none; padding-bottom: 72px;">
+  <div class="cta-section">
+    <div class="cta-heading">Ready to start your pilot?</div>
+    <p class="cta-body">The June 15 kickoff window is open now. Starting in June means the full campaign build and CAPI setup are complete before July 15 launch, Trade enters August's back-to-school demand ramp with a live retargeting pool, and the campaign is fully optimized with 60 days of signal entering peak Q4. Gifting season starts in October. Every week of delay is one less week of learning before that window opens.</p>
+    <a href="https://form.typeform.com/to/lf3pnicO" target="_blank" class="cta-btn">Apply for a spot</a>
+    <p class="cta-footnote">5 founding cohort spots total. Hard close: June 30, 2026. Standard rate ($2,500/mo) applies after that date.</p>
+  </div>
+</section>
+
+</div><!-- end .container -->
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-wordmark">ScalePaid</div>
+  <div class="footer-tagline">Reddit Ads that actually work for brands worth advertising.</div>
+  <div class="footer-meta">May 22, 2026 &nbsp;&middot;&nbsp; Confidential &nbsp;&middot;&nbsp; Prepared for Trade Coffee</div>
+</footer>
+
+</body>
+</html>
