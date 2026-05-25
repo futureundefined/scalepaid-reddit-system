@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reddit Fit Analysis: Fin (fin.ai) — ScalePaid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sp-orange-red: #FF4500;
+      --sp-black: #0E0F11;
+      --sp-charcoal: #18191D;
+      --sp-off-white: #F5F5F0;
+      --sp-gold: #FDC171;
+      --sp-green: #26D100;
+      --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+      --sp-font-serif: 'Instrument Serif', serif;
+      --sp-font-sans: 'Instrument Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--sp-black);
+      color: var(--sp-off-white);
+      font-family: var(--sp-font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--sp-orange-red);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── STICKY HEADER ─────────────────────────────────── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--sp-charcoal);
+      border-bottom: 2px solid var(--sp-orange-red);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-header .wordmark {
+      font-family: var(--sp-font-serif);
+      font-size: 22px;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+
+    .site-header .doc-label {
+      font-family: var(--sp-font-sans);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.5);
+      margin-top: 2px;
+    }
+
+    .site-header .header-meta {
+      font-size: 12px;
+      color: rgba(245,245,240,0.45);
+      text-align: right;
+    }
+
+    /* ── LAYOUT ────────────────────────────────────────── */
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 60px 0;
+      border-bottom: 1px solid rgba(245,245,240,0.08);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sp-orange-red);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-family: var(--sp-font-serif);
+      font-size: 26px;
+      color: var(--sp-off-white);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    h3 {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sp-orange-red);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    p {
+      color: rgba(245,245,240,0.82);
+      margin-bottom: 14px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      padding: 64px 0 52px;
+      border-bottom: 1px solid rgba(245,245,240,0.08);
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: rgba(245,245,240,0.45);
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-name {
+      font-family: var(--sp-font-serif);
+      font-size: 52px;
+      color: var(--sp-off-white);
+      line-height: 1.05;
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .hero-submeta {
+      font-size: 14px;
+      color: rgba(245,245,240,0.55);
+      margin-bottom: 36px;
+    }
+
+    .hero-submeta a {
+      color: var(--sp-orange-red);
+    }
+
+    .score-card {
+      background: var(--sp-charcoal);
+      border-radius: 12px;
+      padding: 32px 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 36px;
+    }
+
+    .score-left {
+      flex-shrink: 0;
+    }
+
+    .score-number {
+      font-family: var(--sp-font-serif);
+      font-size: 72px;
+      line-height: 1;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .score-denom {
+      font-size: 20px;
+      color: rgba(245,245,240,0.35);
+    }
+
+    .score-tier {
+      font-size: 12px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.45);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .score-right {
+      flex: 1;
+    }
+
+    .score-right .verdict-label {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sp-orange-red);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .score-right p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── TABLES ─────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead th {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(245,245,240,0.1);
+    }
+
+    tbody td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(245,245,240,0.07);
+      color: rgba(245,245,240,0.82);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:first-child td {
+      font-weight: 600;
+    }
+
+    .score-green {
+      color: var(--sp-green);
+      font-weight: 700;
+    }
+
+    .score-orange {
+      color: var(--sp-orange-red);
+      font-weight: 700;
+    }
+
+    .score-total-row td {
+      background: rgba(245,245,240,0.04);
+      font-weight: 700;
+      color: var(--sp-off-white);
+    }
+
+    /* ── AUDIT CARDS ────────────────────────────────────── */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .audit-card {
+      background: var(--sp-charcoal);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .audit-card .audit-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .audit-card .audit-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sp-off-white);
+      margin-bottom: 6px;
+    }
+
+    .audit-card p {
+      font-size: 13px;
+      color: rgba(245,245,240,0.6);
+      margin: 0;
+    }
+
+    /* ── ANGLE CARDS ────────────────────────────────────── */
+    .angle-block {
+      background: var(--sp-charcoal);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-top: 16px;
+      border-left: 3px solid transparent;
+    }
+
+    .angle-block.primary {
+      border-left-color: var(--sp-orange-red);
+    }
+
+    .angle-block .angle-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .angle-block p {
+      font-size: 14px;
+    }
+
+    .headline-example {
+      background: rgba(255,69,0,0.08);
+      border: 1px solid rgba(255,69,0,0.25);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 20px;
+      font-size: 14px;
+      font-style: italic;
+      color: rgba(245,245,240,0.75);
+    }
+
+    .headline-example strong {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      margin-bottom: 6px;
+    }
+
+    /* ── RED FLAGS ──────────────────────────────────────── */
+    .red-flag-list {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .red-flag-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(245,245,240,0.07);
+      font-size: 15px;
+      color: rgba(245,245,240,0.78);
+      display: flex;
+      gap: 12px;
+    }
+
+    .red-flag-list li:last-child {
+      border-bottom: none;
+    }
+
+    .red-flag-list li::before {
+      content: "—";
+      color: var(--sp-orange-red);
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .red-flag-list li strong {
+      color: var(--sp-off-white);
+    }
+
+    /* ── PILOT TIMELINE ─────────────────────────────────── */
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .timeline-card {
+      background: var(--sp-charcoal);
+      border-radius: 10px;
+      padding: 22px 24px;
+      border-left: 3px solid;
+    }
+
+    .timeline-card.kickoff { border-left-color: rgba(245,245,240,0.25); }
+    .timeline-card.month1  { border-left-color: var(--sp-orange-red); }
+    .timeline-card.month2  { border-left-color: var(--sp-green); }
+    .timeline-card.month3  { border-left-color: var(--sp-gold); }
+
+    .timeline-card .month-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .timeline-card h4 {
+      font-family: var(--sp-font-serif);
+      font-size: 18px;
+      color: var(--sp-off-white);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .timeline-card p {
+      font-size: 13px;
+      color: rgba(245,245,240,0.65);
+    }
+
+    .investment-bar {
+      background: var(--sp-gradient);
+      border-radius: 10px;
+      padding: 22px 28px;
+      margin-top: 20px;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .investment-bar .inv-item .inv-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(14,15,17,0.6);
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .investment-bar .inv-item .inv-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0E0F11;
+    }
+
+    /* ── CTA SECTION ────────────────────────────────────── */
+    .cta-section {
+      padding: 64px 0;
+      border-bottom: none;
+    }
+
+    .cta-card {
+      background: var(--sp-charcoal);
+      border: 1px solid var(--sp-orange-red);
+      border-radius: 14px;
+      padding: 48px 52px;
+      text-align: center;
+    }
+
+    .cta-card h2 {
+      font-family: var(--sp-font-serif);
+      font-size: 34px;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .cta-card p {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      font-size: 16px;
+      color: rgba(245,245,240,0.7);
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--sp-gradient);
+      color: #fff;
+      font-family: var(--sp-font-sans);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 36px;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+      text-decoration: none;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--sp-charcoal);
+      border-top: 1px solid rgba(245,245,240,0.08);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer .wordmark {
+      font-family: var(--sp-font-serif);
+      font-size: 20px;
+      background: var(--sp-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    footer .footer-meta {
+      font-size: 12px;
+      color: rgba(245,245,240,0.35);
+      text-align: right;
+    }
+
+    /* ── PRINT ──────────────────────────────────────────── */
+    @media print {
+      .site-header {
+        position: static;
+      }
+      .score-card,
+      .audit-card,
+      .angle-block,
+      .timeline-card,
+      .cta-card {
+        break-inside: avoid;
+      }
+    }
+
+    /* ── MOBILE ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .site-header {
+        padding: 12px 16px;
+      }
+
+      .hero-name {
+        font-size: 36px;
+      }
+
+      .score-card {
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+      }
+
+      .score-number {
+        font-size: 56px;
+      }
+
+      .audit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-card {
+        padding: 32px 20px;
+      }
+
+      .investment-bar {
+        gap: 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding: 24px 16px;
+      }
+
+      footer .footer-meta {
+        text-align: center;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header class="site-header">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="doc-label">Reddit Fit Analysis</div>
+    </div>
+    <div class="header-meta">
+      May 25, 2026 &nbsp;&middot;&nbsp; Confidential
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-meta">Reddit Fit Analysis</div>
+      <div class="hero-name">Fin</div>
+      <div class="hero-submeta">
+        <a href="https://fin.ai" target="_blank">fin.ai</a>
+        &nbsp;&middot;&nbsp; AI Customer Service Agent &nbsp;&middot;&nbsp; Enterprise SaaS
+      </div>
+
+      <div class="score-card">
+        <div class="score-left">
+          <div class="score-number">4.0<span class="score-denom">/10</span></div>
+          <div class="score-tier">Poor Fit</div>
+        </div>
+        <div class="score-right">
+          <div class="verdict-label">Verdict</div>
+          <p>Fin is an enterprise B2B AI customer service platform and Reddit is the wrong channel for this category. The economic buyers, VP-level CX and Support Operations leaders who evaluate, budget, and sign contracts, are not active Reddit users. No competitors advertise here, and for good reason. The channel mismatch is structural.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT AND AUDIENCE -->
+    <section>
+      <div class="section-label">Product and Audience</div>
+
+      <h3>What They Sell</h3>
+      <p>Fin is an AI agent platform that autonomously resolves customer support inquiries across multiple channels, integrating with existing helpdesks including Zendesk, Salesforce, HubSpot, and Freshdesk. Pricing is per-outcome at $0.99 per resolved conversation, with a minimum of 50 resolutions per month. The product claims a 65% end-to-end resolution rate across 40 million-plus conversations and is positioned as a direct replacement for tier-1 human support.</p>
+
+      <h3 style="margin-top: 28px;">Target Audience</h3>
+      <p>Fin targets VP of Customer Support, Head of CX, and Support Operations Directors at mid-market and enterprise companies across financial services, retail, technology, and gaming. These buyers are budget-responsible and evaluate tools through procurement processes, demos, and vendor comparisons. Reddit's core demographic, 18 to 34 year-old tech enthusiasts and individual contributors, does not overlap meaningfully with this ICP. These buyers live on LinkedIn, read industry publications, and purchase from vendor relationships, not social discovery.</p>
+    </section>
+
+    <!-- SUBREDDIT LANDSCAPE -->
+    <section>
+      <div class="section-label">Subreddit Landscape</div>
+      <h2>Where the audience lives on Reddit</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Subreddit</th>
+              <th>Subscribers</th>
+              <th>Targeting type</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>r/SaaS</td>
+              <td>677,000</td>
+              <td>Interest</td>
+              <td>Broad SaaS audience including founders and operators. Largest pool but not CX-specific. Some buyers present.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>r/Chatbots</td>
+              <td>81,000</td>
+              <td>Interest</td>
+              <td>Developers building bots, not enterprise software buyers. Technical but wrong seniority level.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>r/CallCentres</td>
+              <td>30,000</td>
+              <td>Community</td>
+              <td>Frontline agents only. No overlap with enterprise software decision makers.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>r/CustomerSuccess</td>
+              <td>25,000</td>
+              <td>Community</td>
+              <td>CS professionals. Closer to ICP but mostly individual contributors, not budget holders.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>r/AI_Agents</td>
+              <td>20,000+</td>
+              <td>Interest</td>
+              <td>Growing tech-forward community. Some startup founders with buying power present.</td>
+            </tr>
+            <tr style="font-weight: normal; color: rgba(245,245,240,0.45);">
+              <td>r/CustomerExperience</td>
+              <td>3,600</td>
+              <td>Community</td>
+              <td>Closest subreddit to actual ICP, but small and low-volume. Insufficient reach for a pilot.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 14px; color: rgba(245,245,240,0.5);">Total addressable subreddit reach: approximately 835,000. Effective ICP reach is a small fraction of that figure.</p>
+      <p style="font-size: 14px; color: rgba(245,245,240,0.5);">Targeting recommendation: Interest targeting via r/SaaS plus keyword targeting on "AI customer service," "support automation," and "chatbot" terms. Even with precise targeting, the pool of actual VP-level buyers is thin.</p>
+    </section>
+
+    <!-- REDDIT PRESENCE AUDIT -->
+    <section>
+      <div class="section-label">Reddit Presence Audit</div>
+      <h2>Brand and competitor activity on Reddit</h2>
+
+      <div class="audit-grid">
+        <div class="audit-card">
+          <div class="audit-label">Brand Mentions</div>
+          <div class="audit-value">Minimal</div>
+          <p>Referenced in pricing threads across support and SaaS communities. Sentiment skews negative on per-resolution cost escalation.</p>
+        </div>
+        <div class="audit-card">
+          <div class="audit-label">Competitor Ads</div>
+          <div class="audit-value">None detected</div>
+          <p>Intercom, Zendesk, Ada, Sierra, and Freshdesk show no Reddit paid activity. The entire category is absent from the channel.</p>
+        </div>
+        <div class="audit-card">
+          <div class="audit-label">Organic Community Fit</div>
+          <div class="audit-value">Low</div>
+          <p>The problem Fin solves comes up organically in r/CustomerSuccess and r/SaaS, but discussions center on comparing tools, not brand engagement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIT SCORE BREAKDOWN -->
+    <section>
+      <div class="section-label">Fit Score Breakdown</div>
+      <h2>How Fin scores across the five criteria</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Criteria</th>
+              <th>Score</th>
+              <th>Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="font-weight: normal;">
+              <td>Audience presence</td>
+              <td>3/10</td>
+              <td>CX decision makers are not active Reddit users. Relevant communities are dominated by frontline workers and developers, not VP-level buyers.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>Offer and product fit</td>
+              <td>3/10</td>
+              <td>Enterprise AI SaaS with a complex evaluation cycle and no self-serve path does not convert from Reddit traffic. Demo requests require long follow-up cycles.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>Creative angle potential</td>
+              <td>5/10</td>
+              <td>The $0.99/resolution hook is concrete and the 40M-conversation credential has weight, but the audience most likely to engage lacks buying authority.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>Competition signal</td>
+              <td>2/10</td>
+              <td>Zero competitor Reddit ads detected across the entire enterprise customer service category. This absence is a verdict, not a gap to exploit.</td>
+            </tr>
+            <tr style="font-weight: normal;">
+              <td>Budget and commitment alignment</td>
+              <td class="score-orange">7/10</td>
+              <td>A well-funded organization that could commit to pilot spend without issue. Budget is not the constraint here.</td>
+            </tr>
+            <tr class="score-total-row">
+              <td><strong>Overall</strong></td>
+              <td><strong>4.0/10</strong></td>
+              <td><strong>Poor Fit</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RECOMMENDED CREATIVE ANGLE -->
+    <section>
+      <div class="section-label">Recommended Creative Angle</div>
+      <h2>If a test were run</h2>
+
+      <p>The strongest angle for a Reddit test would be a native promoted post targeting r/SaaS and r/CustomerSuccess with a data-forward hook. This frames Fin as a thought-leadership source rather than a direct pitch, which is the only format that earns trust on Reddit. The CTA would drive to a landing page with a resolution benchmark report, not a demo form, to reduce friction and build a retargeting audience before asking for a meeting.</p>
+
+      <div class="angle-block primary">
+        <div class="angle-label">Primary angle</div>
+        <p>Data-forward native promoted post. Format: long-form promoted post in r/SaaS and r/CustomerSuccess. Tone: genuine insight, zero corporate polish. CTA: gated report download, not demo request. Target: founders and operators who manage their own support teams at early-to-mid-stage companies.</p>
+      </div>
+
+      <div class="headline-example">
+        <strong>Example headline direction</strong>
+        "Your support team is resolving 35% of tickets. Here is what the top 10% resolve automatically."
+      </div>
+    </section>
+
+    <!-- RED FLAGS -->
+    <section>
+      <div class="section-label">Red Flags</div>
+      <h2>Genuine concerns before committing to Reddit</h2>
+
+      <ul class="red-flag-list">
+        <li><span><strong>Enterprise ICP mismatch with Reddit demographics.</strong> VP-level buyers at mid-market and enterprise companies are not browsing Reddit for software solutions. They evaluate through LinkedIn, analyst reports, peer referrals, and vendor outreach.</span></li>
+        <li><span><strong>No self-serve conversion path.</strong> Reddit ads perform best when a click leads to an immediate, low-friction conversion: a signup, trial, or purchase. Fin's conversion is a demo request followed by a multi-week enterprise sales cycle. Attribution is nearly impossible to defend.</span></li>
+        <li><span><strong>Zero competitor validation.</strong> Intercom, Zendesk, Ada, Sierra, Freshdesk, and every other AI customer service platform show no detectable Reddit ad presence. These companies have large marketing budgets and sophisticated paid media teams. They are not here.</span></li>
+        <li><span><strong>Community sentiment skews negative on pricing.</strong> The most visible Reddit discussion about Fin centers on per-resolution costs escalating unexpectedly. Running paid ads into communities where organic sentiment is cost-skeptical creates headwinds.</span></li>
+        <li><span><strong>Small effective ICP pool.</strong> Even in the most relevant subreddits, the share of users with VP-level authority and a genuine enterprise support automation need is a tiny fraction of the subscriber count. Targeting efficiency will be poor.</span></li>
+      </ul>
+    </section>
+
+    <!-- 90-DAY PILOT -->
+    <section>
+      <div class="section-label">Proposed 90-Day Pilot Structure</div>
+      <h2>How a pilot would be structured</h2>
+
+      <div class="timeline-grid">
+        <div class="timeline-card kickoff">
+          <div class="month-label">Pre-launch</div>
+          <h4>Month 0: Kickoff</h4>
+          <p>Strategy session, campaign build, and creative production. Set up keyword targeting and community targeting on r/CustomerSuccess, r/SaaS, and r/Chatbots. Build a custom audience from existing site traffic for retargeting. No paid spend.</p>
+        </div>
+        <div class="timeline-card month1">
+          <div class="month-label">Month 1</div>
+          <h4>Audience Building</h4>
+          <p>The goal is not conversions: it is driving qualified traffic and building retargeting audiences. CPAs will run 30 to 50% above the optimized benchmark while the algorithm learns. Success metric: CTR above 0.3%, retargeting audience build rate on pace.</p>
+        </div>
+        <div class="timeline-card month2">
+          <div class="month-label">Month 2</div>
+          <h4>Layer Retargeting</h4>
+          <p>Layer retargeting campaigns against Month 1 audiences. Test a thought-leadership creative alongside the direct-response variant. CPA should start declining week-over-week as retargeting pools activate and the algorithm gains signal.</p>
+        </div>
+        <div class="timeline-card month3">
+          <div class="month-label">Month 3</div>
+          <h4>Optimize and Evaluate</h4>
+          <p>Evaluate using three signals: CPA trajectory (declining week-over-week?), retargeting CPA vs. prospecting CPA (should be 40 to 60% lower), and downstream quality (demo show rate, sales-qualified lead ratio). Given category dynamics, there is meaningful probability that signals remain unfavorable.</p>
+        </div>
+      </div>
+
+      <div class="investment-bar">
+        <div class="inv-item">
+          <div class="inv-label">Management Fee</div>
+          <div class="inv-value">$1,500/mo</div>
+        </div>
+        <div class="inv-item">
+          <div class="inv-label">Recommended Media Budget</div>
+          <div class="inv-value">$3,000/mo</div>
+        </div>
+        <div class="inv-item">
+          <div class="inv-label">Total Monthly Commitment</div>
+          <div class="inv-value">$4,500/mo</div>
+        </div>
+        <div class="inv-item">
+          <div class="inv-label">Contract</div>
+          <div class="inv-value">90-day pilot</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-card">
+        <h2>Interested in a Reddit pilot?</h2>
+        <p>Five founding cohort spots remain at $1,500/mo. Hard close: June 30, 2026. If the fit analysis raises questions or you want to discuss your specific use case, apply below and we will talk through it directly.</p>
+        <a class="btn-primary" href="https://form.typeform.com/to/lf3pnicO" target="_blank">Apply for a spot</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div style="font-size: 12px; color: rgba(245,245,240,0.35); margin-top: 4px;">Reddit advertising for brands that earn it.</div>
+    </div>
+    <div class="footer-meta">
+      May 25, 2026 &nbsp;&middot;&nbsp; Confidential
+    </div>
+  </footer>
+
+</body>
+</html>
