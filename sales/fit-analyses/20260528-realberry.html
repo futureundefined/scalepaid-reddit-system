@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Fit Analysis: Realberry | ScalePaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', system-ui, sans-serif;
+    --sp-dim: #6B6E78;
+    --sp-border: rgba(245,245,240,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--sp-orange-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---- STICKY HEADER ---- */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--sp-charcoal);
+    border-bottom: 2px solid var(--sp-orange-red);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .site-header .brand-group {}
+  .site-header .wordmark {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 18px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.01em;
+  }
+  .site-header .report-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-dim);
+    margin-top: 1px;
+  }
+  .site-header .meta-right {
+    text-align: right;
+    font-size: 12px;
+    color: var(--sp-dim);
+  }
+  .site-header .meta-right .conf-label {
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    font-size: 10px;
+  }
+
+  /* ---- LAYOUT ---- */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--sp-border); }
+  section:last-of-type { border-bottom: none; }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 64px 0 56px;
+  }
+  .hero .prospect-name {
+    font-family: var(--sp-font-serif);
+    font-size: clamp(38px, 6vw, 60px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--sp-off-white);
+    margin-bottom: 12px;
+  }
+  .hero .meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--sp-dim);
+    margin-bottom: 40px;
+  }
+  .hero .meta-line a { color: var(--sp-orange-red); font-weight: 500; }
+  .meta-dot { color: var(--sp-border); }
+
+  .score-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-border);
+    border-radius: 12px;
+    padding: 36px 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 36px;
+  }
+  .score-left {
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .score-number {
+    font-family: var(--sp-font-serif);
+    font-size: 72px;
+    font-weight: 400;
+    line-height: 1;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .score-denom {
+    font-size: 18px;
+    color: var(--sp-dim);
+    margin-top: 2px;
+  }
+  .score-right {}
+  .fit-tier {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    background: rgba(255,69,0,0.1);
+    border: 1px solid rgba(255,69,0,0.25);
+    border-radius: 4px;
+    padding: 4px 10px;
+    margin-bottom: 14px;
+  }
+  .exec-summary {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--sp-off-white);
+    opacity: 0.9;
+  }
+
+  /* ---- SECTION HEADERS ---- */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 24px;
+  }
+  h2.section-title {
+    font-family: var(--sp-font-serif);
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 400;
+    color: var(--sp-off-white);
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+  h3.subsection-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 10px;
+    margin-top: 28px;
+  }
+  h3.subsection-title:first-child { margin-top: 0; }
+
+  p { margin-bottom: 14px; font-size: 15px; line-height: 1.7; color: var(--sp-off-white); opacity: 0.88; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---- TABLES ---- */
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr {
+    border-bottom: 1px solid var(--sp-border);
+  }
+  th {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-dim);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  td {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--sp-border);
+    color: var(--sp-off-white);
+    opacity: 0.88;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.sub-name { font-weight: 600; color: var(--sp-off-white); opacity: 1; font-size: 13px; white-space: nowrap; }
+  td.sub-name.top { color: var(--sp-off-white); }
+
+  .score-cell {
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .score-green { color: var(--sp-green); }
+  .score-orange { color: var(--sp-orange-red); }
+  .score-dim { color: var(--sp-dim); }
+
+  .total-row td {
+    background: rgba(255,255,255,0.04);
+    font-weight: 600;
+  }
+
+  /* ---- AUDIT CARDS ---- */
+  .audit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .audit-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-border);
+    border-radius: 10px;
+    padding: 22px 20px;
+  }
+  .audit-card .audit-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-dim);
+    margin-bottom: 10px;
+  }
+  .audit-card .audit-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sp-off-white);
+    margin-bottom: 8px;
+  }
+  .audit-card .audit-body {
+    font-size: 13px;
+    color: var(--sp-off-white);
+    opacity: 0.75;
+    line-height: 1.55;
+  }
+
+  /* ---- ANGLE CARDS ---- */
+  .angle-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-border);
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin-bottom: 14px;
+  }
+  .angle-card.primary {
+    border-left: 4px solid var(--sp-orange-red);
+    border-radius: 4px 10px 10px 4px;
+  }
+  .angle-card .angle-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin-bottom: 8px;
+  }
+  .angle-card p {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+  .headline-block {
+    background: rgba(255,69,0,0.06);
+    border: 1px solid rgba(255,69,0,0.18);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--sp-off-white);
+    font-style: italic;
+    line-height: 1.55;
+    opacity: 0.9;
+  }
+
+  /* ---- RED FLAGS ---- */
+  .red-flags-list { list-style: none; margin-top: 8px; }
+  .red-flags-list li {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--sp-border);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--sp-off-white);
+    opacity: 0.88;
+  }
+  .red-flags-list li:last-child { border-bottom: none; }
+  .rf-dash { color: var(--sp-orange-red); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .rf-label { font-weight: 700; color: var(--sp-off-white); }
+
+  /* ---- PILOT TIMELINE ---- */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .timeline-card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-border);
+    border-radius: 10px;
+    padding: 24px 22px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-radius: 4px 10px 10px 4px;
+  }
+  .timeline-card.kickoff { border-left-color: rgba(245,245,240,0.25); }
+  .timeline-card.month1 { border-left-color: var(--sp-orange-red); }
+  .timeline-card.month2 { border-left-color: var(--sp-green); }
+  .timeline-card.month3 { border-left-color: var(--sp-gold); }
+  .timeline-card .tl-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sp-dim);
+    margin-bottom: 8px;
+  }
+  .timeline-card .tl-title {
+    font-family: var(--sp-font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--sp-off-white);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .timeline-card p {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .investment-bar {
+    background: var(--sp-gradient);
+    border-radius: 10px;
+    padding: 28px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .inv-item {}
+  .inv-item .inv-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(14,15,17,0.65);
+    margin-bottom: 4px;
+  }
+  .inv-item .inv-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sp-black);
+    line-height: 1;
+  }
+  .inv-item .inv-note {
+    font-size: 11px;
+    color: rgba(14,15,17,0.6);
+    margin-top: 3px;
+  }
+  .inv-divider { width: 1px; height: 40px; background: rgba(14,15,17,0.2); }
+
+  /* ---- CTA SECTION ---- */
+  .cta-section {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-orange-red);
+    border-radius: 14px;
+    padding: 48px 48px;
+    text-align: center;
+    margin: 0;
+  }
+  .cta-section .cta-heading {
+    font-family: var(--sp-font-serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 400;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .cta-section p {
+    max-width: 560px;
+    margin: 0 auto 28px;
+    font-size: 15px;
+    opacity: 0.85;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--sp-gradient);
+    color: var(--sp-black) !important;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 36px;
+    border-radius: 999px;
+    text-decoration: none !important;
+    letter-spacing: 0.01em;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  /* ---- FOOTER ---- */
+  .site-footer {
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid var(--sp-border);
+    color: var(--sp-dim);
+  }
+  .site-footer .foot-wordmark {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 17px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+  .site-footer .foot-tagline {
+    font-size: 13px;
+    color: var(--sp-dim);
+    margin-bottom: 10px;
+  }
+  .site-footer .foot-meta {
+    font-size: 12px;
+    color: var(--sp-dim);
+    opacity: 0.6;
+  }
+
+  /* ---- PRINT ---- */
+  @media print {
+    .site-header { position: static; }
+    .score-card,
+    .audit-card,
+    .angle-card,
+    .timeline-card { break-inside: avoid; }
+    body { font-size: 13px; }
+    .btn-primary { background: #FF4500 !important; color: #fff !important; }
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    .container { padding: 0 20px; }
+    .site-header { padding: 12px 20px; }
+    .score-card { flex-direction: column; padding: 24px 20px; }
+    .score-number { font-size: 56px; }
+    .audit-grid { grid-template-columns: 1fr; }
+    .timeline-grid { grid-template-columns: 1fr; }
+    .investment-bar { flex-direction: column; gap: 20px; padding: 22px 20px; }
+    .inv-divider { display: none; }
+    .cta-section { padding: 32px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="site-header">
+  <div class="brand-group">
+    <div class="wordmark">ScalePaid</div>
+    <div class="report-label">Reddit Fit Analysis</div>
+  </div>
+  <div class="meta-right">
+    <div>May 28, 2026</div>
+    <div class="conf-label">Confidential</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="container">
+  <section class="hero">
+    <h1 class="prospect-name">Realberry</h1>
+    <div class="meta-line">
+      <a href="https://www.realberry.com/" target="_blank">realberry.com</a>
+      <span class="meta-dot">|</span>
+      <span>Private Real Estate Investments</span>
+      <span class="meta-dot">|</span>
+      <span>Accredited Investors</span>
+    </div>
+
+    <div class="score-card">
+      <div class="score-left">
+        <div class="score-number">5.6</div>
+        <div class="score-denom">out of 10</div>
+      </div>
+      <div class="score-right">
+        <div class="fit-tier">Poor Fit</div>
+        <p class="exec-summary">Realberry has the right brand story and the right target audience exists on Reddit. But the channel is fundamentally constrained by SEC securities advertising rules. Private real estate offerings structured under Regulation D 506(b) prohibit general solicitation, which includes paid digital advertising. Even under 506(c), compliance review will strip out most of what makes Reddit Ads effective. The audience is there. The regulatory pathway is the question that needs to be answered first.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT AND AUDIENCE -->
+  <section>
+    <div class="section-label">Product and Audience</div>
+
+    <h3 class="subsection-title">What They Sell</h3>
+    <p>Realberry (formerly McWhinney, founded 1991) is a Denver-based real estate investment, development, and management firm that opened a direct investor platform in January 2026. Accredited investors co-invest alongside the firm in sponsor-led private real estate deals. The first offering is Red Hawk Crossings, a 60-unit build-to-rent townhome community in Castle Rock, Colorado, with additional offerings planned on a rolling basis. Securities are offered through North Capital Private Securities (FINRA/SIPC member).</p>
+
+    <h3 class="subsection-title">Target Audience</h3>
+    <p>Realberry targets accredited investors: individuals with $200K+ annual income ($300K joint) or $1M+ net worth excluding primary residence, roughly 12.6% of the US population per a June 2025 SEC working paper. The ideal investor wants passive exposure to institutional-quality real estate without direct ownership burden. This profile maps closely to the FIRE and fatFIRE communities on Reddit, as well as high-income professionals active in r/realestateinvesting. The platform's current focus is US accredited investors with a Colorado emphasis in its first offering, expanding nationally over time.</p>
+  </section>
+
+  <!-- SUBREDDIT LANDSCAPE -->
+  <section>
+    <div class="section-label">Subreddit Landscape</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Subreddit</th>
+            <th>Subscribers</th>
+            <th>Targeting Type</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="sub-name top">r/fatFIRE</td>
+            <td>423K</td>
+            <td>Community</td>
+            <td>High-NW individuals explicitly discussing wealth-building. Most likely to meet the accredited investor threshold. Skeptical of promotions but receptive to proof-based content.</td>
+          </tr>
+          <tr>
+            <td class="sub-name">r/realestateinvesting</td>
+            <td>~1M</td>
+            <td>Community + Interest</td>
+            <td>Largest real estate community on Reddit. Active discussion of passive investing, syndications, and BTR. Broad net worth range but high intent on the topic.</td>
+          </tr>
+          <tr>
+            <td class="sub-name">r/financialindependence</td>
+            <td>~975K</td>
+            <td>Community + Interest</td>
+            <td>FIRE-aligned audience with longer time horizons. Receptive to passive income vehicles. More conservative risk tolerance than r/fatFIRE.</td>
+          </tr>
+          <tr>
+            <td class="sub-name">r/passive_income</td>
+            <td>Unavailable</td>
+            <td>Community</td>
+            <td>Discussion of passive cash flow strategies. Lower sophistication than r/fatFIRE but relevant for awareness at the top of funnel.</td>
+          </tr>
+          <tr>
+            <td class="sub-name">r/realestate</td>
+            <td>~304K</td>
+            <td>Community</td>
+            <td>General real estate discussion. Less investor-focused than r/realestateinvesting. Lower priority for a syndication product.</td>
+          </tr>
+          <tr>
+            <td class="sub-name" style="opacity:0.6;">Keyword: "real estate syndication"</td>
+            <td style="opacity:0.5;">N/A</td>
+            <td style="opacity:0.6;">Keyword</td>
+            <td style="opacity:0.6;">Targets users actively searching this term across Reddit. High intent, lower volume. Critical layer for relevance filtering.</td>
+          </tr>
+          <tr>
+            <td class="sub-name" style="opacity:0.6;">Keyword: "accredited investor"</td>
+            <td style="opacity:0.5;">N/A</td>
+            <td style="opacity:0.6;">Keyword</td>
+            <td style="opacity:0.6;">Smallest but highest-intent signal on the platform. Reaches users already self-identifying as the target audience.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px; font-size:13px; color: var(--sp-dim);">Total addressable subreddit reach: approximately 2.7M across primary communities, with significant overlap between r/fatFIRE and r/financialindependence.</p>
+    <p style="font-size:13px; color: var(--sp-dim);">Targeting recommendation: Community targeting in r/fatFIRE and r/realestateinvesting, combined with keyword targeting on "real estate syndication" and "accredited investor." The keyword layer is critical: it filters impressions to users who are actively discussing the product category, reducing wasted spend on non-qualified users.</p>
+  </section>
+
+  <!-- REDDIT PRESENCE AUDIT -->
+  <section>
+    <div class="section-label">Reddit Presence Audit</div>
+    <div class="audit-grid">
+      <div class="audit-card">
+        <div class="audit-label">Brand Mentions</div>
+        <div class="audit-status">None Found</div>
+        <div class="audit-body">Realberry rebranded from McWhinney in January 2026. No Reddit brand presence exists yet. Minimal legacy McWhinney mentions, focused on Colorado development work rather than investor content.</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-label">Competitor Reddit Ads</div>
+        <div class="audit-status">None Detected</div>
+        <div class="audit-body">No confirmed paid Reddit Ads from Fundrise, CrowdStreet, or YieldStreet. These companies spend heavily on digital ads broadly. Their absence from Reddit is a meaningful signal for this product category.</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-label">Organic Community Fit</div>
+        <div class="audit-status">Category Present</div>
+        <div class="audit-body">Real estate syndication, passive investing, and BTR as an asset class are active topics in r/realestateinvesting and r/fatFIRE. Realberry does not appear in these conversations yet.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIT SCORE BREAKDOWN -->
+  <section>
+    <div class="section-label">Fit Score Breakdown</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Criteria</th>
+            <th>Score</th>
+            <th>Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500;">Audience presence</td>
+            <td class="score-cell score-orange">7/10</td>
+            <td>Target accredited investors are concentrated in r/fatFIRE and r/realestateinvesting. Audience is present but skeptical of promotions.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Offer and product fit</td>
+            <td class="score-cell score-dim">4/10</td>
+            <td>Private securities offerings face SEC general solicitation restrictions. High-ticket, long-funnel product is incompatible with Reddit's direct-response model.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Creative angle potential</td>
+            <td class="score-cell score-orange">6/10</td>
+            <td>Strong brand story: 35 years of developer track record and landmark projects now open to individual investors. Compliance constraints will limit how much of this story can be told.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Competition signal</td>
+            <td class="score-cell score-dim">4/10</td>
+            <td>No established competitors advertising on Reddit despite heavy digital spend elsewhere, suggesting the channel has not been validated for this investment product category.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Budget and commitment alignment</td>
+            <td class="score-cell score-orange">7/10</td>
+            <td>As a rebranded institutional developer with a 35-year track record, media budget capacity is likely not a constraint. Specific media spend commitment requires confirmation.</td>
+          </tr>
+          <tr class="total-row">
+            <td style="font-weight:700;">Overall</td>
+            <td class="score-cell" style="color:var(--sp-off-white);">5.6/10</td>
+            <td style="font-weight:500;">Poor Fit — regulatory structure is the primary blocker, not audience or brand.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CREATIVE ANGLE -->
+  <section>
+    <div class="section-label">Recommended Creative Angle</div>
+
+    <p>If Realberry's offerings are structured as 506(c) and legal has cleared general solicitation, the strongest Reddit angle is a track record play targeting r/fatFIRE and r/realestateinvesting. The format is a community-placement promoted post with text-first creative, no return projections, and a CTA to a dedicated investor interest page (not the full offering document). The goal is investor inquiry, not immediate capital commitment.</p>
+
+    <div class="angle-card primary">
+      <div class="angle-label">Primary Angle: Track Record Play</div>
+      <p>The team behind Union Station, Dairy Block, and Centerra is opening their investment platform to accredited investors. Lead with proof of what they have built. No projections. No guarantees. Just 35 years of work and an invitation to learn more. This is the one angle that will land in a community like r/fatFIRE, where members reflexively distrust promotional copy but respect demonstrated track records.</p>
+      <div class="headline-block">"We've been building Colorado's most recognized real estate for 35 years. Starting this year, accredited investors can get in alongside us."</div>
+    </div>
+
+    <div class="angle-card">
+      <div class="angle-label">Secondary Angle: Category Education</div>
+      <p>Target keyword audiences with a direct-question post format that educates first: "What to look for in a real estate sponsor before you commit capital." This approach passes Reddit's native content filter and builds trust before introducing the platform, but requires a multi-touch funnel with robust retargeting.</p>
+    </div>
+  </section>
+
+  <!-- RED FLAGS -->
+  <section>
+    <div class="section-label">Red Flags</div>
+    <ul class="red-flags-list">
+      <li>
+        <span class="rf-dash">-</span>
+        <span><span class="rf-label">Regulatory blocker (critical).</span> If Realberry's offerings are structured as 506(b), general solicitation is prohibited by SEC rules, and Reddit Ads constitute general solicitation. The first question in any discovery conversation must be: are current and planned offerings under 506(b) or 506(c)? If 506(b), Reddit Ads are not an option without restructuring the offering. This is a go/no-go gate, not a nuance.</span>
+      </li>
+      <li>
+        <span class="rf-dash">-</span>
+        <span><span class="rf-label">Long, high-friction conversion funnel.</span> The path from Reddit ad click to committed capital involves a landing page, accreditation verification, offering document review, an investor call, and a wire transfer. Reddit Ads are optimized for traffic and short-form conversions. Attributing a $50,000+ investment to a Reddit ad over a 6-to-12 week decision cycle is operationally difficult and media-budget-inefficient at a $5,000/mo spend level.</span>
+      </li>
+      <li>
+        <span class="rf-dash">-</span>
+        <span><span class="rf-label">No competitor channel validation.</span> Fundrise, CrowdStreet, and YieldStreet collectively spend tens of millions on digital ads annually. None appear to be running Reddit Ads for private placement products. Their absence from this specific channel, after years of digital experimentation, is a meaningful yellow flag.</span>
+      </li>
+      <li>
+        <span class="rf-dash">-</span>
+        <span><span class="rf-label">New brand, no Reddit footprint.</span> Realberry launched the brand in January 2026. There is no community trust, no organic presence, and no existing conversation to amplify with paid ads. Brand awareness campaigns would need to run before conversion campaigns make economic sense.</span>
+      </li>
+      <li>
+        <span class="rf-dash">-</span>
+        <span><span class="rf-label">Compliance constraints on ad copy.</span> Any ad promoting an investment product must avoid return projections, guarantees, or cherry-picked performance figures. This removes most high-performing direct-response formats on Reddit, leaving brand awareness as the primary use case, which is difficult to attribute back to capital raised.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- PILOT STRUCTURE -->
+  <section>
+    <div class="section-label">Proposed 90-Day Pilot Structure</div>
+
+    <div class="timeline-grid">
+      <div class="timeline-card kickoff">
+        <div class="tl-label">Pre-Launch</div>
+        <div class="tl-title">Month 0: Kickoff</div>
+        <p>Legal confirmation that offerings are 506(c) permitting general solicitation. Strategy session, campaign build, and creative production. Establish community and keyword targeting. Build a dedicated investor inquiry landing page optimized for accredited investor lead capture. No paid spend until legal pathway is confirmed.</p>
+      </div>
+      <div class="timeline-card month1">
+        <div class="tl-label">Month 1</div>
+        <div class="tl-title">Audience Building + Qualified Traffic</div>
+        <p>Goal: drive qualified accredited investor traffic to the lander and build retargeting audiences. Launch traffic-objective campaigns in r/fatFIRE and r/realestateinvesting with keyword layering. The algorithm is learning and retargeting pools are empty. Expect high CPAs. Do not use Month 1 cost per inquiry to judge the channel. Success metric: CTR above 0.4% on community placements.</p>
+      </div>
+      <div class="timeline-card month2">
+        <div class="tl-label">Month 2</div>
+        <div class="tl-title">Layer Retargeting + Optimization</div>
+        <p>Layer retargeting campaigns against audiences built in Month 1. The algorithm now has signal. Test a second creative angle (track record vs. category education). Introduce lookalike expansion if audience volume allows. Cost per inquiry should start declining week over week.</p>
+      </div>
+      <div class="timeline-card month3">
+        <div class="tl-label">Month 3</div>
+        <div class="tl-title">Optimize and Evaluate</div>
+        <p>Evaluate on three signals: (1) cost per inquiry trajectory, (2) retargeting CPA vs. prospecting CPA (target: 40-60% lower), (3) downstream quality (accreditation verification rate, investor call booking rate). A declining CPA with strong downstream quality justifies continuation even if the absolute number is still high.</p>
+      </div>
+    </div>
+
+    <div class="investment-bar">
+      <div class="inv-item">
+        <div class="inv-label">Management Fee</div>
+        <div class="inv-value">$1,500/mo</div>
+        <div class="inv-note">Founding cohort rate. Valid until June 30, 2026.</div>
+      </div>
+      <div class="inv-divider"></div>
+      <div class="inv-item">
+        <div class="inv-label">Recommended Media</div>
+        <div class="inv-value">$5,000/mo</div>
+        <div class="inv-note">Minimum viable. Preferred: $5,000-$10,000/mo.</div>
+      </div>
+      <div class="inv-divider"></div>
+      <div class="inv-item">
+        <div class="inv-label">Total Monthly</div>
+        <div class="inv-value">$6,500/mo</div>
+        <div class="inv-note">No performance fees. No long-term contract.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="border-bottom:none; padding-bottom: 64px;">
+    <div class="cta-section">
+      <div class="cta-heading">Ready to start your pilot?</div>
+      <p>The June kickoff window is open now. Starting in June means the full campaign build, legal review, and creative production are complete before Q3. Realberry enters the second half of 2026 with a live retargeting pool and real signal from the market. Five founding cohort spots. Hard close: June 30, 2026.</p>
+      <a href="https://form.typeform.com/to/lf3pnicO" class="btn-primary" target="_blank">Apply for a spot</a>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-wordmark">ScalePaid</div>
+    <div class="foot-tagline">Reddit Ads for brands that deserve to win on the platform.</div>
+    <div class="foot-meta">Prepared May 28, 2026 &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; For discussion purposes only. Not investment advice.</div>
+  </div>
+</footer>
+
+</body>
+</html>
