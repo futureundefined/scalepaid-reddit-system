@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Fit Analysis: Playbypoint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  a { color: var(--sp-orange-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* Sticky header */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--sp-charcoal);
+    border-bottom: 2px solid var(--sp-orange-red);
+    padding: 14px 0;
+  }
+  header.site .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .wordmark {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 22px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .label-caps {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9a9a93;
+    margin-top: 2px;
+  }
+  header.site .meta-right { text-align: right; font-size: 12px; color: #9a9a93; line-height: 1.4; }
+
+  /* Hero */
+  .hero { padding: 56px 0 32px; }
+  .hero h1 {
+    font-family: var(--sp-font-serif);
+    font-size: 64px;
+    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -1px;
+  }
+  .hero .metaline { margin-top: 14px; font-size: 15px; color: #b9b9b1; }
+  .hero .metaline span { color: #6f6f68; padding: 0 8px; }
+
+  .scorecard {
+    margin-top: 32px;
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .scorenum {
+    font-family: var(--sp-font-serif);
+    font-size: 92px;
+    line-height: 0.9;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+  }
+  .scoreside .tier {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--sp-gold);
+    margin-bottom: 8px;
+  }
+  .scoreside p { font-size: 15px; color: #c9c9c1; }
+
+  /* Sections */
+  section { padding: 36px 0; border-top: 1px solid #1f2025; }
+  h2 {
+    font-family: var(--sp-font-serif);
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+  }
+  .sublabel {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .subblock { margin-bottom: 24px; }
+  .subblock:last-child { margin-bottom: 0; }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8a8a82;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 1px solid #2a2b30;
+  }
+  tbody td { padding: 12px; border-bottom: 1px solid #1f2025; vertical-align: top; color: #cfcfc7; }
+  tbody tr.top-row td { font-weight: 600; color: var(--sp-off-white); }
+  tbody tr.dim td { color: #85857d; }
+  .score-good { color: var(--sp-green); font-weight: 700; }
+  .score-mid { color: var(--sp-orange-red); font-weight: 700; }
+  tr.total-row td { background: #202127; font-weight: 700; color: var(--sp-off-white); }
+
+  /* Audit cards */
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .audit-card {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .audit-card .h { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 600; margin-bottom: 8px; }
+  .audit-card p { font-size: 14px; color: #c2c2ba; margin: 0; }
+
+  /* Angle blocks */
+  .angle {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 14px;
+  }
+  .angle.primary { border-left: 4px solid var(--sp-orange-red); }
+  .angle .h { font-weight: 700; margin-bottom: 6px; }
+  .angle p { margin: 0; font-size: 14px; color: #c9c9c1; }
+  .angle.example { border-left: 4px solid var(--sp-gold); font-style: italic; }
+
+  /* Red flags */
+  ul.flags { list-style: none; }
+  ul.flags li { position: relative; padding-left: 24px; margin-bottom: 14px; color: #cfcfc7; font-size: 15px; }
+  ul.flags li::before { content: "—"; position: absolute; left: 0; color: var(--sp-orange-red); font-weight: 700; }
+  ul.flags li b { color: var(--sp-off-white); }
+
+  /* Timeline cards */
+  .timeline { display: flex; flex-direction: column; gap: 14px; }
+  .tcard {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-left: 4px solid #444;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .tcard.kickoff { border-left-color: #555; }
+  .tcard.m1 { border-left-color: var(--sp-orange-red); }
+  .tcard.m2 { border-left-color: var(--sp-green); }
+  .tcard.m3 { border-left-color: var(--sp-gold); }
+  .tcard .t {
+    font-family: var(--sp-font-serif);
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .tcard p { font-size: 14px; color: #c2c2ba; margin: 0; }
+
+  .investbar {
+    margin-top: 20px;
+    background: var(--sp-gradient);
+    color: var(--sp-black);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .investbar .row { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 15px; font-weight: 600; }
+  .investbar .row.total { border-top: 1px solid rgba(14,15,17,0.3); margin-top: 6px; padding-top: 12px; font-size: 17px; font-weight: 700; }
+  .investbar .note { font-size: 12px; font-weight: 600; margin-top: 10px; opacity: 0.8; }
+
+  /* CTA */
+  .cta {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-orange-red);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    margin: 40px 0;
+  }
+  .cta h2 {
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .cta p { max-width: 600px; margin: 0 auto 24px; color: #c9c9c1; }
+  .pill {
+    display: inline-block;
+    background: var(--sp-gradient);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 15px 38px;
+    border-radius: 999px;
+  }
+  .pill:hover { text-decoration: none; opacity: 0.94; }
+
+  /* Footer */
+  footer.site { border-top: 1px solid #1f2025; padding: 32px 0 48px; text-align: center; color: #6f6f68; font-size: 13px; }
+  footer.site .wordmark { font-size: 18px; display: inline-block; margin-bottom: 6px; }
+
+  @media print {
+    header.site { position: static; }
+    .tcard, .audit-card, .angle, .scorecard, .cta { break-inside: avoid; }
+    body { font-size: 12px; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 42px; }
+    .scorecard { flex-direction: column; text-align: center; gap: 16px; padding: 24px; }
+    .scorenum { font-size: 72px; }
+    .cards3 { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+    .investbar .row { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="label-caps">Reddit Fit Analysis</div>
+    </div>
+    <div class="meta-right">
+      June 3, 2026<br>Confidential
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Playbypoint</h1>
+    <div class="metaline">
+      <a href="https://www.playbypoint.com">playbypoint.com</a>
+      <span>•</span>Racquet sports club management SaaS<span>•</span>B2B demo generation
+    </div>
+
+    <div class="scorecard">
+      <div class="scorenum">6.0</div>
+      <div class="scoreside">
+        <div class="tier">Conditional Fit</div>
+        <p>The racquet sports communities on Reddit are large and growing fast, but they are dominated by players, not the club operators who actually buy. Playbypoint's own analytics confirm this: roughly 99% of site traffic is players. Broad community prospecting is a poor bet. The viable path is narrow: retarget existing site traffic and HubSpot audiences, and target the "opening a club" pre-launch intent moment. Run as a scoped secondary channel alongside the proven Google Ads motion, Reddit is worth a controlled test. Run as a primary prospecting channel, it burns budget on players who will never book a demo.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Product and Audience</h2>
+    <div class="subblock">
+      <div class="sublabel">What They Sell</div>
+      <p>All-in-one court management software for racquet sports clubs: scheduling, memberships, payments, pro-shop POS, and a white-label club-branded app. B2B SaaS sold to club owners and operators across pickleball, padel, tennis, squash, golf simulators, and swim. The buyer is often the decision-maker, operator, and on-court coach at a single-location club. Considered purchase: demo request, AE-run walk-through, then close. Unit economics: roughly $230 MRR per customer, $350 target cost per demo, $1,200 CAC ceiling.</p>
+    </div>
+    <div class="subblock">
+      <div class="sublabel">Target Audience</div>
+      <p>Two segments. Existing club operators frustrated with CourtReserve, Playtomic, or Birrdi and evaluating a switch. And pre-launch operators opening a club within three months, who have the shortest and best sales cycle. Both are a thin slice of the broader racquet sports audience. Reddit's core demographic (18 to 34, US-skewed, high-intent on niche topics) maps well to the player communities but only loosely to the operator buyer. The match is strongest at one specific moment: someone researching how to open and run a club, before they have picked a platform.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Subreddit Landscape</h2>
+    <table>
+      <thead>
+        <tr><th>Subreddit</th><th>Subscribers</th><th>Targeting type</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="top-row"><td>r/Pickleball</td><td>~137,000</td><td>Community</td><td>Fastest-growing racquet community (~100 new/day). Player-dominant. Keyword targeting on club and business posts, not broad blasts.</td></tr>
+        <tr><td>r/padel</td><td>~39,000</td><td>Community</td><td>Emerging Playbypoint segment. Smaller but high-engagement and operator-adjacent in growth markets.</td></tr>
+        <tr><td>r/tennis</td><td>~2,100,000</td><td>Community</td><td>Huge but overwhelmingly players and fans. Low operator density. Keyword targeting only.</td></tr>
+        <tr><td>r/golfsimulator</td><td>count unavailable</td><td>Community</td><td>High-conviction emerging segment (Birrdi switchers). Niche, operator-adjacent. Worth testing.</td></tr>
+        <tr><td>r/smallbusiness</td><td>~2,500,000</td><td>Keyword</td><td>Catches pre-launch operators researching the business side. Pair with racquet and club keyword targeting.</td></tr>
+        <tr class="dim"><td>r/Entrepreneur</td><td>~3,000,000+</td><td>Keyword</td><td>Same logic. Layer with keyword targeting for the pre-launch club founder.</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px;"><b>Targeting recommendation:</b> Keyword and interest targeting layered with retargeting, not community targeting alone. The highest-value play is retargeting Playbypoint's existing site visitors and HubSpot audiences, where the player-versus-operator filtering already happened. Second is keyword targeting on pre-launch intent ("opening a pickleball club", "padel court business", "club management software"). Broad community targeting on r/Pickleball or r/tennis wastes most impressions on players.</p>
+  </section>
+
+  <section>
+    <h2>Reddit Presence Audit</h2>
+    <div class="cards3">
+      <div class="audit-card">
+        <div class="h">Brand mentions</div>
+        <p>Minimal. Playbypoint appears in third-party comparison content (for example Pickleheads) as a legitimate option operators use, alongside PodPlay and CourtReserve. Direct organic discussion is sparse.</p>
+      </div>
+      <div class="audit-card">
+        <div class="h">Competitor ads</div>
+        <p>None found. No detectable paid Reddit ads from CourtReserve, Playtomic, PodPlay, or Birrdi. Untapped, but unvalidated. No competitor has proven the channel for this niche.</p>
+      </div>
+      <div class="audit-card">
+        <div class="h">Organic fit</div>
+        <p>Thin and player-side. Operators surface mainly in pre-launch "how do I start a club" threads in r/Pickleball, r/padel, and the business subs. That is the one place the buyer reliably appears.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fit Score Breakdown</h2>
+    <table>
+      <thead>
+        <tr><th>Criteria</th><th>Score</th><th>Rationale</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Audience presence</td><td class="score-mid">6/10</td><td>Communities are huge and growing, but buyers (operators) are a thin slice. Pre-launch researchers and retargetable site traffic are the real signal.</td></tr>
+        <tr><td>Offer and product fit</td><td class="score-mid">5/10</td><td>B2B SaaS demo-gen on a considered purchase is not Reddit's native sweet spot, though the underlying pain is real and well-articulated.</td></tr>
+        <tr><td>Creative angle potential</td><td class="score-good">7/10</td><td>Strong native angles already exist (Birrdi double-fees switcher, Playtomic data ownership). Brand already has a Reddit ad playbook.</td></tr>
+        <tr><td>Competition signal</td><td class="score-mid">4/10</td><td>No competitor Reddit ads found: untapped but unvalidated for this niche.</td></tr>
+        <tr><td>Budget and commitment alignment</td><td class="score-good">8/10</td><td>Existing client, $2,500/mo retainer, Reddit already in signed scope, proven $5k/mo paid media operation.</td></tr>
+        <tr class="total-row"><td>Overall</td><td>6.0/10</td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Recommended Creative Angle</h2>
+    <p>Run Reddit-native promoted posts that read like a forum contribution, not a billboard. Lead with the operator's pain, earn the product mention. The strongest angle is the switcher hook, because it is specific, contrarian, and unmistakably Reddit-shaped. The second targets the pre-launch founder researching how to set up a club correctly from day one. Keep it to a problem-led headline and two to three short body sentences with a soft CTA. No hashtags, no emojis, no exclamation marks.</p>
+
+    <div class="angle primary">
+      <div class="h">Primary angle: the switcher</div>
+      <p>Target operators frustrated with double fees and disappearing support. "Tired of paying two platforms a cut of every transaction?" Pull from the Birrdi and Playtomic differentiators: single payment processor, 100% data ownership, same-day human support.</p>
+    </div>
+    <div class="angle">
+      <div class="h">Secondary angle: the pre-launch founder</div>
+      <p>Target the "opening a club" intent moment. Lead with getting the infrastructure right before launch. Frame the product as the relief, not the pitch.</p>
+    </div>
+    <div class="angle example">
+      <div class="h">Example headline direction</div>
+      <p>"We built booking software specifically for racquet sports clubs, not adapted from gym software. If you are opening a club, here is what we learned about getting day-one operations right."</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Red Flags</h2>
+    <ul class="flags">
+      <li><b>Player-versus-operator mismatch.</b> ~99% of the relevant audience are players, not buyers. Broad community targeting wastes most of the budget. This is the biggest risk and the reason the verdict is conditional, not strong.</li>
+      <li><b>No competitor validation.</b> No competitor is running Reddit ads. Untapped can mean opportunity or can mean the channel does not convert here. Treat the first 90 days as a real test.</li>
+      <li><b>Considered B2B purchase.</b> Demo-gen on a multi-touch sales cycle is harder on Reddit than B2C impulse offers. Expect Reddit to assist and warm the funnel more than it closes cold.</li>
+      <li><b>Thin organic footprint.</b> Low brand mention volume means limited social proof to lean on inside Reddit conversations.</li>
+      <li><b>Channel role.</b> This should be a scoped secondary channel behind the proven Google Ads motion, not a reallocation away from what already hits target.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Proposed 90-Day Pilot Structure</h2>
+    <div class="timeline">
+      <div class="tcard kickoff">
+        <div class="t">Pre-launch (Month 0)</div>
+        <p>Strategy session, campaign build, creative production. Set up keyword and interest targeting on pre-launch club intent. Connect existing site-visitor and HubSpot audiences for retargeting and lookalike setup. No paid spend.</p>
+      </div>
+      <div class="tcard m1">
+        <div class="t">Month 1 — Audience building + qualified traffic</div>
+        <p>The goal is not conversions. It is driving qualified operator traffic to the walk-through lander and building retargeting pools. Launch traffic and conversion campaigns against keyword targeting plus top racquet and business subreddits, filtered hard toward operator and pre-launch intent. CPAs run 30 to 50% above the optimized benchmark while the algorithm learns. Do not judge the channel on Month 1 CPA. Success metrics: CTR above 0.4% on community placements, cost-per-lander-visit in range, retargeting build rate.</p>
+      </div>
+      <div class="tcard m2">
+        <div class="t">Month 2 — Layer retargeting + optimization</div>
+        <p>Layer retargeting against the audiences built in Month 1, where the player-versus-operator filtering already happened. The algorithm now has signal and CPAs should decline week over week. Test the second creative angle. Introduce lookalike expansion off the HubSpot audiences if volume allows. CPA target: trending toward the mid-scenario benchmark.</p>
+      </div>
+      <div class="tcard m3">
+        <div class="t">Month 3 — Optimize and evaluate</div>
+        <p>Evaluate on three signals, not CPA alone: is CPA declining week over week, is retargeting CPA running 40 to 60% below prospecting, and downstream demo show rate and lead quality from the AE team. A CPA above $350 is acceptable with a clear downward trajectory and strong retargeting signal. At or below $350 with strong demo quality: scale. Above but declining with strong signals: 30-day extension. Flat or rising with no improvement: conclude Reddit as a primary path, keep only retargeting, and document what failed.</p>
+      </div>
+    </div>
+
+    <div class="investbar">
+      <div class="row"><span>Management fee</span><span>Covered under existing $2,500/mo retainer (Reddit in scope)</span></div>
+      <div class="row"><span>Recommended Reddit media</span><span>$2,000 to $3,000/mo incremental</span></div>
+      <div class="row total"><span>Total monthly commitment</span><span>$2,500 retainer + $2,000 to $3,000 Reddit media</span></div>
+      <div class="note">Incremental to the existing $5k/mo Google budget. No reallocation from campaigns hitting target. 90-day test window with a clear go/no-go.</div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Ready to start your pilot?</h2>
+    <p>The June build window is open now. Starting the build in June means campaigns and retargeting pools are live before the summer club-launch and tournament season, when pre-launch operators are most actively researching. That timing puts Playbypoint in front of the one Reddit audience that converts: founders setting up a club from scratch, plus warm site traffic already filtered for operator intent. This is a scoped test. Run it tight, judge it on the 90-day arc.</p>
+    <a class="pill" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
+  </div>
+
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="wordmark">ScalePaid</div>
+    <div>Reddit Ads, run for brands that earn it.</div>
+    <div>June 3, 2026 • Confidential</div>
+  </div>
+</footer>
+
+</body>
+</html>
