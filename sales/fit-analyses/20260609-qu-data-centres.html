@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Fit Analysis: Qu Data Centres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  a { color: var(--sp-orange-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* Sticky header */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--sp-charcoal);
+    border-bottom: 2px solid var(--sp-orange-red);
+    padding: 14px 0;
+  }
+  header.site .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .wordmark {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 22px;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .label-caps {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9a9a93;
+    margin-top: 2px;
+  }
+  header.site .meta-right { text-align: right; font-size: 12px; color: #9a9a93; line-height: 1.4; }
+
+  /* Hero */
+  .hero { padding: 56px 0 32px; }
+  .hero h1 {
+    font-family: var(--sp-font-serif);
+    font-size: 64px;
+    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -1px;
+  }
+  .hero .metaline { margin-top: 14px; font-size: 15px; color: #b9b9b1; }
+  .hero .metaline span { color: #6f6f68; padding: 0 8px; }
+
+  .scorecard {
+    margin-top: 32px;
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .scorenum {
+    font-family: var(--sp-font-serif);
+    font-size: 92px;
+    line-height: 0.9;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+  }
+  .scoreside .tier {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--sp-gold);
+    margin-bottom: 8px;
+  }
+  .scoreside p { font-size: 15px; color: #c9c9c1; }
+
+  /* Sections */
+  section { padding: 36px 0; border-top: 1px solid #1f2025; }
+  h2 {
+    font-family: var(--sp-font-serif);
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+  }
+  .sublabel {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .subblock { margin-bottom: 24px; }
+  .subblock:last-child { margin-bottom: 0; }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8a8a82;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 1px solid #2a2b30;
+  }
+  tbody td { padding: 12px; border-bottom: 1px solid #1f2025; vertical-align: top; color: #cfcfc7; }
+  tbody tr.top-row td { font-weight: 600; color: var(--sp-off-white); }
+  tbody tr.dim td { color: #85857d; }
+  .score-good { color: var(--sp-green); font-weight: 700; }
+  .score-mid { color: var(--sp-orange-red); font-weight: 700; }
+  tr.total-row td { background: #202127; font-weight: 700; color: var(--sp-off-white); }
+  tr.econ-mid td { background: rgba(38,209,0,0.08); font-weight: 600; color: var(--sp-off-white); }
+
+  /* Audit cards */
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .audit-card {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .audit-card .h { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--sp-orange-red); font-weight: 600; margin-bottom: 8px; }
+  .audit-card p { font-size: 14px; color: #c2c2ba; margin: 0; }
+
+  /* Econ callout */
+  .econ-callout {
+    margin-top: 18px;
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-green);
+    border-radius: 12px;
+    padding: 18px 20px;
+    font-size: 14px;
+    color: #cfcfc7;
+  }
+
+  /* Angle blocks */
+  .angle {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 14px;
+  }
+  .angle.primary { border-left: 4px solid var(--sp-orange-red); }
+  .angle .h { font-weight: 700; margin-bottom: 6px; }
+  .angle p { margin: 0; font-size: 14px; color: #c9c9c1; }
+  .angle.example { border-left: 4px solid var(--sp-gold); font-style: italic; }
+
+  /* Red flags */
+  ul.flags { list-style: none; }
+  ul.flags li { position: relative; padding-left: 24px; margin-bottom: 14px; color: #cfcfc7; font-size: 15px; }
+  ul.flags li::before { content: "—"; position: absolute; left: 0; color: var(--sp-orange-red); font-weight: 700; }
+  ul.flags li b { color: var(--sp-off-white); }
+
+  /* Timeline cards */
+  .timeline { display: flex; flex-direction: column; gap: 14px; }
+  .tcard {
+    background: var(--sp-charcoal);
+    border: 1px solid #2a2b30;
+    border-left: 4px solid #444;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .tcard.kickoff { border-left-color: #555; }
+  .tcard.m1 { border-left-color: var(--sp-orange-red); }
+  .tcard.m2 { border-left-color: var(--sp-green); }
+  .tcard.m3 { border-left-color: var(--sp-gold); }
+  .tcard .t {
+    font-family: var(--sp-font-serif);
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .tcard p { font-size: 14px; color: #c2c2ba; margin: 0; }
+
+  .investbar {
+    margin-top: 20px;
+    background: var(--sp-gradient);
+    color: var(--sp-black);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .investbar .row { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 15px; font-weight: 600; }
+  .investbar .row.total { border-top: 1px solid rgba(14,15,17,0.3); margin-top: 6px; padding-top: 12px; font-size: 17px; font-weight: 700; }
+  .investbar .note { font-size: 12px; font-weight: 600; margin-top: 10px; opacity: 0.8; }
+
+  /* CTA */
+  .cta {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--sp-orange-red);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    margin: 40px 0;
+  }
+  .cta h2 {
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .cta p { max-width: 600px; margin: 0 auto 24px; color: #c9c9c1; }
+  .pill {
+    display: inline-block;
+    background: var(--sp-gradient);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 15px 38px;
+    border-radius: 999px;
+  }
+  .pill:hover { text-decoration: none; opacity: 0.94; }
+
+  /* Footer */
+  footer.site { border-top: 1px solid #1f2025; padding: 32px 0 48px; text-align: center; color: #6f6f68; font-size: 13px; }
+  footer.site .wordmark { font-size: 18px; display: inline-block; margin-bottom: 6px; }
+
+  @media print {
+    header.site { position: static; }
+    .tcard, .audit-card, .angle, .scorecard, .cta { break-inside: avoid; }
+    body { font-size: 12px; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 42px; }
+    .scorecard { flex-direction: column; text-align: center; gap: 16px; padding: 24px; }
+    .scorenum { font-size: 72px; }
+    .cards3 { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+    .investbar .row { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="label-caps">Reddit Fit Analysis</div>
+    </div>
+    <div class="meta-right">
+      June 9, 2026<br>Confidential
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Qu Data Centres</h1>
+    <div class="metaline">
+      <a href="https://qudatacentres.com">qudatacentres.com</a>
+      <span>•</span>Canadian colocation, managed cloud, and DRaaS<span>•</span>B2B pipeline generation
+    </div>
+
+    <div class="scorecard">
+      <div class="scorenum">7.6</div>
+      <div class="scoreside">
+        <div class="tier">Conditional Fit</div>
+        <p>Reddit works for the SME IT buyer Qu wants to grow into, not the enterprise and government buyer the homepage leads with. The sysadmin, MSP owner, and infra lead are one of the densest professional cohorts on Reddit, and the cost, sovereignty, and DRaaS problems Qu solves are discussed there daily. The channel is wide open: colocation competitors default to LinkedIn and events, leaving cheap CPMs in an uncontested auction. The conditions are real: Canada-only geo thins the pool, a long B2B sales cycle means Reddit feeds pipeline rather than instant conversions, and the program only works with SME-tuned landing pages and server-side tracking live on Day 1. Run Reddit as a strong secondary prospecting channel paired with Google Search, not as a standalone demand source.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Product and Audience</h2>
+    <div class="subblock">
+      <div class="sublabel">What They Sell</div>
+      <p>Canadian infrastructure: colocation, public and private cloud, and managed services (monitoring, backups, disaster recovery, DRaaS) across nine facilities in Ontario and Alberta. A high-ticket, considered B2B purchase with custom monthly pricing and a long buying cycle. The differentiator is Canadian-owned, Canadian-hosted infrastructure with data-sovereignty and compliance positioning: PIPEDA, Quebec Law 25, SOC 2, HIPAA, and CLOUD Act avoidance.</p>
+    </div>
+    <div class="subblock">
+      <div class="sublabel">Target Audience</div>
+      <p>The website currently sells to enterprise and government in regulated sectors (fintech, telecom, healthcare, defence). That buyer is not on Reddit. The audience that makes Reddit viable is the one Qu wants to grow into: SME IT decision-makers (sysadmins, IT managers, MSP owners, DevOps and infra leads) feeling runaway cloud costs and data-residency pressure. That cohort maps tightly to Reddit's core: technical, US and Canada skewed, research-heavy, highly active on niche professional topics. The mismatch between the homepage and the Reddit buyer is the single biggest thing to fix before launch.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Subreddit Landscape</h2>
+    <table>
+      <thead>
+        <tr><th>Subreddit</th><th>Subscribers</th><th>Targeting type</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="top-row"><td>r/sysadmin</td><td>~330,000+</td><td>Community</td><td>Highest density of SME infra decision-makers. The AWS-bill and data-residency pain lives here.</td></tr>
+        <tr><td>r/msp</td><td>~130,000+</td><td>Community</td><td>Gold for the "host my clients' data in Canada" DRaaS angle. MSPs resell, so each lead carries multiplier value.</td></tr>
+        <tr><td>r/devops</td><td>~89,000+</td><td>Community</td><td>Cloud repatriation and cost-modeling conversations.</td></tr>
+        <tr><td>r/networking</td><td>count unavailable</td><td>Community</td><td>Carrier-neutral, power density, and colo infrastructure discussion.</td></tr>
+        <tr><td>r/datacenter</td><td>count unavailable (small, pure intent)</td><td>Community</td><td>Smaller but high-intent: people actively shopping colo in the GTA, Calgary, Edmonton.</td></tr>
+        <tr><td>r/aws, r/cloudcomputing</td><td>count unavailable</td><td>Interest</td><td>Cloud-cost pain. The source of the repatriation question.</td></tr>
+        <tr class="dim"><td>Keyword / contextual</td><td>n/a</td><td>Keyword</td><td>colocation, cloud repatriation, egress fees, data residency, PIPEDA, DRaaS, Veeam, Zerto, CLOUD Act. Keep separate from community ad groups.</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px;"><b>Targeting recommendation:</b> Community plus keyword mix, in separate ad groups so signal stays clean. Raw subscriber reach is large (550K+ across core subs) but materially reduced by Canada-only geo, which is the core constraint and the reason Reddit cannot carry the program alone. Expansion audiences off. Exclude Virginia and data-center geos (bot traffic). Frequency cap 1 to 3 per day.</p>
+  </section>
+
+  <section>
+    <h2>Reddit Presence Audit</h2>
+    <div class="cards3">
+      <div class="audit-card">
+        <div class="h">Brand mentions</div>
+        <p>None material found. Qu has no meaningful organic Reddit footprint to build on or defend against.</p>
+      </div>
+      <div class="audit-card">
+        <div class="h">Competitor ads</div>
+        <p>None found. Colocation competitors default to LinkedIn, events, and channel. Whitespace: cheap CPMs and an uncontested auction, but the channel is unvalidated for this category and must be proven.</p>
+      </div>
+      <div class="audit-card">
+        <div class="h">Organic fit</div>
+        <p>Strong. The problems Qu solves surface constantly: runaway AWS bills, "keep our data in Canada," and "what DRaaS are you reselling?" The topic fit is excellent even though the brand is not yet present.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fit Score Breakdown</h2>
+    <table>
+      <thead>
+        <tr><th>Criteria</th><th>Score</th><th>Rationale</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Audience presence</td><td class="score-good">8/10</td><td>SME IT buyers are highly active; the exact problem language recurs daily across core subs.</td></tr>
+        <tr><td>Offer and product fit</td><td class="score-good">7/10</td><td>High-ticket considered B2B is Reddit's sweet spot, but a long sales cycle and buying committee mean it feeds pipeline, not instant conversions.</td></tr>
+        <tr><td>Creative angle potential</td><td class="score-good">9/10</td><td>Cost-exit math, sovereignty explainers, and DRaaS-for-MSPs are extremely Reddit-native, value-first content.</td></tr>
+        <tr><td>Competition signal</td><td class="score-mid">6/10</td><td>Competitors absent means cheap CPMs and whitespace, but the channel is unvalidated for colo and must be proven rather than copied.</td></tr>
+        <tr><td>Budget and commitment alignment</td><td class="score-good">8/10</td><td>Established B2B with real media budget and a build plus retainer scope; can commit well above the minimum media threshold.</td></tr>
+        <tr class="total-row"><td>Overall</td><td>7.6/10</td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Reddit Ad Economics</h2>
+    <p>Modeled for the cold top-of-funnel offer (on-demand webinar, email-gated). These are top-of-funnel webinar-view leads that enter nurture and retargeting, not sales-qualified leads. CTR is calibrated to a B2B professional audience (platform B2B range 0.2 to 0.5%), not gaming benchmarks. CPM assumes the low-competition Canadian colo auction. Figures reflect the optimized state; Month 1 runs materially higher.</p>
+    <table>
+      <thead>
+        <tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Lander to gate CVR</th><th>Cost per webinar lead</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Conservative</td><td>$6</td><td>0.30%</td><td>$2.00</td><td>12%</td><td>~$16.70</td></tr>
+        <tr class="econ-mid"><td>Baseline (mid)</td><td>$6</td><td>0.40%</td><td>$1.50</td><td>15%</td><td>~$10.00</td></tr>
+        <tr><td>Optimistic (warm)</td><td>$6</td><td>0.60%</td><td>$1.00</td><td>18%</td><td>~$5.60</td></tr>
+      </tbody>
+    </table>
+    <div class="econ-callout">
+      At the baseline and a recommended $5,000/mo Reddit media budget, that is roughly 500 webinar-view leads per month in the optimized state, each entering the cost-model nurture and a retargeting pool. The strategic payoff is downstream: the warm cost-model and blueprint offer arms an internal champion to sell a purchase above $10K up the chain. Judge Reddit on 60 to 90 day qualified pipeline via HubSpot offline conversions, never on first-touch cost per lead.
+    </div>
+  </section>
+
+  <section>
+    <h2>Recommended Creative Angle</h2>
+    <p>Text-first conversation ads that sound like a peer who solved the problem, not a vendor. No stock photography, no "enterprise-grade" language, no logos-first. Each ad leads with the audience's own pain, delivers one useful insight, then offers a free on-demand webinar (zero commitment, instant access) message-matched to a dedicated SME landing page. The cold offer is education; the warm offer, a custom cloud-vs-colo cost model plus Canadian infrastructure blueprint, is the micro-conversion that qualifies intent and arms the champion. Run two primary angles against each other in the first flight.</p>
+
+    <div class="angle primary">
+      <div class="h">Primary angle: the runaway cloud bill</div>
+      <p>Target the AWS-bill pain in r/sysadmin, r/devops, and r/aws. Predictable workloads do not belong at hyperscaler prices. Lead with the cost reality, offer the math for free.</p>
+    </div>
+    <div class="angle">
+      <div class="h">Secondary angle: keep the data in Canada</div>
+      <p>Target the sovereignty and CLOUD Act conversation in r/sysadmin, r/msp, and r/cybersecurity. Canadian-hosted, Canadian-owned, without enterprise pricing. Strongest for regulated buyers and the US-into-Canada expansion audience.</p>
+    </div>
+    <div class="angle example">
+      <div class="h">Example headline direction</div>
+      <p>"Your cloud bill went up again, didn't it. We modeled cloud-vs-colo for 40 Canadian SMEs last year. The break-even surprised most of them. Here is the math, free."</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Red Flags</h2>
+    <ul class="flags">
+      <li><b>Positioning mismatch.</b> The homepage sells enterprise and government (fintech, telecom, gov, SOC, HIPAA, defence). That copy will not match the SME Reddit buyer. The program needs dedicated SME-tuned landing pages; never route cold Reddit traffic to the homepage.</li>
+      <li><b>Canada-only audience is thin.</b> Geo-targeting shrinks the reachable pool below what Reddit can carry alone. This is why Reddit must be paired with Google Search to capture existing high-intent demand. US-into-Canada can run as a separate capped test.</li>
+      <li><b>Long B2B sales cycle.</b> A buying committee and considered purchase mean Reddit feeds pipeline over 60 to 90 days. Early cost per lead will look like "Reddit isn't working" if judged on first-touch. Optimize to qualified pipeline via HubSpot offline conversion import.</li>
+      <li><b>Champion is rarely the signer.</b> The sysadmin or IT manager on Reddit needs a CFO-ready cost model and blueprint to forward up the chain. The warm offer must produce that artifact, or the lead stalls.</li>
+      <li><b>Tracking is non-negotiable.</b> Reddit Pixel plus Conversions API must be live before the first impression. Without server-side signal, optimization is blind and spend is wasted. Build it Day 1 or do not launch Reddit.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Proposed 90-Day Pilot Structure</h2>
+    <p style="margin-bottom:18px;color:#b9b9b1;">This Reddit pilot sits inside a wider two-platform engagement. Reddit is the cold top-of-funnel prospecting channel; Google Search captures the bottom-of-funnel demand that already exists ("colocation toronto," "data center calgary," "DRaaS canada"). LinkedIn is held as platform #3, added only once the cold offer is proven.</p>
+    <div class="timeline">
+      <div class="tcard kickoff">
+        <div class="t">Pre-launch (Month 0)</div>
+        <p>Strategy session, campaign build, creative production. Build SME-tuned landing pages (webinar, cost model, tour). Stand up Reddit Pixel and CAPI, HubSpot lifecycle and offline conversion import, GA4. Set up community and keyword ad groups. No paid spend.</p>
+      </div>
+      <div class="tcard m1">
+        <div class="t">Month 1 — Audience building + qualified traffic</div>
+        <p>The goal is not conversions. It is driving qualified traffic to the SME landers and building retargeting pools. Launch on the top 2 to 3 subreddits plus keyword targeting. Cost per lead runs 30 to 50% above the optimized benchmark while the algorithm learns and pools are empty. Do not judge the channel on Month 1. Success metrics: CTR above 0.4% on community placements, cost-per-lander-visit in range, retargeting build rate.</p>
+      </div>
+      <div class="tcard m2">
+        <div class="t">Month 2 — Layer retargeting + optimization</div>
+        <p>Layer retargeting against the Month 1 audiences (Reddit engagers, webinar viewers, site visitors) and bridge them to the cost-model offer. The algorithm now has signal and cost per lead should decline week over week. Test the second creative angle. Introduce the US-into-Canada keyword expansion as a separate capped group if volume allows.</p>
+      </div>
+      <div class="tcard m3">
+        <div class="t">Month 3 — Optimize and evaluate</div>
+        <p>Evaluate on three signals, not cost per lead alone: is the qualified-lead cost declining week over week, is retargeting cost running 40 to 60% below prospecting, and what is the downstream pipeline and SQL rate via HubSpot. A higher headline cost is acceptable with a clear downward trajectory and strong retargeting signal. Strong pipeline signal: scale and port the winning offer to LinkedIn. Improving but not yet profitable: 30-day extension. Flat with no improvement: conclude and document what failed.</p>
+      </div>
+    </div>
+
+    <div class="investbar">
+      <div class="row"><span>Management fee</span><span>$1,500/mo founding cohort rate (standard $2,500/mo)</span></div>
+      <div class="row"><span>Recommended Reddit media</span><span>$5,000/mo (preferred $5,000 to $10,000/mo)</span></div>
+      <div class="row total"><span>Total monthly commitment (Reddit channel)</span><span>$6,500/mo</span></div>
+      <div class="note">Plus Google Search media and the one-time build, scoped separately. No performance fees. No long-term contract beyond the 90-day pilot.</div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Ready to start your pilot?</h2>
+    <p>The June kickoff window is open now. Starting in June means the SME landing pages, tracking, and creative are built and live before Q3, so Qu enters the second half at full speed with a warm retargeting pool already filling. Reddit catches the cost and sovereignty pain at the top while Google captures the buyers already searching. Five founding cohort spots. Hard close: June 30, 2026.</p>
+    <a class="pill" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
+  </div>
+
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="wordmark">ScalePaid</div>
+    <div>Reddit Ads, run for brands that earn it.</div>
+    <div>June 9, 2026 • Confidential</div>
+  </div>
+</footer>
+
+</body>
+</html>
