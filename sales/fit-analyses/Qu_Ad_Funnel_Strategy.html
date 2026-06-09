@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qu Data Centres — Ad Funnel Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-dark:#12191C;
+  --brand-light:#FAF7F2;
+  --brand-accent-1:#F15A22;   /* Qu orange */
+  --brand-accent-2:#16798B;   /* deep teal */
+  --brand-accent-3:#E0A23C;   /* amber */
+  --brand-muted:#D9D5CC;
+  --sp-orange:#FF4500;
+  --text-primary:var(--brand-dark);
+  --text-secondary:#485054;
+  --text-muted:#7C8186;
+  --border:#E7E3DA;
+  --card-bg:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--brand-light);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:32px 28px 56px}
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.header .left{display:flex;align-items:center;gap:14px}
+.header img{height:30px}
+.cobrand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-muted)}
+.cobrand .div{width:1px;height:20px;background:var(--border)}
+.cobrand .sp{color:var(--sp-orange);letter-spacing:.08em}
+/* Title */
+.title{margin:34px 0 6px;font-size:34px;font-weight:700;letter-spacing:-.02em}
+.subtitle{font-size:16px;color:var(--text-secondary);max-width:760px}
+.pills-top{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill-top{font-size:11px;font-weight:600;letter-spacing:.03em;background:#fff;border:1px solid var(--border);color:var(--text-secondary);padding:6px 12px;border-radius:999px}
+.pill-top b{color:var(--brand-accent-1)}
+/* Section label */
+.seclabel{margin:42px 0 16px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+/* Funnel cards */
+.funnel{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.funnel-card{background:var(--card-bg);border-radius:10px;padding:24px 20px 20px;position:relative;overflow:hidden;border:1px solid var(--border)}
+.funnel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.c1::before{background:var(--brand-accent-1)}
+.c2::before{background:var(--brand-accent-2)}
+.c3::before{background:var(--brand-accent-3)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:14px}
+.b1{background:rgba(241,90,34,.12);color:#C8430F}
+.b2{background:rgba(22,121,139,.12);color:#0F5C6B}
+.b3{background:rgba(224,162,60,.16);color:#9A6B12}
+.funnel-card h3{font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px}
+.plabel{font-size:12px;color:var(--text-muted);margin-bottom:12px}
+.funnel-card p.desc{font-size:13.5px;color:var(--text-secondary);margin-bottom:16px}
+.offer{border-left:3px solid var(--border);padding:8px 0 8px 12px;margin-bottom:16px}
+.c1 .offer{border-color:var(--brand-accent-1)}
+.c2 .offer{border-color:var(--brand-accent-2)}
+.c3 .offer{border-color:var(--brand-accent-3)}
+.offer .ol{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:3px}
+.offer .ot{font-size:13.5px;font-weight:500;color:var(--text-primary)}
+.srclabel{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11px;font-weight:500;background:#F4F1EA;color:var(--text-secondary);padding:5px 10px;border-radius:6px;border:1px solid var(--border)}
+.flowrow{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;color:var(--text-muted);font-size:12px;font-weight:600}
+/* Webinar dark panel */
+.panel{margin-top:26px;background:var(--brand-dark);border-radius:14px;padding:38px 36px;position:relative;overflow:hidden;color:#fff}
+.panel::before{content:'';position:absolute;right:-120px;top:-120px;width:340px;height:340px;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
+.panel::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(241,90,34,.18)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-accent-1);margin-bottom:10px}
+.panel h2{font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:24px;position:relative}
+.panel-body{display:grid;grid-template-columns:1.15fr 1fr;gap:34px;position:relative}
+.topt{display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}
+.topt:first-child{border-top:none;padding-top:0}
+.topt .num{font-size:13px;font-weight:700;color:var(--brand-accent-1);min-width:20px}
+.topt .ttl{font-size:14.5px;font-weight:600;margin-bottom:4px;line-height:1.35}
+.topt .rat{font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.45}
+.rec{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--brand-accent-1);color:#fff;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.why h4{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:14px}
+.why li{list-style:none;font-size:13px;color:rgba(255,255,255,.86);padding-left:24px;position:relative;margin-bottom:11px;line-height:1.45}
+.why li::before{content:'';position:absolute;left:0;top:6px;width:11px;height:6px;border-left:2px solid var(--brand-accent-1);border-bottom:2px solid var(--brand-accent-1);transform:rotate(-45deg)}
+.footnote{margin-top:26px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;color:rgba(255,255,255,.6);position:relative;line-height:1.5}
+.footnote b{color:rgba(255,255,255,.85)}
+/* Bottom grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+.box{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:24px 22px}
+.box h3{font-size:17px;font-weight:700;margin-bottom:14px}
+.box .lede{font-size:13.5px;color:var(--text-secondary);margin-bottom:14px}
+.vp{list-style:none;margin-bottom:16px}
+.vp li{font-size:13px;color:var(--text-secondary);padding-left:20px;position:relative;margin-bottom:9px;line-height:1.45}
+.vp li::before{content:'';position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:50%;background:var(--brand-accent-1)}
+.todiscuss{background:#FBF3EC;border:1px solid #F3D9C6;border-left:3px solid var(--brand-accent-1);border-radius:8px;padding:12px 14px;font-size:12.5px;color:#8A4A22}
+.todiscuss b{color:#C8430F;text-transform:uppercase;font-size:10px;letter-spacing:.06em;display:block;margin-bottom:4px}
+.lib{list-style:none}
+.lib li{font-size:13px;color:var(--text-secondary);padding:10px 0 10px 22px;position:relative;border-top:1px solid var(--border);line-height:1.4}
+.lib li:first-child{border-top:none}
+.lib li::before{content:'';position:absolute;left:0;top:14px;width:9px;height:9px;border:2px solid var(--brand-accent-2);border-radius:2px}
+.lib li b{color:var(--text-primary);font-weight:600}
+.libnote{margin-top:14px;font-size:12px;color:var(--text-muted);font-style:italic;line-height:1.45}
+/* Footer */
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted)}
+.footer .brandmark{font-weight:700;letter-spacing:.02em;color:var(--text-secondary)}
+.footer .brandmark .sp{color:var(--sp-orange)}
+@media(max-width:800px){
+  .funnel{grid-template-columns:1fr}
+  .panel-body{grid-template-columns:1fr;gap:24px}
+  .grid2{grid-template-columns:1fr}
+  .header{flex-direction:column;align-items:flex-start;gap:14px}
+  .title{font-size:27px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="left">
+      <img src="https://qudatacentres.com/hubfs/Qu_Logo_Primary-Orange.svg" alt="Qu Data Centres">
+    </div>
+    <div class="cobrand">
+      <span>Paid Media Strategy</span>
+      <span class="div"></span>
+      <span class="sp">SCALEPAID</span>
+    </div>
+  </div>
+
+  <h1 class="title">Your Ad Funnel Architecture</h1>
+  <p class="subtitle">A two-platform launch built for Canadian SME infrastructure buyers — Reddit and Google work together to find cost-and-compliance pain at the top, then capture high-intent demand at the bottom. LinkedIn opens as a third platform once the cold offer is proven.</p>
+  <div class="pills-top">
+    <span class="pill-top">Platforms at launch: <b>Reddit&nbsp;+&nbsp;Google</b></span>
+    <span class="pill-top">Audience: <b>SME IT decision-makers</b></span>
+    <span class="pill-top">Geo: <b>Canada</b> + US-into-Canada</span>
+    <span class="pill-top">3 landing pages</span>
+    <span class="pill-top">Static + video creative</span>
+  </div>
+
+  <div class="seclabel">The Funnel — Three Pages, Three Jobs</div>
+  <div class="funnel">
+
+    <div class="funnel-card c1">
+      <span class="badge b1">Top of Funnel · Cold</span>
+      <h3>On-Demand Training</h3>
+      <div class="plabel">Webinar landing page</div>
+      <p class="desc">Catches teams already feeling the pain — runaway cloud bills, data-residency pressure — before they're shopping for a provider. Pure education, zero sales pressure. Watch instantly, no live date.</p>
+      <div class="offer">
+        <span class="ol">The Offer</span>
+        <span class="ot">A 20-minute on-demand session on the real cost math and compliance reality of moving to Canadian colo. Gated by email.</span>
+      </div>
+      <div class="srclabel">Fed by</div>
+      <div class="chips">
+        <span class="chip">Reddit — Subreddit targeting</span>
+        <span class="chip">Reddit — Keyword/contextual</span>
+        <span class="chip">Google Demand Gen</span>
+        <span class="chip">YouTube — Video</span>
+      </div>
+    </div>
+
+    <div class="funnel-card c2">
+      <span class="badge b2">Mid Funnel · Warm</span>
+      <h3>Cost Model &amp; Blueprint</h3>
+      <div class="plabel">Calculator / assessment page</div>
+      <p class="desc">For people who've engaged with the training and want to know what it means for them. They share their workload; they get a tangible artifact they can take to their boss. A real micro-commitment that qualifies intent.</p>
+      <div class="offer">
+        <span class="ol">The Offer</span>
+        <span class="ot">A custom cloud-vs-colo cost model + right-sized Canadian infrastructure blueprint with projected 3-year savings. Gated by a short form.</span>
+      </div>
+      <div class="srclabel">Fed by</div>
+      <div class="chips">
+        <span class="chip">Retargeting — Reddit engagers</span>
+        <span class="chip">Retargeting — YouTube viewers</span>
+        <span class="chip">Retargeting — Site visitors</span>
+        <span class="chip">In-content CTA from webinar</span>
+      </div>
+    </div>
+
+    <div class="funnel-card c3">
+      <span class="badge b3">Bottom of Funnel · Intent</span>
+      <h3>Book a Tour / Talk to an Engineer</h3>
+      <div class="plabel">Conversion page</div>
+      <p class="desc">Catches the buyer who is already searching for a provider and ready to talk. This demand exists today on Google — we capture it directly and reconnect with everyone the funnel has already warmed.</p>
+      <div class="offer">
+        <span class="ol">The Offer</span>
+        <span class="ot">Facility tour, infrastructure consult, and tailored quote. Full demo form.</span>
+      </div>
+      <div class="srclabel">Fed by</div>
+      <div class="chips">
+        <span class="chip">Google Search — High intent</span>
+        <span class="chip">Google — RLSA</span>
+        <span class="chip">Retargeting — All warm audiences</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="flowrow">Cold education &nbsp;→&nbsp; Self-qualified blueprint &nbsp;→&nbsp; Tour &amp; quote</div>
+
+  <div class="panel">
+    <div class="eyebrow">Recommended Lead Offer</div>
+    <h2>On-Demand Training — Title Options</h2>
+    <div class="panel-body">
+      <div class="topts">
+        <div class="topt">
+          <div class="num">1</div>
+          <div>
+            <div class="ttl">The Canadian Cloud Exit: How Growing Companies Cut Infrastructure Costs 30–50% Without Losing Compliance<span class="rec">Recommended</span></div>
+            <div class="rat">Leads with the outcome (cost) and removes the objection (compliance) in one line. Works as an ad headline verbatim.</div>
+          </div>
+        </div>
+        <div class="topt">
+          <div class="num">2</div>
+          <div>
+            <div class="ttl">Out of the Hyperscaler, Into Canada: The SME Playbook for Repatriating Workloads</div>
+            <div class="rat">Speaks directly to the cloud-repatriation conversation; "SME Playbook" signals it's built for your size, not enterprise.</div>
+          </div>
+        </div>
+        <div class="topt">
+          <div class="num">3</div>
+          <div>
+            <div class="ttl">Is Your Data Actually Canadian? The Sovereignty Gap Hiding in Your Cloud Bill</div>
+            <div class="rat">Curiosity + compliance angle. Strongest for the US-into-Canada expansion audience and regulated buyers.</div>
+          </div>
+        </div>
+      </div>
+      <div class="why">
+        <h4>Why this works for ads</h4>
+        <ul>
+          <li>Answers the exact questions SME IT teams are already asking out loud — it reads as help, not a pitch.</li>
+          <li>On-demand means zero friction: the click-to-value gap is seconds, not a calendar booking.</li>
+          <li>Education-first format is what cold Reddit audiences accept; hard offers get ignored.</li>
+          <li>The recording becomes a creative library — short clips fuel Reddit and YouTube ads for months.</li>
+          <li>Every viewer becomes a warm retargeting audience for the cost-model offer.</li>
+          <li>Positions Qu as the SME guide, distinct from enterprise-only competitors.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footnote"><b>Suggested outline (~20 min):</b> 1) The true cost of staying on the hyperscaler · 2) The data-residency / CLOUD Act risk in plain language · 3) A simple framework for when colo pays off · 4) What a Canadian-hosted setup actually looks like · 5) How to model it for your own workload → bridge to the cost-model offer.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <h3>Demo Offer Language <span style="font-size:12px;font-weight:500;color:var(--text-muted)">— draft</span></h3>
+      <p class="lede"><b>Headline:</b> See exactly what moving to Qu would cost — and save — before you commit to anything.</p>
+      <ul class="vp">
+        <li>A walkthrough of the Canadian facility closest to you, in person or virtual.</li>
+        <li>A tailored quote built on your real workload, not a generic price sheet.</li>
+        <li>A migration path mapped by our engineers — including parallel-run and cutover planning.</li>
+        <li>Predictable monthly pricing, no hidden egress or surprise fees.</li>
+      </ul>
+      <div class="todiscuss">
+        <b>To discuss</b>
+        Can Qu commit to white-glove migration support (parallel-run guidance + cutover plan) for qualified demo leads? This is the strongest risk-reversal we can put on the BOF page if confirmed.
+      </div>
+    </div>
+    <div class="box">
+      <h3>Supporting Content Library</h3>
+      <ul class="lib">
+        <li><b>On-demand webinar</b> — the cornerstone cold offer; source of all clip creative.</li>
+        <li><b>Cloud-vs-colo cost calculator</b> — powers the mid-funnel blueprint offer.</li>
+        <li><b>Infrastructure blueprint template</b> — the CFO-ready artifact that arms the internal champion.</li>
+        <li><b>Data-residency / sovereignty explainer</b> — supports the compliance angle and US-into-Canada audience.</li>
+        <li><b>CEO sovereignty video</b> — already on-site; repurpose for YouTube/Demand Gen prospecting.</li>
+        <li><b>Facility tour assets</b> — feed the BOF "Book a tour" conversion path.</li>
+      </ul>
+      <p class="libnote">Reddit and YouTube creative will pull voice-of-customer language directly from how SME IT teams describe these problems in their own words — see the accompanying creative brief.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Two-platform launch (Reddit + Google) · build + managed retainer</span>
+    <span class="brandmark">Qu Data Centres &nbsp;×&nbsp; <span class="sp">SCALEPAID</span> · June 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
