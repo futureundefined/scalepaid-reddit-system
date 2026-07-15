@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reddit Fit Analysis: ProLon — ScalePaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--sp-orange-red); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Sticky header */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--sp-charcoal);
+    border-bottom: 1px solid rgba(255,69,0,0.4);
+    padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wordmark {
+    font-family: var(--sp-font-sans); font-weight: 700; font-size: 20px; letter-spacing: -0.02em;
+    background: var(--sp-gradient); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em;
+    color: rgba(245,245,240,0.55); margin-top: 2px;
+  }
+  .header-right { text-align: right; font-size: 11px; color: rgba(245,245,240,0.55); text-transform: uppercase; letter-spacing: 0.12em; }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* Hero */
+  .hero { padding: 56px 0 32px; }
+  .hero h1 { font-family: var(--sp-font-serif); font-size: 68px; line-height: 1; font-weight: 400; letter-spacing: -0.01em; }
+  .meta-line { margin-top: 16px; font-size: 14px; color: rgba(245,245,240,0.7); display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  .meta-line .sep { color: rgba(245,245,240,0.3); }
+
+  .score-card {
+    display: flex; gap: 32px; align-items: center;
+    background: var(--sp-charcoal); border-radius: 16px; padding: 32px; margin-top: 28px;
+  }
+  .score-num {
+    font-family: var(--sp-font-serif); font-size: 92px; line-height: 0.9; font-weight: 400;
+    background: var(--sp-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+  }
+  .score-num small { display: block; font-size: 20px; color: rgba(245,245,240,0.4); -webkit-text-fill-color: rgba(245,245,240,0.4); margin-top: 4px; }
+  .tier-label {
+    display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--sp-gold); border: 1px solid rgba(253,193,113,0.4); border-radius: 999px; padding: 4px 14px; margin-bottom: 12px;
+  }
+  .score-card p { font-size: 15px; color: rgba(245,245,240,0.85); }
+
+  section { padding: 32px 0; border-top: 1px solid rgba(245,245,240,0.08); }
+  h2 { font-family: var(--sp-font-serif); font-size: 34px; font-weight: 400; margin-bottom: 18px; letter-spacing: -0.01em; }
+  .sub-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sp-orange-red); margin-bottom: 6px; margin-top: 22px; }
+  .sub-label:first-of-type { margin-top: 0; }
+  p { margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 4px; font-size: 14px; }
+  th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(245,245,240,0.5); padding: 10px 12px; border-bottom: 1px solid rgba(245,245,240,0.15); }
+  td { padding: 12px; border-bottom: 1px solid rgba(245,245,240,0.07); vertical-align: top; }
+  tr.top-row td { font-weight: 600; }
+  td.dim { color: rgba(245,245,240,0.5); }
+  .table-scroll { overflow-x: auto; }
+
+  /* Audit cards */
+  .audit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .audit-card { background: var(--sp-charcoal); border-radius: 12px; padding: 18px; }
+  .audit-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sp-orange-red); margin-bottom: 8px; font-weight: 600; }
+  .audit-card p { font-size: 13px; color: rgba(245,245,240,0.8); margin: 0; }
+
+  /* Score breakdown colors */
+  .s-high { color: var(--sp-green); font-weight: 700; }
+  .s-mid { color: var(--sp-orange-red); font-weight: 700; }
+  tr.total-row td { background: rgba(255,69,0,0.08); font-weight: 700; border-bottom: none; }
+
+  /* Economics */
+  .econ-intro { font-size: 14px; color: rgba(245,245,240,0.8); }
+  tr.econ-mid td { background: rgba(38,209,0,0.1); }
+  tr.econ-mid td:first-child { font-weight: 600; }
+  .net-neg { color: var(--sp-orange-red); font-weight: 600; }
+  .net-pos { color: var(--sp-green); font-weight: 600; }
+  .callout { border: 1px solid rgba(38,209,0,0.45); border-radius: 12px; padding: 20px; margin-top: 18px; background: rgba(38,209,0,0.05); }
+  .callout strong { color: var(--sp-off-white); }
+  .lever-list { list-style: none; margin-top: 16px; }
+  .lever-list li { padding: 12px 0 12px 0; border-bottom: 1px solid rgba(245,245,240,0.07); font-size: 14px; }
+  .lever-list li:last-child { border-bottom: none; }
+  .lever-list b { color: var(--sp-gold); }
+
+  /* Angle blocks */
+  .angle-block { background: var(--sp-charcoal); border-radius: 12px; padding: 18px 20px; margin-top: 14px; }
+  .angle-block.primary { border-left: 3px solid var(--sp-orange-red); }
+  .angle-block .headline { font-style: italic; color: var(--sp-gold); font-size: 15px; }
+
+  /* Red flags */
+  .flags { list-style: none; }
+  .flags li { position: relative; padding-left: 22px; margin-bottom: 12px; font-size: 14px; color: rgba(245,245,240,0.85); }
+  .flags li::before { content: "—"; position: absolute; left: 0; color: var(--sp-orange-red); font-weight: 700; }
+  .flags li b { color: var(--sp-off-white); }
+
+  /* Timeline */
+  .timeline { display: grid; gap: 14px; }
+  .tl-card { background: var(--sp-charcoal); border-radius: 12px; padding: 18px 20px; border-left: 3px solid rgba(245,245,240,0.3); }
+  .tl-card.m1 { border-left-color: var(--sp-orange-red); }
+  .tl-card.m2 { border-left-color: var(--sp-green); }
+  .tl-card.m3 { border-left-color: var(--sp-gold); }
+  .tl-card h4 { font-family: var(--sp-font-serif); font-size: 22px; font-weight: 400; margin-bottom: 6px; }
+  .tl-card p { font-size: 13px; color: rgba(245,245,240,0.8); margin: 0; }
+  .invest-bar { background: var(--sp-gradient); color: var(--sp-black); border-radius: 12px; padding: 20px 24px; margin-top: 18px; font-weight: 600; font-size: 15px; }
+  .invest-bar span { display: block; font-size: 13px; font-weight: 500; opacity: 0.85; margin-top: 4px; }
+
+  /* CTA */
+  .cta { background: var(--sp-charcoal); border: 1px solid rgba(255,69,0,0.5); border-radius: 16px; padding: 40px; text-align: center; margin: 40px 0; }
+  .cta h2 { background: var(--sp-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 14px; }
+  .cta p { max-width: 560px; margin: 0 auto 24px; color: rgba(245,245,240,0.85); }
+  .btn-primary {
+    display: inline-block; background: var(--sp-gradient); color: #fff; font-weight: 700;
+    padding: 14px 34px; border-radius: 999px; font-size: 15px;
+  }
+  .btn-primary:hover { text-decoration: none; opacity: 0.94; }
+
+  /* Footer */
+  footer { border-top: 1px solid rgba(245,245,240,0.08); padding: 32px; text-align: center; color: rgba(245,245,240,0.5); font-size: 12px; }
+  footer .wordmark { font-size: 18px; margin-bottom: 8px; display: inline-block; }
+  footer .tag { display: block; margin-bottom: 6px; }
+
+  @media print {
+    .site-header { position: static; }
+    .tl-card, .audit-card, .angle-block, .score-card, .callout, .cta { break-inside: avoid; }
+    body { background: #fff; color: #000; }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 20px; }
+    .hero h1 { font-size: 46px; }
+    .score-card { flex-direction: column; gap: 16px; text-align: center; align-items: center; }
+    .score-num { font-size: 76px; }
+    .audit-grid { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+    .site-header { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <div class="wordmark">ScalePaid</div>
+    <div class="header-label">Reddit Fit Analysis</div>
+  </div>
+  <div class="header-right">
+    July 15, 2026<br>Confidential
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>ProLon</h1>
+    <div class="meta-line">
+      <a href="https://prolonlife.com/" target="_blank">prolonlife.com</a>
+      <span class="sep">•</span>
+      <span>Fasting Mimicking Diet (longevity nutrition)</span>
+      <span class="sep">•</span>
+      <span>Affiliate via Impact</span>
+    </div>
+
+    <div class="score-card">
+      <div class="score-num">6.8<small>out of 10</small></div>
+      <div>
+        <span class="tier-label">Conditional Fit</span>
+        <p>ProLon is one of the best audience-and-product fits Reddit can offer. Fasting, longevity, and biohacking are top-tier native topics, and ProLon solves the exact problem those communities complain about: a 5-day fast is brutal, and ProLon makes it doable with clinical proof behind it. The catch is the affiliate math. At 20% commission on a roughly $175 order, payout is about $35 per sale, which is also your breakeven CPA. The model only prints in the optimistic corner: sub-$0.50 clicks and a 2% conversion rate. Secure recurring commission on reorders and this goes from thin to durable.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Product and Audience</h2>
+    <div class="sub-label">What They Sell</div>
+    <p>ProLon (by L-Nutra) sells the 5-Day Fasting Mimicking Diet, a boxed meal program that mimics the metabolic effects of a water fast while you still eat. Core kit runs roughly $150 to $185, with add-ons like fasting bars, shakes, and 1-day resets. Business model is one-time purchase plus subscription reorder, which matters a lot for affiliate LTV.</p>
+    <div class="sub-label">Target Audience</div>
+    <p>Health-conscious adults 30 to 55 chasing longevity, metabolic reset, and fat loss with muscle preservation. This maps cleanly onto Reddit's fasting and longevity communities: dense, high-intent, and obsessed with clinical evidence. ProLon's 47 clinical trials and USC, Stanford, and Mayo credentials are exactly the proof this audience demands before spending $185.</p>
+  </section>
+
+  <section>
+    <h2>Subreddit Landscape</h2>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Subreddit</th><th>Subscribers (est.)</th><th>Targeting</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="top-row"><td>r/fasting</td><td>~950K</td><td>Community</td><td>Best single fit. Extended-fast crowd already white-knuckling 3 to 5 day fasts</td></tr>
+        <tr><td>r/intermittentfasting</td><td>~1.7M</td><td>Community</td><td>Largest pool. Skews shorter-fast; needs the "go longer, safely" angle</td></tr>
+        <tr><td>r/longevity</td><td>~700K</td><td>Community</td><td>Proof-driven, autophagy-literate. ProLon's clinical story lands hardest here</td></tr>
+        <tr><td>r/Biohackers</td><td>~500K</td><td>Community</td><td>Early-adopter, high-AOV tolerance, loves data</td></tr>
+        <tr><td>r/loseit</td><td>~4M</td><td>Community</td><td>Broad weight-loss reach. Lower intent, colder, cheaper CPMs</td></tr>
+        <tr class="dim-row"><td class="dim">r/Supplements, r/nutrition</td><td class="dim">~500K / ~4M</td><td class="dim">Interest / Keyword</td><td class="dim">Support layer for keyword and interest expansion</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:16px;"><strong>Targeting recommendation:</strong> Start Community plus Interest on r/fasting, r/longevity, and r/Biohackers (highest intent, cleanest fit), then layer keyword targeting on fasting and autophagy terms. Hold r/loseit and r/intermittentfasting for scale once creative is proven. Subscriber counts are estimates and must be confirmed in Reddit Ads Manager.</p>
+  </section>
+
+  <section>
+    <h2>Reddit Presence Audit</h2>
+    <div class="audit-grid">
+      <div class="audit-card">
+        <h4>Brand Mentions</h4>
+        <p>Active, mixed-positive. Recurring thread is "is it worth $185?" Most who tried it say it works and beat a water fast. The price objection is what creative must neutralize.</p>
+      </div>
+      <div class="audit-card">
+        <h4>Competitor Ads</h4>
+        <p>No paid Reddit ads found from ProLon or FMD competitors (Kroma, Methodology). Channel is unvalidated: likely nobody has made the CPA close here yet.</p>
+      </div>
+      <div class="audit-card">
+        <h4>Organic Fit</h4>
+        <p>Excellent. FMD, autophagy, and 5-day fasts come up organically and constantly in r/fasting and r/longevity. Ads can be genuinely native.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fit Score Breakdown</h2>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Criteria</th><th>Score</th><th>Rationale</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Audience presence</td><td class="s-high">9/10</td><td>Fasting and longevity are top-tier native Reddit topics with 8M+ addressable</td></tr>
+        <tr><td>Offer and product fit</td><td class="s-high">8/10</td><td>Solves the exact pain (extended fasting is hard) with elite clinical proof</td></tr>
+        <tr><td>Creative angle potential</td><td class="s-high">8/10</td><td>Strong native story: proof, autophagy, "fast without starving." Price is the hurdle</td></tr>
+        <tr><td>Competition signal</td><td class="s-mid">4/10</td><td>No competitor paid Reddit activity found. Channel unvalidated</td></tr>
+        <tr><td>Affiliate margin viability</td><td class="s-mid">5/10</td><td>Breakeven CPA ~$35 at 20%; profitable only in the optimistic sub-$35 CPA corner</td></tr>
+        <tr class="total-row"><td>Overall</td><td>6.8/10</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Affiliate CPA Economics</h2>
+    <p class="econ-intro">This is the heart of the question: what would a Reddit-driven CPA look like, and does it clear the commission? Modeled at a <strong>20% commission on a ~$175 order, which is about $35 payout per sale</strong>. That $35 is also your breakeven CPA. Baseline CVR assumes cold-to-warm traffic hitting a $150+ considered health purchase, which is a demanding conversion. These are optimized-state numbers (weeks 3+), not launch. Launch CPAs run materially higher while the algorithm and retargeting pools are cold.</p>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>CVR</th><th>CPA</th><th>Payout @20%</th><th>Net / sale</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Conservative</td><td>$6.00</td><td>0.60%</td><td>$1.00</td><td>1.0%</td><td>$100</td><td>$35</td><td class="net-neg">-$65</td></tr>
+        <tr class="econ-mid"><td>Mid / baseline</td><td>$6.00</td><td>0.80%</td><td>$0.75</td><td>1.5%</td><td>$50</td><td>$35</td><td class="net-neg">-$15</td></tr>
+        <tr><td>Optimistic</td><td>$5.00</td><td>1.00%</td><td>$0.50</td><td>2.0%</td><td>$25</td><td>$35</td><td class="net-pos">+$10</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout">
+      <p><strong>The breakeven read:</strong> CPA must stay under ~$35 to profit. That only happens in the optimistic corner, and even there the margin is a thin ~$10 per sale (roughly 29% return on commission). At $0.50 CPC you need a 1.4%+ CVR just to break even; at $1.00 CPC you need 2.9%, which cold traffic to a $185 kit will not deliver. The model lives or dies on holding CPC under $0.50 with strong native creative AND landing at or above a 1.5% CVR. Beating $100 CPA is realistic; the optimistic case is achievable, but there is almost no margin of safety at a flat 20% one-time payout.</p>
+    </div>
+    <ul class="lever-list">
+      <li><b>Recurring commission on reorders.</b> ProLon is subscription-capable and people re-run FMD monthly or quarterly. If Impact pays 20% on reorders, effective payout per acquired customer rises well past $35 and the arbitrage stops depending on a perfect first-order CPA. This is the single most important lever to negotiate.</li>
+      <li><b>Higher-AOV bundles.</b> Driving 2-kit or 3-kit bundles lifts order value and the 20% payout, widening breakeven CPA from $35 toward $60+.</li>
+      <li><b>Advertorial bridge.</b> A content-first review page between the Reddit ad and the PDP is the proven way to lift CVR toward 2% on a considered health purchase. This is where "getting creative" actually moves the number.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Recommended Creative Angle</h2>
+    <p>Lead with the proof-plus-relief story, not a discount. Promoted posts styled as a first-person Reddit-native review, routed to an advertorial bridge that pre-sells the science and neutralizes the price objection before the PDP. Direct-response discount ads will burn budget at this AOV; the advertorial path is what gets CVR to the 2% the model needs.</p>
+    <div class="angle-block primary">
+      <div class="sub-label" style="margin-top:0;">Primary Angle</div>
+      <p style="margin:0 0 10px;">First-person review: "I wanted to try a 5-day fast but couldn't white-knuckle it. Here's what happened when I did the version with 47 clinical trials behind it."</p>
+      <p class="headline" style="margin:0;">"Everyone in r/fasting keeps asking if a 5-day fast is worth it. I tried the clinically-tested shortcut."</p>
+    </div>
+    <div class="angle-block">
+      <div class="sub-label" style="margin-top:0;">Proof Angle</div>
+      <p style="margin:0;">USC, Stanford, Mayo. The autophagy-and-biological-age data, aimed straight at r/longevity's evidence-first crowd.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Red Flags</h2>
+    <ul class="flags">
+      <li><b>Breakeven is razor-thin at a flat 20% one-time payout.</b> A ~$35 CPA ceiling leaves no room for error. Recurring or bundle commission is close to required, not optional.</li>
+      <li><b>$150+ AOV suppresses cold-traffic CVR.</b> This is a considered purchase. Without an advertorial bridge, expect sub-1% CVR and an underwater CPA.</li>
+      <li><b>Channel is unvalidated on Reddit.</b> No competitor paid signal means no proof the CPA closes here. This is a genuine test, not a copy of a known-good playbook.</li>
+      <li><b>Launch-phase CPA will look alarming.</b> Early cold-traffic CPA can run 3 to 5x the optimized number. Do not judge the arbitrage on week-one data.</li>
+      <li><b>Attribution across Impact and Reddit.</b> A 30 to 45 day cookie plus a considered purchase cycle means some conversions land outside the click window. Confirm Impact's attribution model before scaling.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Proposed Test Structure</h2>
+    <div class="timeline">
+      <div class="tl-card">
+        <h4>Pre-launch</h4>
+        <p>Confirm Impact terms (target 20%, push for recurring on reorders). Build the advertorial bridge page and 3 to 4 native creative angles. Set Community plus keyword targeting on r/fasting, r/longevity, r/Biohackers. No spend yet.</p>
+      </div>
+      <div class="tl-card m1">
+        <h4>Weeks 1 to 2 — Prove the click</h4>
+        <p>Small budget ($1,500 to $3,000) to find sub-$0.75 CPC creative and validate CTR above 0.6% on community placements. Goal is cheap qualified clicks and a filling retargeting pool, not profitable CPA yet.</p>
+      </div>
+      <div class="tl-card m2">
+        <h4>Weeks 3 to 4 — Prove the conversion</h4>
+        <p>Layer retargeting against the pool built in weeks 1 to 2. Push CVR toward 1.5% to 2% via the advertorial bridge. This is where CPA should break under $50 and approach breakeven.</p>
+      </div>
+      <div class="tl-card m3">
+        <h4>Weeks 5 to 6 — Judge the arbitrage</h4>
+        <p>Evaluate on three signals: (1) is prospecting CPA trending under $35? (2) is retargeting CPA 40 to 60% below prospecting? (3) does recurring or bundle payout lift effective revenue per customer above the one-time $35? Scale if CPA holds under breakeven with a positive net.</p>
+      </div>
+    </div>
+    <div class="invest-bar">
+      Breakeven CPA at 20% one-time: ~$35 per sale.
+      <span>Profitable only if creative and retargeting hold CPA below that. Recurring commission or bundle AOV is the lever that makes the margin safe rather than thin.</span>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Ready to test the arbitrage?</h2>
+    <p>The audience is as good as Reddit gets. The economics are entirely a function of payout structure and CVR, and both are things we can move. Lock 20% plus recurring commission on reorders, and greenlight a 4-to-6 week validation test built around an advertorial bridge. That is the only path to the 2% CVR the model needs.</p>
+    <a class="btn-primary" href="https://form.typeform.com/to/lf3pnicO" target="_blank">Start the conversation</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wordmark">ScalePaid</div>
+  <span class="tag">Reddit Ads, engineered for the arbitrage.</span>
+  July 15, 2026 • Confidential
+</footer>
+
+</body>
+</html>
