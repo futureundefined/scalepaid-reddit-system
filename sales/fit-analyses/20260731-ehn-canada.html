@@ -1,0 +1,733 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddit Fit Analysis: EHN Canada | ScalePaid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sp-orange-red: #FF4500;
+    --sp-black: #0E0F11;
+    --sp-charcoal: #18191D;
+    --sp-off-white: #F5F5F0;
+    --sp-gold: #FDC171;
+    --sp-green: #26D100;
+    --sp-gradient: linear-gradient(90deg, #FF4500, #FDC171);
+    --sp-font-serif: 'Instrument Serif', Georgia, serif;
+    --sp-font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --dim: #9A9B9F;
+    --line: #2A2C31;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--sp-black);
+    color: var(--sp-off-white);
+    font-family: var(--sp-font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Header ---------- */
+  header.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--sp-charcoal);
+    border-bottom: 1px solid rgba(255, 69, 0, 0.35);
+  }
+  .hdr-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .wordmark {
+    font-family: var(--sp-font-sans);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.1;
+  }
+  .hdr-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+  .hdr-right {
+    text-align: right;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 64px 0 8px; }
+  h1 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 62px;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+  }
+  .meta {
+    font-size: 14px;
+    color: var(--dim);
+    margin: 0 0 34px;
+    line-height: 1.9;
+  }
+  .meta a { color: var(--sp-orange-red); text-decoration: none; border-bottom: 1px solid rgba(255,69,0,0.35); }
+  .meta a:hover { border-bottom-color: var(--sp-orange-red); }
+  .meta .sep { color: var(--line); padding: 0 10px; }
+
+  .verdict {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 34px 36px;
+  }
+  .verdict-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .band {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 7px 16px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .chip.high { color: var(--sp-orange-red); border: 1px solid rgba(255,69,0,0.5); background: rgba(255,69,0,0.08); }
+  .chip.med { color: var(--sp-gold); border: 1px solid rgba(253,193,113,0.5); background: rgba(253,193,113,0.08); }
+  .chip.low { color: var(--sp-green); border: 1px solid rgba(38,209,0,0.5); background: rgba(38,209,0,0.08); }
+
+  /* Sliding fit scale */
+  .scale { margin: 30px 0 26px; }
+  .scale-track {
+    position: relative;
+    height: 6px;
+    border-radius: 999px;
+    background: #26282D;
+    margin-bottom: 14px;
+  }
+  .scale-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--sp-gradient);
+  }
+  .scale-marker {
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--sp-gold);
+    border: 3px solid var(--sp-charcoal);
+    box-shadow: 0 0 0 1px rgba(253,193,113,0.6);
+    transform: translate(-50%, -50%);
+  }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #62646A;
+  }
+  .scale-labels span { flex: 1; text-align: center; }
+  .scale-labels span:first-child { text-align: left; }
+  .scale-labels span:last-child { text-align: right; }
+  .scale-labels span.on { color: var(--sp-gold); }
+
+  .verdict p { margin: 0; font-size: 15.5px; color: #DEDFDC; }
+
+  /* Rating meters */
+  .rating { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .meter { display: inline-flex; gap: 3px; flex-shrink: 0; }
+  .meter i {
+    width: 13px;
+    height: 5px;
+    border-radius: 2px;
+    background: #33363C;
+    display: block;
+  }
+  .meter i.f-green { background: var(--sp-green); }
+  .meter i.f-gold { background: var(--sp-gold); }
+  .meter i.f-orange { background: var(--sp-orange-red); }
+  .r-green { color: var(--sp-green); font-weight: 700; }
+  .r-gold { color: var(--sp-gold); font-weight: 700; }
+  .r-orange { color: var(--sp-orange-red); font-weight: 700; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 52px 0 0; }
+  h2 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .rule { height: 1px; background: var(--line); margin: 14px 0 26px; }
+  .sublabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin: 28px 0 8px;
+  }
+  .sublabel:first-child { margin-top: 0; }
+  p { margin: 0 0 16px; }
+  .lead { color: #DEDFDC; }
+
+  /* ---------- Tables ---------- */
+  .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 560px;
+  }
+  th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 0 16px 10px 0;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td {
+    padding: 13px 16px 13px 0;
+    border-bottom: 1px solid rgba(42,44,49,0.6);
+    vertical-align: top;
+    color: #DEDFDC;
+  }
+  td:last-child, th:last-child { padding-right: 0; }
+  tr.top td { color: var(--sp-off-white); font-weight: 600; }
+  tr.dim td { color: #7E8085; }
+  tr.total td {
+    background: rgba(255,69,0,0.07);
+    font-weight: 700;
+    color: var(--sp-off-white);
+    border-bottom: none;
+  }
+  tr.hl td { background: rgba(38,209,0,0.08); font-weight: 600; color: var(--sp-off-white); }
+  .s-high { color: var(--sp-green); font-weight: 700; }
+  .s-mid { color: var(--sp-orange-red); font-weight: 700; }
+  .sub { color: var(--sp-orange-red); font-weight: 600; white-space: nowrap; }
+
+  /* ---------- Cards ---------- */
+  .cards { display: grid; gap: 14px; margin-bottom: 8px; }
+  .card {
+    background: var(--sp-charcoal);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .card h3 {
+    font-family: var(--sp-font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sp-orange-red);
+    margin: 0 0 8px;
+  }
+  .card p { margin: 0; font-size: 14.5px; color: #DEDFDC; }
+  .card.primary { border-left: 3px solid var(--sp-orange-red); }
+
+  .callout {
+    background: rgba(38,209,0,0.05);
+    border: 1px solid rgba(38,209,0,0.35);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 8px;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--sp-green); }
+
+  .callout.warn {
+    background: rgba(255,69,0,0.05);
+    border-color: rgba(255,69,0,0.4);
+  }
+  .callout.warn strong { color: var(--sp-orange-red); }
+
+  .fineprint { font-size: 12.5px; color: #7E8085; line-height: 1.7; }
+
+  /* ---------- Red flags ---------- */
+  ul.flags { list-style: none; padding: 0; margin: 0; }
+  ul.flags li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: #DEDFDC;
+  }
+  ul.flags li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 12px;
+    height: 2px;
+    background: var(--sp-orange-red);
+  }
+  ul.flags li b { color: #FFFFFF; font-weight: 700; }
+
+  /* ---------- Timeline ---------- */
+  .tl { display: grid; gap: 14px; }
+  .tl .card { border-left: 3px solid var(--dim); }
+  .tl .m1 { border-left-color: var(--sp-orange-red); }
+  .tl .m2 { border-left-color: var(--sp-green); }
+  .tl .m3 { border-left-color: var(--sp-gold); }
+  .tl h4 {
+    font-family: var(--sp-font-serif);
+    font-weight: 400;
+    font-size: 24px;
+    margin: 0 0 8px;
+    color: var(--sp-off-white);
+  }
+
+  .investment {
+    background: var(--sp-gradient);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-top: 18px;
+    color: #1A0C04;
+  }
+  .investment .il {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.72;
+    margin-bottom: 6px;
+  }
+  .investment .iv { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  .investment .in { font-size: 13.5px; margin-top: 10px; opacity: 0.82; line-height: 1.6; }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    background: var(--sp-charcoal);
+    border: 1px solid rgba(255,69,0,0.45);
+    border-radius: 14px;
+    padding: 44px 40px;
+    margin: 56px 0 0;
+    text-align: center;
+  }
+  .cta h2 {
+    background: var(--sp-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 38px;
+    margin-bottom: 14px;
+  }
+  .cta p { color: #DEDFDC; max-width: 560px; margin: 0 auto 26px; font-size: 15.5px; }
+  .btn {
+    display: inline-block;
+    background: var(--sp-gradient);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    margin-top: 64px;
+    border-top: 1px solid var(--line);
+    padding: 28px 0 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  footer .tag { font-size: 13px; color: var(--dim); margin-top: 4px; }
+  footer .right {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6D6F74;
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 600px) {
+    .wrap, .hdr-inner { padding-left: 20px; padding-right: 20px; }
+    h1 { font-size: 40px; }
+    h2 { font-size: 27px; }
+    .cta h2 { font-size: 28px; }
+    .cta { padding: 32px 24px; }
+    .verdict { padding: 26px 24px; }
+    .verdict-top { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .band { font-size: 34px; }
+    .scale-labels { font-size: 9px; letter-spacing: 0.06em; }
+    .hero { padding-top: 40px; }
+    .investment .iv { font-size: 21px; }
+  }
+
+  @media print {
+    header.sticky { position: static; }
+    body { background: #FFFFFF; color: #0E0F11; }
+    .card, .verdict, .cta, .callout, .tl .card { break-inside: avoid; page-break-inside: avoid; }
+    section { break-inside: avoid-page; }
+    .btn { color: #FFFFFF; }
+  }
+</style>
+
+<header class="sticky">
+  <div class="hdr-inner">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="hdr-label">Reddit Fit Analysis</div>
+    </div>
+    <div class="hdr-right">
+      31 July 2026<br>Confidential
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>EHN Canada</h1>
+    <p class="meta">
+      <a href="https://ehncanada.com">ehncanada.com</a>
+      <span class="sep">/</span>Private addiction and mental health treatment
+      <span class="sep">/</span>10 facilities, Canada wide
+    </p>
+
+    <div class="verdict">
+      <div class="verdict-top">
+        <div class="band">Strong Opportunity</div>
+        <div class="chip high">High execution risk</div>
+      </div>
+
+      <div class="scale">
+        <div class="scale-track">
+          <div class="scale-fill" style="width:70%"></div>
+          <div class="scale-marker" style="left:70%"></div>
+        </div>
+        <div class="scale-labels">
+          <span>Weak</span>
+          <span>Limited</span>
+          <span>Moderate</span>
+          <span class="on">Strong</span>
+          <span>Exceptional</span>
+        </div>
+      </div>
+
+      <p>The audience is genuinely there and the category is one of the most actively discussed on Reddit. The build is hard, and anyone who tells you otherwise has not opened the platform. Reddit's healthcare policy blocks targeting the Addiction Support, Medical and Mental Health, and Trauma Support community categories outright, prohibits targeting on health data, and bans native Lead Generation ads for healthcare entirely. That removes the highest intent audience from the board before the first dollar is spent. What remains is real but narrower: Canadian geographic communities, a first responder and veteran angle that is uncontested and matched to programs you already run, and a partial keyword layer. The honest case for Reddit here is channel diversification, not cheaper admissions.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Product and Audience</h2>
+    <div class="rule"></div>
+
+    <div class="sublabel">What You Sell</div>
+    <p class="lead">Private inpatient, outpatient, and virtual addiction and mental health treatment through Canada's largest treatment network. Ten facilities across British Columbia, Alberta, Saskatchewan, Ontario, Quebec, and Nova Scotia, plus EHN Online for virtual intensive therapy. Private pay with iFinance financing available, some OHIP covered services, and a parallel B2B motion selling into corporate partners, EAP programs, and first responder organizations.</p>
+
+    <div class="sublabel">Target Audience</div>
+    <p class="lead">Three distinct buyers. Reddit's healthcare policy determines which of them are actually reachable.</p>
+    <p class="lead">The <b>individual in crisis</b> is researching anonymously, at night, often months before they call anyone. This is Reddit's core behaviour and the strongest theoretical fit. It is also the audience Reddit protects most aggressively. They cannot be targeted by condition, by health interest, or by membership in the communities where they actually are.</p>
+    <p class="lead">The <b>family member</b> is frequently the actual purchaser for private residential treatment. A spouse or parent researching options for someone else converts faster and carries fewer objections about cost. This buyer is reachable, because targeting them does not require inferring anything about their own health.</p>
+    <p class="lead">The <b>institutional buyer</b> covers HR leaders, benefits managers, union representatives, and first responder organizations. You already run dedicated programs for military, veterans, RCMP, and IAFF members. These communities are occupational rather than clinical, which puts them outside the restricted categories. This is the primary play, not a secondary one.</p>
+  </section>
+
+  <section>
+    <h2>Reddit Healthcare Policy Constraints</h2>
+    <div class="rule"></div>
+    <p class="lead">These are platform rules, verified inside Reddit Ads Manager. They define the build before strategy enters the picture.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Constraint</th><th>Effect on this account</th></tr></thead>
+        <tbody>
+          <tr><td class="sub">No sensitive data targeting</td><td>Cannot target on physical or mental health data, biometric markers, or medical conditions. Health interest targeting is unavailable.</td></tr>
+          <tr><td class="sub">Blocked community categories</td><td>Addiction Support, Medical and Mental Health, Trauma Support, and Mature Themes cannot be targeted under any circumstance.</td></tr>
+          <tr><td class="sub">No support subreddits</td><td>Disease specific and mental health support communities are off limits regardless of category labelling.</td></tr>
+          <tr><td class="sub">No Lead Generation ads</td><td>Healthcare is fully prohibited from Reddit's native lead gen format. Every conversion must happen on your own lander.</td></tr>
+          <tr><td class="sub">Age floor</td><td>All targeting must exclude users under 18.</td></tr>
+          <tr><td class="sub">Partial keyword availability</td><td>Clinical terminology is blocked. "Mental health" is disallowed. Colloquial intent language such as "addicted" clears. The boundary is terminology, not intent, and it needs manual enumeration in the platform.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <p><strong>Consequence.</strong> Roughly half the audience identified in a naive analysis of this category is structurally unreachable. Any Reddit proposal for a treatment provider that does not account for this is quoting reach that does not exist.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Subreddit Landscape</h2>
+    <div class="rule"></div>
+    <p class="lead">Only buyable inventory is listed. Recovery, trauma, and mental health communities are excluded because they cannot be purchased.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Subreddit</th><th>Subscribers</th><th>Targeting type</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr class="top">
+            <td class="sub">r/ProtectAndServe</td><td>Counts unavailable</td><td>Community</td>
+            <td>Occupational, not Trauma Support. Should clear review. Matched to your first responder programs. Primary buy.</td>
+          </tr>
+          <tr class="top">
+            <td class="sub">r/Firefighting</td><td>Counts unavailable</td><td>Community</td>
+            <td>Same profile. IAFF program alignment.</td>
+          </tr>
+          <tr class="top">
+            <td class="sub">r/CanadianForces</td><td>Counts unavailable</td><td>Community</td>
+            <td>Same profile. Military and veteran program alignment.</td>
+          </tr>
+          <tr>
+            <td class="sub">r/toronto</td><td>~926k</td><td>Community</td>
+            <td>Geo aligned to Bellwood Toronto. Clean category. Volume layer.</td>
+          </tr>
+          <tr>
+            <td class="sub">r/vancouver</td><td>~634k</td><td>Community</td>
+            <td>Geo aligned to Edgewood Nanaimo and Guardians Nanaimo. Volume layer.</td>
+          </tr>
+          <tr>
+            <td class="sub">r/canada, r/alberta, r/ontario, r/nova_scotia, r/saskatchewan</td><td>Counts unavailable</td><td>Community</td>
+            <td>Geo layer covering the remaining facilities. Cost of living and healthcare access are constant themes, which the cost explainer angle plugs into directly.</td>
+          </tr>
+          <tr>
+            <td class="sub">Keyword layer</td><td>n/a</td><td>Keyword</td>
+            <td>Colloquial intent terms only. Requires manual enumeration against the platform disallow list before budgeting.</td>
+          </tr>
+          <tr class="dim">
+            <td class="sub">r/stopdrinking, r/CPTSD, r/Petioles, r/leaves</td><td>~1.6M combined</td><td>Blocked</td>
+            <td>The highest intent audience on the platform. Unbuyable by category. Listed so the exclusion is explicit rather than an omission.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead"><b>Total addressable reach:</b> roughly 1.6M subscribers across confirmed buyable communities, before keyword expansion. This is half the reach a surface level analysis would report, and the half that remains is lower intent.</p>
+    <p class="lead"><b>Targeting recommendation:</b> community and keyword only. Weight community spend toward the first responder set, where the audience is occupationally defined and the message can be specific without touching a protected attribute. Treat the Canadian city and province communities as the volume layer. Build the keyword list manually in the platform before committing budget, because the disallow list is not documented publicly.</p>
+  </section>
+
+  <section>
+    <h2>Reddit Presence Audit</h2>
+    <div class="rule"></div>
+    <div class="cards">
+      <div class="card">
+        <h3>Brand mentions</h3>
+        <p>None found. No meaningful Reddit footprint for EHN Canada, Edgewood, or Bellwood. Clean slate, no negative sentiment to manage, and no organic credibility to borrow either.</p>
+      </div>
+      <div class="card">
+        <h3>Competitor Reddit ads</h3>
+        <p>None found. No Canadian private treatment provider appears to be running paid Reddit ads. The surface reading is that the channel is untapped. The likelier explanation, given the policy constraints, is that the category is structurally hard to buy on Reddit and providers have concentrated on Google and Meta where certification unlocks proper targeting. Competitor absence is a warning here as much as an opportunity.</p>
+      </div>
+      <div class="card">
+        <h3>Organic community fit</h3>
+        <p>The topic comes up constantly. People ask which Canadian treatment centres are worth the money, whether private beats the public waitlist, and how families should handle an intervention. Those conversations are happening in exactly the communities that cannot be bought. Demand is visible and unreachable at the same time, which is the central tension of this account.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Opportunity Rating</h2>
+    <div class="rule"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Dimension</th><th>Rating</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Reachable audience</td>
+            <td><span class="rating"><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span><span class="r-gold">Moderate</span></span></td>
+            <td>Roughly 1.6M buyable subscribers across Canadian geo and first responder communities. Real volume, but the highest intent half of the audience sits in blocked categories.</td>
+          </tr>
+          <tr>
+            <td>Conversation density</td>
+            <td><span class="rating"><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i></span><span class="r-green">Exceptional</span></span></td>
+            <td>Addiction, recovery, and treatment cost are among the most actively and openly discussed topics on Reddit, with unusually high emotional intent behind each thread.</td>
+          </tr>
+          <tr>
+            <td>Vertical fit</td>
+            <td><span class="rating"><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i></i></span><span class="r-green">Strong</span></span></td>
+            <td>High ticket, high consideration, researched anonymously over months. That is Reddit's core user behaviour rather than an adaptation of it.</td>
+          </tr>
+          <tr>
+            <td>Sentiment</td>
+            <td><span class="rating"><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span><span class="r-gold">Moderate</span></span></td>
+            <td>No brand footprint at all. Nothing negative to manage, and nothing positive to borrow.</td>
+          </tr>
+          <tr class="total">
+            <td>Overall</td>
+            <td>Strong, lower end</td>
+            <td>The demand is real and heavily discussed. What holds this back from the top of the band is reachability, not desire.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Execution Risk</h2>
+    <div class="rule"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Factor</th><th>Risk</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Policy and platform constraints</td><td class="r-orange">High</td><td>Addiction Support, Medical and Mental Health, and Trauma Support categories are blocked outright, and health data targeting is unavailable.</td></tr>
+          <tr><td>Competition signal</td><td class="r-orange">High</td><td>No treatment provider appears to be advertising on Reddit. In a restricted category that absence is more likely structural than an unclaimed opening.</td></tr>
+          <tr><td>Creative difficulty</td><td class="r-orange">High</td><td>Copy cannot address a reader's condition, Reddit is cynical about rehab marketing, and your existing brand voice is clinical. Creative must be built from scratch for this channel.</td></tr>
+          <tr><td>Conversion mechanics</td><td class="r-gold">Medium</td><td>Native lead generation is prohibited, so every conversion depends on a lander built for cold traffic. Solvable, but it is real work before launch.</td></tr>
+          <tr class="total"><td>Overall</td><td>High</td><td>Three of four factors are high, and the policy constraint is permanent rather than something better execution overcomes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reddit Ad Economics</h2>
+    <div class="rule"></div>
+    <p class="lead">Modeled at $25,000/mo media spend. CTR is calibrated down from a naive intent matched estimate because the buyable inventory is geographic and occupational rather than condition matched. CVR is calibrated down because the healthcare lead gen prohibition forces every conversion onto your own lander, which converts materially worse than a native in feed form. Inquiry to admission is held flat at 4% across all three scenarios, because that conversion is a function of your intake team rather than of media efficiency.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Clicks</th><th>CVR</th><th>Inquiries</th><th>CPL</th><th>Admissions</th><th>CPA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Conservative</td><td>$5.00</td><td>0.20%</td><td>$2.50</td><td>10,000</td><td>0.5%</td><td>50</td><td>$500</td><td>2</td><td>$12,500</td></tr>
+          <tr class="hl"><td>Mid (baseline)</td><td>$5.00</td><td>0.30%</td><td>$1.67</td><td>15,000</td><td>1.2%</td><td>180</td><td>$139</td><td>7</td><td>$3,472</td></tr>
+          <tr><td>Optimistic</td><td>$5.00</td><td>0.40%</td><td>$1.25</td><td>20,000</td><td>2.5%</td><td>500</td><td>$50</td><td>20</td><td>$1,250</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <p><strong>What this means, stated plainly.</strong> The mid case lands at $3,472 per admission, which is parity with the bottom of the $3,000 to $6,000 category benchmark, not an improvement on it. The conservative case at $12,500 is well above what you pay today. The optimistic case only arrives if the first responder angle outperforms and retargeting compounds through Month 3.</p>
+      <p>This is not a cheaper admissions pitch. It is a diversification pitch: a second acquisition channel in a category where every provider bids against every other provider for the same finite Google search volume, and where a single policy change at Google or Meta can take a large share of pipeline offline overnight. The value of a working Reddit channel is optionality and risk reduction, priced at parity.</p>
+    </div>
+    <p class="fineprint">Figures in CAD. Reddit bills media in USD, so budget a currency buffer. These are modeled projections against category benchmarks, not guarantees. No Reddit specific CPA data exists for this vertical because nobody has run it.</p>
+  </section>
+
+  <section>
+    <h2>Recommended Creative Angle</h2>
+    <div class="rule"></div>
+    <p class="lead">Reddit punishes anything that reads like a rehab ad, and policy forbids copy that implies knowledge of a reader's condition. The angle has to lead with information the reader wants, speak to a situation rather than a diagnosis, and let your credibility do the selling underneath it. Format is promoted post, first person or plainly useful resource, not display. Every conversion path goes to your own lander.</p>
+    <div class="cards">
+      <div class="card primary">
+        <h3>Primary: first responders and veterans</h3>
+        <p>This leads, not because it is the largest audience, but because it is the only one where you can be specific about who you serve without touching a protected attribute. Occupational identity is targetable. Clinical condition is not. You already run dedicated programs for military, veterans, RCMP, and IAFF members, which means the message is true, differentiated, and uncontested in r/ProtectAndServe, r/Firefighting, and r/CanadianForces. Speak to the job and the culture around it, never to a diagnosis.</p>
+      </div>
+      <div class="card">
+        <h3>Second: the cost and process explainer</h3>
+        <p>A straight, unsentimental breakdown of what private treatment in Canada actually involves. Length of stay, what a day looks like, what it costs, how financing works, and how it compares to waiting for public. Nobody in this category publishes this honestly, and Reddit rewards the brand that does it first. Runs in the Canadian city and province communities, where cost of living and healthcare access frustration are constant themes and no health inference is required to serve it.</p>
+      </div>
+      <div class="card">
+        <h3>Third: the family member</h3>
+        <p>Aimed at the spouse or parent who is the actual buyer. What to do when someone you love will not accept help. Highest conversion intent of the three, and it cleanly sidesteps the policy problem, because it addresses the reader's situation rather than the reader's condition.</p>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:20px"><b>Example headline direction:</b> "What 90 days of private treatment in Canada actually costs, and how it compares to the public waitlist"</p>
+  </section>
+
+  <section>
+    <h2>Red Flags</h2>
+    <div class="rule"></div>
+    <ul class="flags">
+      <li><b>The highest intent audience is unbuyable, permanently.</b> This is a platform policy, not an optimization problem. r/stopdrinking, r/CPTSD, r/Petioles, and r/leaves are blocked by category and no budget, creative, or agency changes that.</li>
+      <li><b>No native lead generation.</b> Healthcare is fully prohibited from Reddit's lead gen format. Every conversion depends on your lander performing against cold, broadly targeted traffic. If the lander is not built for this, the test fails on the lander, not on the channel.</li>
+      <li><b>Competitor absence is ambiguous and probably not good news.</b> No treatment provider appears to be running paid Reddit ads. Given the constraints, the likeliest explanation is that the category is structurally hard to buy here, not that everyone missed an opportunity.</li>
+      <li><b>Economics are at parity, not advantage.</b> The mid case matches the low end of your existing benchmark. Evaluated purely on cost per admission against Google, Reddit will not win. It has to be measured as diversification.</li>
+      <li><b>A long consideration cycle distorts the 90 day read.</b> People research treatment for months before calling. Inquiries generated in Month 1 may not become admissions until after the pilot closes. Attribution must be configured on day one or the pilot will under report its own results.</li>
+      <li><b>Lead quality will skew away from private pay.</b> Broad geographic targeting means a meaningful share of inquiries will come from family members and from people who cannot afford private treatment. Qualification has to happen on the lander, not in the intake queue.</li>
+      <li><b>Brand voice mismatch.</b> Your current site voice is clinical and corporate, which is correct for a healthcare buyer and wrong for Reddit. Creative must be built for this channel. Repurposing Google or Meta assets will fail.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Proposed 90 Day Pilot</h2>
+    <div class="rule"></div>
+    <div class="tl">
+      <div class="card">
+        <h4>Pre-launch (Month 0)</h4>
+        <p>Manual enumeration of buyable communities and keywords in Reddit Ads Manager, so the media plan is built on confirmed inventory rather than estimates. Lander build and qualification logic, since no native lead gen is available. Creative production for the first responder and cost explainer angles. Attribution configured for a long consideration window. No paid spend.</p>
+      </div>
+      <div class="card m1">
+        <h4>Month 1: audience building and qualified traffic</h4>
+        <p>The goal is not admissions. It is driving qualified traffic to the lander and building retargeting audiences, which are the only way to reach high intent users given the targeting constraints. Launch across first responder communities and Canadian geo communities plus the cleared keyword set. Expect CPAs materially above baseline, typically 30% to 50% higher and often more in a long cycle category. Month 1 CPA is not the channel benchmark. Success metrics: CTR above 0.4% on first responder placements, cost per lander visit in range, retargeting audience build rate.</p>
+      </div>
+      <div class="card m2">
+        <h4>Month 2: layer retargeting and optimize</h4>
+        <p>Retargeting is disproportionately important on this account, because it is the only mechanism that reaches genuinely high intent users without violating the sensitive data rule. Launch retargeting against Month 1 audiences. Test the second creative angle. Introduce lookalike expansion if volume allows. CPAs should begin declining week over week.</p>
+      </div>
+      <div class="card m3">
+        <h4>Month 3: optimize and evaluate</h4>
+        <p>Judged on three signals, not CPA alone. First, CPA trajectory: is it declining week over week? Second, retargeting CPA against prospecting CPA, which should run 40% to 60% lower. Third, downstream quality: inquiry to consult and consult to admission rates compared against your other channels. Assisted conversions and direct traffic lift are tracked alongside, given the consideration cycle. Because the honest baseline is parity rather than advantage, the decision criterion is whether Reddit can hold near benchmark CPA while adding incremental volume that Google and Meta are not already capturing. Incrementality, not efficiency, is the thing being tested.</p>
+      </div>
+    </div>
+
+    <div class="investment">
+      <div class="il">Recommended media budget</div>
+      <div class="iv">$25,000/mo for Months 1 and 2, scaling to $40,000/mo in Month 3</div>
+      <div class="in">Roughly 12% to 20% of your current cross platform spend, which makes this a low risk allocation rather than a budget fight. Management fee quoted separately. No performance fees. No long term contract beyond the 90 day pilot.</div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Ready to start your pilot?</h2>
+    <p>An August kickoff means inventory verification, lander build, and creative are complete before September, and you enter the fall intake window with a live retargeting pool already building. September through November is peak intent in this category: the summer is over, the year end deadline is visible, and families are having the conversation they postponed.</p>
+    <a class="btn" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
+  </div>
+
+  <footer>
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="tag">Reddit Ads, built for brands that need a second channel.</div>
+    </div>
+    <div class="right">31 July 2026<br>Confidential</div>
+  </footer>
+
+</div>
