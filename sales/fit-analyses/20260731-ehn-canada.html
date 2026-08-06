@@ -218,6 +218,7 @@
     margin: 28px 0 8px;
   }
   .sublabel:first-child { margin-top: 0; }
+  .sublabel.muted { color: var(--dim); }
   p { margin: 0 0 16px; }
   .lead { color: #DEDFDC; }
 
@@ -255,10 +256,21 @@
     color: var(--sp-off-white);
     border-bottom: none;
   }
+  tr.blocked td {
+    background: rgba(255,69,0,0.07);
+    font-weight: 700;
+    color: var(--sp-orange-red);
+    border-bottom: none;
+  }
   tr.hl td { background: rgba(38,209,0,0.08); font-weight: 600; color: var(--sp-off-white); }
   .s-high { color: var(--sp-green); font-weight: 700; }
   .s-mid { color: var(--sp-orange-red); font-weight: 700; }
   .sub { color: var(--sp-orange-red); font-weight: 600; white-space: nowrap; }
+  .num { font-weight: 700; color: var(--sp-off-white); white-space: nowrap; }
+  .subs { color: #B9BABD; }
+  .tag-ok { color: var(--sp-green); font-weight: 700; white-space: nowrap; }
+  .tag-risk { color: var(--sp-gold); font-weight: 700; white-space: nowrap; }
+  .tag-no { color: var(--sp-orange-red); font-weight: 700; white-space: nowrap; }
 
   /* ---------- Cards ---------- */
   .cards { display: grid; gap: 14px; margin-bottom: 8px; }
@@ -278,7 +290,9 @@
     margin: 0 0 8px;
   }
   .card p { margin: 0; font-size: 14.5px; color: #DEDFDC; }
+  .card p + p { margin-top: 12px; }
   .card.primary { border-left: 3px solid var(--sp-orange-red); }
+  .card.muted h3 { color: var(--dim); }
 
   .callout {
     background: rgba(38,209,0,0.05);
@@ -317,6 +331,10 @@
     background: var(--sp-orange-red);
   }
   ul.flags li b { color: #FFFFFF; font-weight: 700; }
+
+  ol.steps { padding-left: 20px; margin: 0; }
+  ol.steps li { margin-bottom: 10px; font-size: 14.5px; color: #DEDFDC; }
+  ol.steps li:last-child { margin-bottom: 0; }
 
   /* ---------- Timeline ---------- */
   .tl { display: grid; gap: 14px; }
@@ -367,7 +385,7 @@
     font-size: 38px;
     margin-bottom: 14px;
   }
-  .cta p { color: #DEDFDC; max-width: 560px; margin: 0 auto 26px; font-size: 15.5px; }
+  .cta p { color: #DEDFDC; max-width: 600px; margin: 0 auto 20px; font-size: 15.5px; }
   .btn {
     display: inline-block;
     background: var(--sp-gradient);
@@ -378,6 +396,7 @@
     padding: 15px 40px;
     border-radius: 999px;
     letter-spacing: 0.01em;
+    margin-top: 6px;
   }
 
   /* ---------- Footer ---------- */
@@ -432,7 +451,7 @@
       <div class="hdr-label">Reddit Fit Analysis</div>
     </div>
     <div class="hdr-right">
-      31 July 2026<br>Confidential
+      6 August 2026<br>Confidential
     </div>
   </div>
 </header>
@@ -442,15 +461,16 @@
   <div class="hero">
     <h1>EHN Canada</h1>
     <p class="meta">
-      <a href="https://ehncanada.com">ehncanada.com</a>
+      <a href="https://www.edgewoodhealthnetwork.com">edgewoodhealthnetwork.com</a>
       <span class="sep">/</span>Private addiction and mental health treatment
-      <span class="sep">/</span>10 facilities, Canada wide
+      <span class="sep">/</span>14 facilities, Canada wide
+      <span class="sep">/</span>Prepared for Paige Malling and Jonathan Friedman
     </p>
 
     <div class="verdict">
       <div class="verdict-top">
         <div class="band">Strong Opportunity</div>
-        <div class="chip high">High execution risk</div>
+        <div class="chip low">Uncontested inventory</div>
       </div>
 
       <div class="scale">
@@ -467,8 +487,9 @@
         </div>
       </div>
 
-      <p>Almost nobody on Reddit talks about buying software or booking a hotel with the intensity that people talk about getting sober. The demand you sell into is one of the most actively and openly discussed subjects on the platform, in Reddit's second largest market, from an audience that researches anonymously for months before calling anyone. That is the opportunity, and it is real.</p>
-      <p style="margin-top:14px">The build is hard. Reddit's healthcare policy blocks the Addiction Support, Medical and Mental Health, and Trauma Support community categories outright, forbids targeting on health data, and prohibits native lead generation ads for healthcare entirely. The communities where the conversation actually happens cannot be bought at any price. What remains is a Canadian geographic layer, an uncontested first responder and veteran angle matched to programs you already run, and a partial keyword layer. That is enough to build on, and it is not the campaign a naive analysis would have proposed.</p>
+      <p>Almost nobody on Reddit talks about buying software or booking a hotel with the intensity that people talk about getting sober. The demand you sell into is one of the most actively discussed subjects on the platform, in Reddit's second largest market, from an audience that researches anonymously for months before calling anyone.</p>
+      <p style="margin-top:14px">The build takes real work. Reddit restricts health based targeting, so the route to this audience runs through geography, occupation, keyword intent, and retargeting rather than through condition. Reddit's own partner team reached the same conclusion independently and recommended geography and keywords. We agree with the direction and are going further on both: a facility matched geographic layer, an occupational layer Reddit did not propose, and a keyword layer verified in Ads Manager before a dollar is committed.</p>
+      <p style="margin-top:14px">Recommendation: proceed as a build to constraints engagement, sequenced behind the Google audit, structured to prove incrementality.</p>
     </div>
   </div>
 
@@ -476,102 +497,156 @@
     <h2>Product and Audience</h2>
     <div class="rule"></div>
 
-    <div class="sublabel">What You Sell</div>
-    <p class="lead">Private inpatient, outpatient, and virtual addiction and mental health treatment through Canada's largest treatment network. Ten facilities across British Columbia, Alberta, Saskatchewan, Ontario, Quebec, and Nova Scotia, plus EHN Online for virtual intensive therapy. Private pay with iFinance financing available, some OHIP covered services, and a parallel B2B motion selling into corporate partners, EAP programs, and first responder organizations.</p>
+    <p class="sublabel">What you sell</p>
+    <p class="lead">Private inpatient, outpatient, and virtual addiction and mental health treatment through Canada's largest treatment network. EHN reports fourteen facilities nationally. The public site lists ten inpatient centres plus EHN Online, so four sites carry no public marketing page. Specialty programs for military, veterans, and first responders run through the Guardians facilities in BC, Ontario, and Nova Scotia. That detail carries more weight on Reddit than anywhere else in your media mix.</p>
 
-    <div class="sublabel">Target Audience</div>
-    <p class="lead">Three distinct buyers. Reddit's healthcare policy determines which of them are actually reachable.</p>
-    <p class="lead">The <b>individual in crisis</b> is researching anonymously, at night, often months before they call anyone. This is Reddit's core behaviour and the strongest theoretical fit. It is also the audience Reddit protects most aggressively. They cannot be targeted by condition, by health interest, or by membership in the communities where they actually are.</p>
-    <p class="lead">The <b>family member</b> is frequently the actual purchaser for private residential treatment. A spouse or parent researching options for someone else converts faster and carries fewer objections about cost. This buyer is reachable, because targeting them does not require inferring anything about their own health.</p>
-    <p class="lead">The <b>institutional buyer</b> covers HR leaders, benefits managers, union representatives, and first responder organizations. You already run dedicated programs for military, veterans, RCMP, and IAFF members. These communities are occupational rather than clinical, which puts them outside the restricted categories. This is the primary play, not a secondary one.</p>
+    <p class="sublabel">Target audience</p>
+    <p class="lead">Two primary audiences. A third is structured as a separate campaign.</p>
+
+    <div class="cards">
+      <div class="card primary">
+        <h3>Audience 1. The individual in crisis</h3>
+        <p>Researches anonymously, at night, often months before calling anyone. Reddit's core behaviour and the strongest fit on the platform. Reached through occupational identity, geography, and keyword intent.</p>
+      </div>
+      <div class="card primary">
+        <h3>Audience 2. The family member</h3>
+        <p>Frequently the real purchaser for private residential treatment. A spouse or parent researching on someone else's behalf converts faster and carries fewer objections about cost.</p>
+      </div>
+      <div class="card muted">
+        <h3>Separate campaign. The institutional buyer</h3>
+        <p>HR leaders, benefits managers, union representatives, and first responder organizations. Reachable, but a different message, funnel, and measurement model. It runs as its own structure or not at all, and it does not compete with the LinkedIn motion Jonathan is already running.</p>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:14px">
+      <p><strong>ICP definition is a Week 0 deliverable.</strong> Audiences 1 and 2 each split into distinct ICPs, likely by substance, acuity, payer, and relationship to the patient. Each needs its own creative and lander path. We build these with your team, because your intake data tells us which ones convert to admission and ours does not.</p>
+    </div>
   </section>
 
   <section>
     <h2>Reddit Policy Constraints</h2>
     <div class="rule"></div>
-    <p class="lead">Verified in Reddit Ads Manager. These are platform rules and they define the build before strategy enters the picture.</p>
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th>Constraint</th><th>Effect on this account</th></tr></thead>
-        <tbody>
-          <tr><td class="sub">No sensitive data targeting</td><td>Cannot target on physical or mental health data, biometric markers, or medical conditions. Health interest targeting is unavailable.</td></tr>
-          <tr><td class="sub">Blocked community categories</td><td>Addiction Support, Medical and Mental Health, Trauma Support, and Mature Themes cannot be targeted under any circumstance.</td></tr>
-          <tr><td class="sub">No support subreddits</td><td>Disease specific and mental health support communities are off limits regardless of category labelling.</td></tr>
-          <tr><td class="sub">No Lead Generation ads</td><td>Healthcare is fully prohibited from Reddit's native lead gen format. Every conversion must happen on your own lander.</td></tr>
-          <tr><td class="sub">Age floor</td><td>All targeting must exclude users under 18.</td></tr>
-          <tr><td class="sub">Partial keyword availability</td><td>Clinical terminology is blocked. "Mental health" is disallowed. Colloquial intent language such as "addicted" clears. The boundary is terminology, not intent, and it needs manual enumeration in the platform.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="callout warn">
-      <p><strong>Consequence.</strong> Roughly half the audience identified in a naive analysis of this category is structurally unreachable. Any Reddit proposal for a treatment provider that does not account for this is quoting reach that does not exist.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Subreddit Landscape</h2>
-    <div class="rule"></div>
-    <p class="lead">Only buyable inventory is listed. Recovery, trauma, and mental health communities are excluded because they cannot be purchased.</p>
+    <p class="lead">Verified in Reddit Ads Manager. Reddit's partner team confirmed the same restrictions independently, which settles whether this is a strategy choice or a platform rule.</p>
     <div class="tablewrap">
       <table>
         <thead>
-          <tr><th>Subreddit</th><th>Subscribers</th><th>Targeting type</th><th>Notes</th></tr>
+          <tr><th style="width:34%">Constraint</th><th>Effect on this account</th></tr>
         </thead>
         <tbody>
-          <tr class="top">
-            <td class="sub">r/ProtectAndServe</td><td>Counts unavailable</td><td>Community</td>
-            <td>Occupational, not Trauma Support. Should clear review. Matched to your first responder programs. Primary buy.</td>
-          </tr>
-          <tr class="top">
-            <td class="sub">r/Firefighting</td><td>Counts unavailable</td><td>Community</td>
-            <td>Same profile. IAFF program alignment.</td>
-          </tr>
-          <tr class="top">
-            <td class="sub">r/CanadianForces</td><td>Counts unavailable</td><td>Community</td>
-            <td>Same profile. Military and veteran program alignment.</td>
-          </tr>
-          <tr>
-            <td class="sub">r/toronto</td><td>~926k</td><td>Community</td>
-            <td>Geo aligned to Bellwood Toronto. Clean category. Volume layer.</td>
-          </tr>
-          <tr>
-            <td class="sub">r/vancouver</td><td>~634k</td><td>Community</td>
-            <td>Geo aligned to Edgewood Nanaimo and Guardians Nanaimo. Volume layer.</td>
-          </tr>
-          <tr>
-            <td class="sub">r/canada, r/alberta, r/ontario, r/nova_scotia, r/saskatchewan</td><td>Counts unavailable</td><td>Community</td>
-            <td>Geo layer covering the remaining facilities. Cost of living and healthcare access are constant themes, which the cost explainer angle plugs into directly.</td>
-          </tr>
-          <tr>
-            <td class="sub">Keyword layer</td><td>n/a</td><td>Keyword</td>
-            <td>Colloquial intent terms only. Requires manual enumeration against the platform disallow list before budgeting.</td>
-          </tr>
-          <tr class="dim">
-            <td class="sub">r/stopdrinking, r/CPTSD, r/Petioles, r/leaves</td><td>~1.6M combined</td><td>Blocked</td>
-            <td>The highest intent audience on the platform. Unbuyable by category. Listed so the exclusion is explicit rather than an omission.</td>
-          </tr>
+          <tr class="top"><td>No sensitive data targeting</td><td>Cannot target on physical or mental health data, biometric markers, or medical conditions.</td></tr>
+          <tr class="top"><td>Restricted community categories</td><td>Addiction Support, Medical and Mental Health, Trauma Support, and Mature Themes are not targetable. Condition based communities are out of scope.</td></tr>
+          <tr><td>No Lead Generation ads</td><td>Healthcare is prohibited from Reddit's native lead gen format. Every conversion happens on your own lander.</td></tr>
+          <tr><td>Age floor</td><td>All targeting must exclude users under 18.</td></tr>
+          <tr><td>Partial keyword availability</td><td>Clinical terminology is blocked. Colloquial intent language such as "addicted" clears. The boundary is terminology, not intent.</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="lead"><b>Total addressable reach:</b> roughly 1.6M subscribers across confirmed buyable communities, before keyword expansion. This is half the reach a surface level analysis would report, and the half that remains is lower intent.</p>
-    <p class="lead"><b>Targeting recommendation:</b> community and keyword only. Weight community spend toward the first responder set, where the audience is occupationally defined and the message can be specific without touching a protected attribute. Treat the Canadian city and province communities as the volume layer. Build the keyword list manually in the platform before committing budget, because the disallow list is not documented publicly.</p>
+    <p class="lead">These restrictions apply across targeting types. The plan below is built entirely from inventory that is buyable.</p>
   </section>
 
   <section>
-    <h2>Reddit Presence Audit</h2>
+    <h2>Campaign Structure</h2>
     <div class="rule"></div>
+    <p class="lead">Targeting is organized as discrete campaigns, each with its own creative and geo layer. Reach figures are estimates for planning only. These are memberships rather than people, overlap between communities is heavy, and the US skewed communities need geographic filtering. The number worth planning against is the audience size Ads Manager returns for the assembled targeting set, which is a Week 0 deliverable.</p>
+
+    <p class="sublabel">Occupational campaigns. The differentiated play.</p>
+    <p class="lead">Occupational identity is targetable. Clinical condition is not. These communities are defined by a job, and they map directly onto programs you already run. Three campaigns, each with its own creative.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th style="width:20%">Campaign</th><th>Communities</th><th>Est. reach</th><th>Why it matters</th></tr>
+        </thead>
+        <tbody>
+          <tr class="top"><td>First responders and military</td><td class="subs">r/ProtectAndServe, r/CanadianForces, r/Firefighting, r/ems, r/paramedics, r/911dispatchers, r/Military, r/Veterans</td><td class="num">est. 1.6M</td><td>Direct match to the Guardians programs. r/CanadianForces is the cleanest of the set, Canadian by definition with no geo waste.</td></tr>
+          <tr class="top"><td>Healthcare workers</td><td class="subs">r/nursing</td><td class="num">est. 1.1M</td><td>Burnout and substance use are openly discussed. Occupational framing, not clinical.</td></tr>
+          <tr class="top"><td>Trades and transport</td><td class="subs">r/Construction, r/skilledtrades, r/Truckers</td><td class="num">est. 1.0M</td><td>Trades carry among the highest substance use rates of any occupation. No treatment marketing present.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <p><strong>This is where the account wins.</strong> It is the only place you can be specific about who you serve without touching a protected attribute, the Guardians programs already exist so the message is true, and nobody else is there.</p>
+    </div>
+
+    <p class="sublabel">Geographic campaigns, facility matched</p>
+    <p class="lead">One campaign per market, matched to the facility that serves it. This is the volume layer.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Campaign</th><th>Facility coverage</th><th>Communities</th><th>Est. reach</th></tr>
+        </thead>
+        <tbody>
+          <tr class="top"><td>Ontario</td><td>Bellwood Toronto, Guardians Gateway</td><td class="subs">r/ontario, r/toronto, r/ottawa, r/hamilton, r/londonontario, r/waterloo, r/kitchener, r/KingstonOntario, r/Guelph, r/BurlingtonON, r/Barrie, r/Oshawa</td><td class="num">est. 3.0M</td></tr>
+          <tr><td>British Columbia</td><td>Edgewood Nanaimo, Guardians Nanaimo, Edgewood Rockies</td><td class="subs">r/vancouver, r/britishcolumbia, r/VictoriaBC, r/Kelowna, r/nanaimo</td><td class="num">est. 1.4M</td></tr>
+          <tr><td>Alberta</td><td>Sandstone Calgary</td><td class="subs">r/calgary, r/alberta, r/Edmonton</td><td class="num">est. 1.2M</td></tr>
+          <tr><td>Quebec</td><td>Nouveau Départ Montréal</td><td class="subs">r/montreal, r/Quebec</td><td class="num">est. 760k</td></tr>
+          <tr><td>Nova Scotia</td><td>Bellwood NS, Guardians Atlantic</td><td class="subs">r/halifax, r/novascotia</td><td class="num">est. 300k</td></tr>
+          <tr><td>Saskatchewan</td><td>Willowview Lumsden</td><td class="subs">r/saskatoon, r/saskatchewan, r/regina</td><td class="num">est. 260k</td></tr>
+          <tr><td>National, EHN Online</td><td>All, plus EHN Online</td><td class="subs">r/canada, r/AskACanadian, r/onguardforthee</td><td class="num">est. 5.3M</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead">Reddit's recommendation covered twenty of these communities. We added the Ontario secondary markets around Toronto and Peterborough and the national layer, which is the only clean way to serve EHN Online where geography does not constrain the offer.</p>
+
+    <p class="sublabel">Adjacent communities. Further analysis.</p>
+    <p class="lead">Worth testing at low budget once the occupational and geographic campaigns have a read. Cost, family, and decision context, where no health inference is required to serve an ad.</p>
+    <p class="lead">r/PersonalFinanceCanada and r/legaladvicecanada are Canadian by definition and map to the cost and intervention angles. r/relationship_advice and r/Divorce reach the family buyer. r/decidingtobebetter sits near the policy boundary and needs confirmation.</p>
+    <p class="lead">Sizing and policy status for this group come in a further analysis pass rather than being assumed here.</p>
+
+    <p class="sublabel muted">Institutional. Separate campaign.</p>
+    <p class="lead">r/AskHR, r/humanresources, r/Insurance, r/CanadaPublicServants. Reachable and relevant to the B2B motion, but a different message, funnel, and measurement model. Scope it separately once the consumer campaigns have a read, and only if it earns budget alongside the LinkedIn motion rather than duplicating it.</p>
+
+    <p class="lead" style="margin-top:20px"><b>Targeting recommendation:</b> community and keyword only, with a province or metro geo layer on every campaign. That geo layer is what makes the US heavy occupational communities usable at all. Weight spend toward the occupational campaigns for message specificity and geography for volume.</p>
+  </section>
+
+  <section>
+    <h2>Keyword Layer</h2>
+    <div class="rule"></div>
+    <p class="lead">Reddit's partner team supplied a twenty term keyword list, which is the most useful part of their recommendation and the part that most needs checking. Our Ads Manager verification found clinical terminology blocked and colloquial language clearing.</p>
+
+    <div class="callout warn">
+      <p><strong>Every term below requires manual confirmation in Ads Manager before budget is committed.</strong> Reddit does not publish the disallow list, and a partner recommendation is not the same as a term clearing at build time.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-top:20px">
+      <table>
+        <thead>
+          <tr><th style="width:44%">Term</th><th>Expected status</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr class="top"><td>Rehab, Detox, Recovery, Relapse, Sober, Intervention</td><td class="tag-ok">Expected clear</td><td>Colloquial. Matches the "addicted" precedent. High intent.</td></tr>
+          <tr class="top"><td>Therapy, Counselling, Virtual therapy, Family support, Healthcare resources</td><td class="tag-ok">Expected clear</td><td>Service terms, no condition named. Virtual therapy maps to EHN Online.</td></tr>
+          <tr><td>Inpatient treatment, Outpatient treatment</td><td class="tag-ok">Likely clear</td><td>Clinical register but no condition named.</td></tr>
+          <tr><td>Addiction treatment, Alcohol treatment</td><td class="tag-risk">At risk</td><td>Names the condition. Test alongside the colloquial variants.</td></tr>
+          <tr><td>Trauma therapy, PTSD treatment, Anxiety treatment, Depression treatment</td><td class="tag-risk">High risk</td><td>Condition named.</td></tr>
+          <tr><td>Mental health treatment</td><td class="tag-no">Expected blocked</td><td>Contains "mental health", which we confirmed disallowed in Ads Manager.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lead"><b>Practical read:</b> plan the media around the colloquial and service tier. Treat the condition named terms as upside that may not exist. If the eleven expected-to-clear terms hold, the keyword layer is a genuine high intent channel and the strongest complement to the occupational campaigns.</p>
+  </section>
+
+  <section>
+    <h2>How Reddit and Google Work Together</h2>
+    <div class="rule"></div>
+    <p class="lead">The Google and SEM audit is a separate engagement and separate scope. The two channels are worth planning together, because Reddit's contribution shows up partly inside Google.</p>
+
     <div class="cards">
-      <div class="card">
-        <h3>Brand mentions</h3>
-        <p>None found. No meaningful Reddit footprint for EHN Canada, Edgewood, or Bellwood. Clean slate, no negative sentiment to manage, and no organic credibility to borrow either.</p>
+      <div class="card primary">
+        <h3>Reddit generates search demand that Google captures</h3>
+        <p>Reddit is a consideration and discovery platform, not a last click channel. In a category with a months long research cycle, expect a share of Reddit's contribution to appear as branded and non branded search lift rather than as direct conversions. Measuring Reddit on last click alone will systematically understate it. On one ScalePaid account the direct click return was 1.1x while view through ran materially higher, because the platform sat mid journey on a complex purchase.</p>
       </div>
       <div class="card">
-        <h3>Competitor Reddit ads</h3>
-        <p>None found. No Canadian private treatment provider appears to be running paid Reddit ads. The surface reading is that the channel is untapped. The likelier explanation, given the policy constraints, is that the category is structurally hard to buy on Reddit and providers have concentrated on Google and Meta where certification unlocks proper targeting. Competitor absence is a warning here as much as an opportunity.</p>
+        <h3>Retargeting is where the policy constraint gets partially solved</h3>
+        <p>Reddit cannot target people by condition, but it can retarget people who visited your lander. That pool is self selected high intent and fully compliant, because the signal is a site visit rather than a health attribute. Reddit prospecting builds the pool. Google and Reddit retargeting both harvest it. This is why Month 1 is an audience building exercise and not a conversion test.</p>
       </div>
       <div class="card">
-        <h3>Organic community fit</h3>
-        <p>The topic comes up constantly. People ask which Canadian treatment centres are worth the money, whether private beats the public waitlist, and how families should handle an intervention. Those conversations are happening in exactly the communities that cannot be bought. Demand is visible and unreachable at the same time, which is the central tension of this account.</p>
+        <h3>Your Salesforce pipeline already solves the hard measurement problem</h3>
+        <p>Offline conversion signals flowing back to Google can flow to Reddit the same way through the conversion API. Most Reddit healthcare tests fail on measurement rather than media. Yours will not.</p>
+      </div>
+      <div class="card">
+        <h3>The strategic argument</h3>
+        <p>LegitScript parity removed the barrier that protected your search economics. Every certified provider now bids the same finite search volume, which is why the ROI moved against you. Reddit is not cheaper than Google. It is demand Google is not selling, on an inventory nobody in this category is bidding on, in a channel that also feeds the LLM answers where Recovery.com is currently winning.</p>
       </div>
     </div>
   </section>
@@ -581,50 +656,58 @@
     <div class="rule"></div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Dimension</th><th>Rating</th><th>Rationale</th></tr></thead>
+        <thead>
+          <tr><th style="width:24%">Dimension</th><th style="width:24%">Rating</th><th>Rationale</th></tr>
+        </thead>
         <tbody>
           <tr>
             <td>Reachable audience</td>
-            <td><span class="rating"><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span><span class="r-gold">Moderate</span></span></td>
-            <td>Roughly 1.6M buyable subscribers across Canadian geo and first responder communities. Real volume, but the highest intent half of the audience sits in blocked categories.</td>
+            <td><span class="rating"><span class="r-gold">Moderate</span><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span></span></td>
+            <td>Real volume across the occupational and geographic campaigns, though it needs heavy deduplication and the buyable inventory is broader than condition matched targeting would be.</td>
           </tr>
           <tr>
             <td>Conversation density</td>
-            <td><span class="rating"><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i></span><span class="r-green">Exceptional</span></span></td>
-            <td>Addiction, recovery, and treatment cost are among the most actively and openly discussed topics on Reddit, with unusually high emotional intent behind each thread.</td>
+            <td><span class="rating"><span class="r-green">Exceptional</span><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i></span></span></td>
+            <td>Addiction, recovery, and treatment cost are among the most actively discussed subjects on Reddit, with unusually high emotional intent behind each thread.</td>
           </tr>
           <tr>
             <td>Vertical fit</td>
-            <td><span class="rating"><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i></i></span><span class="r-green">Strong</span></span></td>
-            <td>High ticket, high consideration, researched anonymously over months. That is Reddit's core user behaviour rather than an adaptation of it.</td>
+            <td><span class="rating"><span class="r-green">Strong</span><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i></i></span></span></td>
+            <td>High ticket, high consideration, researched anonymously over months. Reddit's core user behaviour rather than an adaptation of it.</td>
+          </tr>
+          <tr>
+            <td>Competitive field</td>
+            <td><span class="rating"><span class="r-green">Open</span><span class="meter"><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i><i class="f-green"></i></span></span></td>
+            <td>No treatment provider is currently advertising on Reddit. First mover, uncontested inventory, and room to define the category voice.</td>
           </tr>
           <tr>
             <td>Sentiment</td>
-            <td><span class="rating"><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span><span class="r-gold">Moderate</span></span></td>
-            <td>No brand footprint at all. Nothing negative to manage, and nothing positive to borrow.</td>
+            <td><span class="rating"><span class="r-gold">Moderate</span><span class="meter"><i class="f-gold"></i><i class="f-gold"></i><i></i><i></i></span></span></td>
+            <td>No brand footprint at all. Nothing negative to manage, nothing positive to borrow.</td>
           </tr>
           <tr class="total">
             <td>Overall</td>
-            <td>Strong, lower end</td>
-            <td>The demand is real and heavily discussed. What holds this back from the top of the band is reachability, not desire.</td>
+            <td>Strong opportunity</td>
+            <td>The demand is real and heavily discussed, and the field is open.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
 
-  <section>
-    <h2>Execution Risk</h2>
+    <h2 style="margin-top:44px">Execution Considerations</h2>
     <div class="rule"></div>
+    <p class="lead">These are the elements the build has to account for, not reasons to hesitate. Each has a defined workaround.</p>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Factor</th><th>Risk</th><th>Rationale</th></tr></thead>
+        <thead>
+          <tr><th style="width:24%">Element</th><th style="width:14%">Focus required</th><th>How we handle it</th></tr>
+        </thead>
         <tbody>
-          <tr><td>Policy and platform constraints</td><td class="r-orange">High</td><td>Addiction Support, Medical and Mental Health, and Trauma Support categories are blocked outright, and health data targeting is unavailable.</td></tr>
-          <tr><td>Competition signal</td><td class="r-orange">High</td><td>No treatment provider appears to be advertising on Reddit. In a restricted category that absence is more likely structural than an unclaimed opening.</td></tr>
-          <tr><td>Creative difficulty</td><td class="r-orange">High</td><td>Copy cannot address a reader's condition, Reddit is cynical about rehab marketing, and your existing brand voice is clinical. Creative must be built from scratch for this channel.</td></tr>
-          <tr><td>Conversion mechanics</td><td class="r-gold">Medium</td><td>Native lead generation is prohibited, so every conversion depends on a lander built for cold traffic. Solvable, but it is real work before launch.</td></tr>
-          <tr class="total"><td>Overall</td><td>High</td><td>Three of four factors are high, and the policy constraint is permanent rather than something better execution overcomes.</td></tr>
+          <tr><td>Policy and platform constraints</td><td><span class="r-orange">High</span></td><td>Health based targeting is unavailable, so the account is built from geography, occupation, keyword intent, and retargeting. This is a build requirement rather than a limit on demand. The audience is on the platform having these conversations every day, and these routes reach them.</td></tr>
+          <tr><td>Creative</td><td><span class="r-orange">High</span></td><td>Copy cannot address a reader's condition, Reddit is cynical about rehab marketing, and the existing brand voice is clinical. Creative gets built from scratch for this channel, which is scoped into the build fee.</td></tr>
+          <tr><td>Conversion mechanics</td><td><span class="r-gold">Medium</span></td><td>Native lead gen is unavailable, so every conversion depends on a lander built for cold traffic. Lander build is a Week 0 gating deliverable.</td></tr>
+          <tr><td>Measurement</td><td><span class="r-green">Low</span></td><td>Salesforce and existing offline conversion plumbing remove the risk that sinks most Reddit healthcare tests.</td></tr>
+          <tr class="total"><td>Overall</td><td>Manageable</td><td>The work concentrates in Week 0. Get targeting, lander, and measurement right before launch and the channel runs normally from there.</td></tr>
         </tbody>
       </table>
     </div>
@@ -633,102 +716,182 @@
   <section>
     <h2>Reddit Ad Economics</h2>
     <div class="rule"></div>
-    <p class="lead">Modeled at $25,000/mo media spend. CTR is calibrated down from a naive intent matched estimate because the buyable inventory is geographic and occupational rather than condition matched. CVR is calibrated down because the healthcare lead gen prohibition forces every conversion onto your own lander, which converts materially worse than a native in feed form. Inquiry to admission is held flat at 4% across all three scenarios, because that conversion is a function of your intake team rather than of media efficiency.</p>
+    <p class="lead">Modeled at $15,000 per month media spend, roughly 15% of monthly Google investment. CTR is calibrated down from a naive intent matched estimate because buyable inventory is geographic and occupational rather than condition matched. CVR is calibrated down because the healthcare lead gen prohibition forces every conversion onto your own lander, which converts materially worse than a native in-feed form. Inquiry to admission is held flat at 4% across all scenarios, because that conversion is a function of your intake team rather than of media efficiency. Replace it with your actual rate and the model sharpens immediately.</p>
+
     <div class="tablewrap">
       <table>
         <thead>
-          <tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Clicks</th><th>CVR</th><th>Inquiries</th><th>CPL</th><th>Admissions</th><th>CPA</th></tr>
+          <tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Clicks</th><th>Lander CVR</th><th>Inquiries</th><th>CPL</th><th>Admissions</th><th>CPA</th></tr>
         </thead>
         <tbody>
-          <tr><td>Conservative</td><td>$5.00</td><td>0.20%</td><td>$2.50</td><td>10,000</td><td>0.5%</td><td>50</td><td>$500</td><td>2</td><td>$12,500</td></tr>
-          <tr class="hl"><td>Mid (baseline)</td><td>$5.00</td><td>0.30%</td><td>$1.67</td><td>15,000</td><td>1.2%</td><td>180</td><td>$139</td><td>7</td><td>$3,472</td></tr>
-          <tr><td>Optimistic</td><td>$5.00</td><td>0.40%</td><td>$1.25</td><td>20,000</td><td>2.5%</td><td>500</td><td>$50</td><td>20</td><td>$1,250</td></tr>
+          <tr><td>Conservative</td><td>$5.00</td><td>0.20%</td><td>$2.50</td><td>6,000</td><td>0.5%</td><td>30</td><td>$500</td><td>1.2</td><td>$12,500</td></tr>
+          <tr class="hl"><td>Mid (baseline)</td><td>$5.00</td><td>0.30%</td><td>$1.67</td><td>9,000</td><td>1.2%</td><td>108</td><td>$139</td><td>4.3</td><td>$3,472</td></tr>
+          <tr><td>Optimistic</td><td>$5.00</td><td>0.40%</td><td>$1.25</td><td>12,000</td><td>2.5%</td><td>300</td><td>$50</td><td>12.0</td><td>$1,250</td></tr>
         </tbody>
       </table>
     </div>
+
     <div class="callout warn">
-      <p><strong>Stated plainly.</strong> The mid case lands at $3,472 per admission, parity with the bottom of the $3,000 to $6,000 category benchmark rather than an improvement on it. The conservative case at $12,500 is well above what you pay today. The optimistic case arrives only if the first responder angle outperforms and retargeting compounds through Month 3.</p>
-      <p>This is not a cheaper admissions pitch. It is a diversification pitch. Every provider in this category bids against every other provider for the same finite Google search volume, and a single policy change at Google or Meta can take a large share of pipeline offline overnight. The value of a working Reddit channel to you is optionality and risk reduction, priced at parity.</p>
+      <p><strong>Stated plainly.</strong> The mid case lands at $3,472 per admission, parity with the bottom of the $3,000 to $6,000 category benchmark rather than an improvement on it. The optimistic case arrives only if the occupational angle outperforms and retargeting compounds through Month 3.</p>
+      <p>Month 1 will run 30% to 50% above these figures, because the algorithm is training on cold traffic and the retargeting pool is empty. The 90 day aggregate is the read, not any single month.</p>
+      <p>This is a diversification pitch rather than a cheaper admissions pitch. Every certified provider now bids against every other for the same finite Google search volume, and a single policy change at Google can take a large share of pipeline offline overnight. The value of a working Reddit channel is incremental demand and platform risk reduction, priced at parity.</p>
     </div>
-    <p class="fineprint">Figures in CAD. Reddit bills media in USD, so budget a currency buffer. These are modeled projections against category benchmarks, not guarantees. No Reddit specific CPA data exists for this vertical because nobody has run it.</p>
+
+    <p class="fineprint" style="margin-top:16px">Figures in CAD. Reddit bills media in USD, so budget a currency buffer. These are modeled projections against category benchmarks, not guarantees.</p>
   </section>
 
   <section>
     <h2>Recommended Creative Angle</h2>
     <div class="rule"></div>
-    <p class="lead">Reddit punishes anything that reads like a rehab ad, and policy forbids copy that implies knowledge of a reader's condition. The angle has to lead with information the reader wants, speak to a situation rather than a diagnosis, and let your credibility do the selling underneath it. Format is promoted post, first person or plainly useful resource, not display. Every conversion path goes to your own lander.</p>
+    <p class="lead">Reddit punishes anything that reads like a rehab ad, and policy forbids copy that implies knowledge of a reader's condition. Every angle here leads with information the reader wants, speaks to a situation rather than a diagnosis, and lets your credibility do the selling underneath. Format is promoted post, first person or plainly useful resource, never display. Every conversion path goes to your own lander.</p>
+
     <div class="cards">
       <div class="card primary">
-        <h3>Primary: first responders and veterans</h3>
-        <p>This leads, not because it is the largest audience, but because it is the only one where you can be specific about who you serve without touching a protected attribute. Occupational identity is targetable. Clinical condition is not. You already run dedicated programs for military, veterans, RCMP, and IAFF members, which means the message is true, differentiated, and uncontested in r/ProtectAndServe, r/Firefighting, and r/CanadianForces. Speak to the job and the culture around it, never to a diagnosis.</p>
+        <h3>Primary. Occupational.</h3>
+        <p>First responders, military, veterans, healthcare workers, and trades. This leads because it is the only place you can be specific about who you serve without touching a protected attribute. The Guardians programs already exist, which makes the message true and differentiated. Speak to the job and the culture around it, never to a diagnosis.</p>
       </div>
       <div class="card">
-        <h3>Second: the cost and process explainer</h3>
-        <p>A straight, unsentimental breakdown of what private treatment in Canada actually involves. Length of stay, what a day looks like, what it costs, how financing works, and how it compares to waiting for public. Nobody in this category publishes this honestly, and Reddit rewards the brand that does it first. Runs in the Canadian city and province communities, where cost of living and healthcare access frustration are constant themes and no health inference is required to serve it.</p>
+        <h3>Second. The cost and process explainer.</h3>
+        <p>A straight breakdown of what private treatment in Canada actually involves. Length of stay, what a day looks like, what it costs, how iFinance works, how it compares to waiting for public. Nobody in this category publishes this honestly, and Reddit rewards the brand that does it first.</p>
       </div>
       <div class="card">
-        <h3>Third: the family member</h3>
+        <h3>Third. The family member.</h3>
         <p>Aimed at the spouse or parent who is the actual buyer. What to do when someone you love will not accept help. Highest conversion intent of the three, and it cleanly sidesteps the policy problem, because it addresses the reader's situation rather than the reader's condition.</p>
       </div>
     </div>
-    <p class="lead" style="margin-top:20px"><b>Example headline direction:</b> "What 90 days of private treatment in Canada actually costs, and how it compares to the public waitlist"</p>
+
+    <p class="sublabel">Example headline direction</p>
+    <p class="lead">"What 90 days of private treatment in Canada actually costs, and how it compares to the public waitlist"</p>
   </section>
 
   <section>
     <h2>Red Flags</h2>
     <div class="rule"></div>
     <ul class="flags">
-      <li><b>The highest intent audience is unbuyable, permanently.</b> This is a platform policy, not an optimization problem. r/stopdrinking, r/CPTSD, r/Petioles, and r/leaves are blocked by category and no budget, creative, or agency changes that.</li>
-      <li><b>No native lead generation.</b> Healthcare is fully prohibited from Reddit's lead gen format. Every conversion depends on your lander performing against cold, broadly targeted traffic. If the lander is not built for this, the test fails on the lander, not on the channel.</li>
-      <li><b>Competitor absence is ambiguous and probably not good news.</b> No treatment provider appears to be running paid Reddit ads. Given the constraints, the likeliest explanation is that the category is structurally hard to buy here, not that everyone missed an opportunity.</li>
-      <li><b>Economics are at parity, not advantage.</b> The mid case matches the low end of your existing benchmark. Evaluated purely on cost per admission against Google, Reddit will not win. It has to be measured as diversification.</li>
-      <li><b>A long consideration cycle distorts the 90 day read.</b> People research treatment for months before calling. Inquiries generated in Month 1 may not become admissions until after the pilot closes. Attribution must be configured on day one or the pilot will under report its own results.</li>
-      <li><b>Lead quality will skew away from private pay.</b> Broad geographic targeting means a meaningful share of inquiries will come from family members and from people who cannot afford private treatment. Qualification has to happen on the lander, not in the intake queue.</li>
-      <li><b>Brand voice mismatch.</b> Your current site voice is clinical and corporate, which is correct for a healthcare buyer and wrong for Reddit. Creative must be built for this channel. Repurposing Google or Meta assets will fail.</li>
+      <li><b>The keyword list is unconfirmed.</b> Reddit's recommendation includes terms our own Ads Manager verification suggests are blocked. Week 0 verification is a gating deliverable. If the condition named terms fail, the keyword layer shrinks to eleven colloquial and service terms.</li>
+      <li><b>Facility count does not reconcile.</b> You reported fourteen. The public site documents ten inpatient plus EHN Online. Four targeting markets are unaccounted for.</li>
+      <li><b>No native lead generation.</b> Every conversion depends on a lander performing against cold traffic. If the lander is not built for this, the test fails on the lander, not on the channel.</li>
+      <li><b>Economics are at parity, not advantage.</b> The mid case matches the low end of your existing benchmark. Judged purely on cost per admission against Google, Reddit will not win. It has to be measured as incrementality.</li>
+      <li><b>Broad geographic targeting means low intent density.</b> Most members of r/toronto are not in market on any given day, which is why creative has to do the qualifying work that targeting normally does.</li>
+      <li><b>A long consideration cycle distorts the 90 day read.</b> Inquiries generated in Month 1 may not become admissions until after the flight closes. Attribution windows must be configured on day one.</li>
+      <li><b>Lead quality will skew away from private pay.</b> Broad geo means a meaningful share of inquiries come from family members and from people who cannot afford private treatment. Qualification has to happen on the lander, not in the intake queue.</li>
+      <li><b>Brand voice mismatch.</b> The current site voice is clinical and corporate, correct for a healthcare buyer and wrong for Reddit. Repurposing Google or Meta assets will fail.</li>
+      <li><b>No strategist in the seat yet.</b> The plan assumes a counterpart who can make decisions between reporting cycles. Until that hire lands, ScalePaid absorbs the strategy layer.</li>
     </ul>
   </section>
 
   <section>
-    <h2>Proposed 90 Day Pilot</h2>
+    <h2>Proposed 90 Day Structure</h2>
     <div class="rule"></div>
     <div class="tl">
       <div class="card">
-        <h4>Pre-launch (Month 0)</h4>
-        <p>Manual enumeration of buyable communities and keywords in Reddit Ads Manager, so the media plan is built on confirmed inventory rather than estimates. Lander build and qualification logic, since no native lead gen is available. Creative production for the first responder and cost explainer angles. Attribution configured for a long consideration window. No paid spend.</p>
+        <h4>Week 0. Pre-launch</h4>
+        <p>Four gating deliverables before any spend.</p>
+        <ol class="steps">
+          <li>Manual enumeration of every community and keyword in Ads Manager, producing a confirmed inventory list and a real audience size for the assembled targeting set.</li>
+          <li>Full fourteen facility confirmation and geo build, one targeting unit per market.</li>
+          <li>Lander build with qualification logic.</li>
+          <li>Conversion API and Salesforce offline conversion mapping, with attribution windows set for a months long consideration cycle.</li>
+        </ol>
+        <p>Creative production for the occupational and cost explainer angles runs in parallel. No paid spend.</p>
       </div>
       <div class="card m1">
-        <h4>Month 1: audience building and qualified traffic</h4>
-        <p>The goal is not admissions. It is driving qualified traffic to the lander and building retargeting audiences, which are the only way to reach high intent users given the targeting constraints. Launch across first responder communities and Canadian geo communities plus the cleared keyword set. Expect CPAs materially above baseline, typically 30% to 50% higher and often more in a long cycle category. Month 1 CPA is not the channel benchmark. Success metrics: CTR above 0.4% on first responder placements, cost per lander visit in range, retargeting audience build rate.</p>
+        <h4>Month 1. Audience building and qualified traffic</h4>
+        <p>The goal is qualified lander traffic and retargeting pool construction, which is the only compliant route to genuinely high intent users. Launch the occupational and geographic campaigns and the cleared keyword set. Success metrics: CTR above 0.4% on occupational placements, cost per lander visit in range, retargeting pool build rate.</p>
       </div>
       <div class="card m2">
-        <h4>Month 2: layer retargeting and optimize</h4>
-        <p>Retargeting is disproportionately important on this account, because it is the only mechanism that reaches genuinely high intent users without violating the sensitive data rule. Launch retargeting against Month 1 audiences. Test the second creative angle. Introduce lookalike expansion if volume allows. CPAs should begin declining week over week.</p>
+        <h4>Month 2. Layer retargeting and optimize</h4>
+        <p>Retargeting matters disproportionately here, because it is the only mechanism that reaches high intent users without touching sensitive data. Launch retargeting against Month 1 audiences. Test the second creative angle. Introduce adjacent communities at low budget. CPAs should begin declining week over week.</p>
       </div>
       <div class="card m3">
-        <h4>Month 3: optimize and evaluate</h4>
-        <p>Judged on three signals, not CPA alone. First, CPA trajectory: is it declining week over week? Second, retargeting CPA against prospecting CPA, which should run 40% to 60% lower. Third, downstream quality: inquiry to consult and consult to admission rates compared against your other channels. Assisted conversions and direct traffic lift are tracked alongside, given the consideration cycle. Because the honest baseline is parity rather than advantage, the decision criterion is whether Reddit can hold near benchmark CPA while adding incremental volume that Google and Meta are not already capturing. Incrementality, not efficiency, is the thing being tested.</p>
+        <h4>Month 3. Optimize and evaluate</h4>
+        <p>Judge on four signals, not CPA alone.</p>
+        <ol class="steps">
+          <li>CPA trajectory. Is it declining week over week?</li>
+          <li>Retargeting CPA against prospecting CPA. Should run 40% to 60% lower.</li>
+          <li>Downstream quality. Inquiry to consult and consult to admission rates, measured in Salesforce against your other channels.</li>
+          <li>Incrementality. Branded and non branded search lift, direct traffic lift, and assisted conversions during the flight.</li>
+        </ol>
+        <p>Because the honest baseline is parity rather than advantage, the decision criterion is whether Reddit holds near benchmark CPA while adding volume Google and Meta are not already capturing.</p>
       </div>
     </div>
 
     <div class="investment">
       <div class="il">Recommended media budget</div>
-      <div class="iv">$25,000/mo for Months 1 and 2, scaling to $40,000/mo in Month 3</div>
-      <div class="in">Management fee quoted separately. No performance fees. No long term contract beyond the 90 day pilot.</div>
+      <div class="iv">$15,000 / month for Months 1 and 2. Scaling to $25,000 / month once we are confident in the signal.</div>
+      <div class="in">Roughly 15% of current monthly Google investment. Paid directly to Reddit, not to ScalePaid.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Investment</h2>
+    <div class="rule"></div>
+
+    <div class="cards">
+      <div class="card primary">
+        <h3>Campaign build and account setup. $5,000, Month 1 only.</h3>
+        <p>Covers Ads Manager inventory and keyword verification, full account and campaign architecture, the geo build across all fourteen markets, conversion API and Salesforce offline conversion mapping, ICP definition, and creative production for the launch angles.</p>
+      </div>
+      <div class="card">
+        <h3>Management. Starting at $3,500 / month, month to month.</h3>
+        <p>Tiered to media spend rather than charged as a percentage of it, so the fee does not climb automatically every time budget goes up. At the recommended budget, management sits in the first tier at $3,500 per month throughout.</p>
+      </div>
+      <div class="card">
+        <h3>Performance incentives</h3>
+        <p>Agreed separately, set against benchmarks established after the audit rather than guessed at now. We do not charge a percentage of spend.</p>
+      </div>
+    </div>
+
+    <p class="sublabel">Management fee tiers</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Monthly media spend</th><th>Management fee</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td>Up to $30,000</td><td>$3,500 / month</td></tr>
+          <tr><td>$30,000 to $100,000</td><td>$6,500 / month</td></tr>
+          <tr><td>Above $100,000</td><td>Custom, scoped to team requirement</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sublabel">90 day total</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Month 1</th><th>Month 2</th><th>Month 3</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Build and setup</td><td>$5,000</td><td>n/a</td><td>n/a</td><td class="num">$5,000</td></tr>
+          <tr><td>Management</td><td>$3,500</td><td>$3,500</td><td>$3,500</td><td class="num">$10,500</td></tr>
+          <tr><td>Media</td><td>$15,000</td><td>$15,000</td><td>$25,000</td><td class="num">$55,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p><strong>All management and build costs in USD.</strong> Media figures are CAD and Reddit bills media in USD, so budget a currency buffer on both.</p>
+      <p>Month to month, no long term contract. If ScalePaid is managing Google alongside Reddit, multi-platform management discounts are available and worth discussing as part of the audit scope.</p>
     </div>
   </section>
 
   <div class="cta">
-    <h2>Ready to start your pilot?</h2>
-    <p>An August kickoff means inventory verification, lander build, and creative are complete before September, and you enter the fall intake window with a live retargeting pool already building. September through November is peak intent in this category: the summer is over, the year end deadline is visible, and families are having the conversation they postponed.</p>
-    <a class="btn" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
+    <h2>Next step</h2>
+    <p><b>First, the Google and SEM audit</b>, as discussed. That is the stated priority and the larger immediate lever, and it is scoped separately.</p>
+    <p><b>Second, a Week 0 Reddit inventory verification.</b> Before you commit budget, we enumerate every community and keyword in Ads Manager and produce a confirmed inventory list with a real audience size. That converts this document from a projection into a plan.</p>
+    <p>An August start means verification, lander build, and creative are complete before September, and you enter the fall intake window with a retargeting pool already building. September through November is peak intent in this category: the summer is over, the year end deadline is visible, and families are having the conversation they postponed.</p>
+    <a class="btn" href="mailto:ben@futureundefined.com?subject=EHN%20Canada%20-%20next%20steps">Confirm next steps</a>
   </div>
 
   <footer>
     <div>
       <div class="wordmark">ScalePaid</div>
-      <div class="tag">Reddit Ads, built for brands that need a second channel.</div>
+      <div class="tag">Reddit Ads strategy and media buying</div>
     </div>
-    <div class="right">31 July 2026<br>Confidential</div>
+    <div class="right">
+      6 August 2026<br>Confidential
+    </div>
   </footer>
 
 </div>
