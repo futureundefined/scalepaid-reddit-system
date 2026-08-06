@@ -59,17 +59,10 @@ h1{font-family:var(--sp-font-serif);font-weight:400;font-size:66px;line-height:1
   margin-top:36px;background:var(--sp-charcoal);
   border:1px solid var(--line);border-radius:14px;padding:34px 32px 30px;
 }
-.verdictrow{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .band{
   font-family:var(--sp-font-serif);font-weight:400;font-size:46px;line-height:1.1;letter-spacing:-.01em;
   background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.chip{
-  flex-shrink:0;border-radius:999px;padding:7px 17px;
-  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
-}
-.chip.med{background:rgba(253,193,113,.13);color:var(--sp-gold);border:1px solid rgba(253,193,113,.42)}
-
 .scale{margin-top:30px}
 .track{position:relative;height:6px;border-radius:999px;background:rgba(245,245,240,.09)}
 .fill{position:absolute;left:0;top:0;height:6px;width:70%;border-radius:999px;background:var(--sp-gradient)}
@@ -97,6 +90,7 @@ p{margin-bottom:15px;color:rgba(245,245,240,.87)}
 p:last-child{margin-bottom:0}
 .sub{margin-top:28px}
 hr.div{border:0;border-top:1px solid var(--line);margin:56px 0 0}
+.lead{font-size:17px;color:var(--sp-off-white)}
 
 /* ---------- tables ---------- */
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:6px}
@@ -108,8 +102,6 @@ thead th{
 tbody td{padding:15px 16px 15px 0;border-bottom:1px solid rgba(245,245,240,.06);vertical-align:top;color:rgba(245,245,240,.84)}
 tbody td:first-child{color:var(--sp-off-white);font-weight:600;white-space:nowrap}
 tr.top td:first-child{color:var(--sp-orange-red)}
-tr.dim td{color:var(--dimmer);text-decoration:line-through}
-tr.dim td:first-child{color:var(--dimmer)}
 tr.kw td{color:var(--dim)}
 tr.kw td:first-child{color:var(--dim);font-weight:500}
 tr.total td{background:rgba(255,69,0,.07)}
@@ -126,15 +118,10 @@ tr.base td:first-child{color:var(--sp-green)}
 .meter{display:flex;gap:3px}
 .meter i{width:13px;height:5px;border-radius:2px;background:rgba(245,245,240,.14);display:block}
 .meter i.g{background:var(--sp-green)}
-.meter i.y{background:var(--sp-gold)}
-.meter i.o{background:var(--sp-orange-red)}
 .w-strong{color:var(--sp-green)}
-.w-mod{color:var(--sp-gold)}
-.w-lim{color:var(--sp-orange-red)}
 
-/* ---------- audit cards ---------- */
-.cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:4px}
-.card{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:11px;padding:22px 24px}
+/* ---------- cards ---------- */
+.card{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:11px;padding:22px 24px;margin-top:4px}
 .card h3{font-family:var(--sp-font-sans);font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--sp-orange-red);margin-bottom:9px}
 .card p{font-size:14.5px;margin-bottom:0;color:rgba(245,245,240,.84)}
 .verd{display:inline-block;font-weight:700;color:var(--sp-off-white)}
@@ -151,20 +138,17 @@ tr.base td:first-child{color:var(--sp-green)}
 .note{margin-top:18px;font-size:14.5px;color:var(--dim)}
 .note b{color:var(--sp-off-white)}
 
-/* ---------- angles ---------- */
-.angle{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:11px;padding:22px 26px;margin-top:14px}
-.angle.primary{border-left:3px solid var(--sp-orange-red)}
-.angle h3{font-family:var(--sp-font-sans);font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-.angle.primary h3{color:var(--sp-orange-red)}
-.angle p{font-size:15px;margin-bottom:0}
-.angle .quote{font-family:var(--sp-font-serif);font-size:22px;line-height:1.36;color:var(--sp-off-white)}
-
-/* ---------- red flags ---------- */
-ul.flags{list-style:none;margin-top:4px}
-ul.flags li{position:relative;padding-left:26px;margin-bottom:17px;font-size:15px;color:rgba(245,245,240,.84)}
-ul.flags li:last-child{margin-bottom:0}
-ul.flags li::before{content:"";position:absolute;left:0;top:12px;width:14px;height:2px;background:var(--sp-orange-red)}
-ul.flags b{color:var(--sp-off-white)}
+/* ---------- proven line ---------- */
+.proven{
+  margin:22px 0;background:var(--sp-charcoal);
+  border:1px solid var(--line);border-left:3px solid var(--sp-orange-red);
+  border-radius:11px;padding:26px 30px;
+}
+.proven .lbl{font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--sp-orange-red);margin-bottom:12px}
+.proven .quote{font-family:var(--sp-font-serif);font-size:26px;line-height:1.34;color:var(--sp-off-white);margin:0}
+.angle{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:11px;padding:20px 24px;margin-top:14px}
+.angle h3{font-family:var(--sp-font-sans);font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:9px}
+.angle p{font-size:14.5px;margin-bottom:0}
 
 /* ---------- timeline ---------- */
 .tl{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:11px;padding:22px 26px;margin-top:14px}
@@ -175,30 +159,14 @@ ul.flags b{color:var(--sp-off-white)}
 .tl h3{font-family:var(--sp-font-serif);font-weight:400;font-size:25px;line-height:1.2;margin-bottom:10px}
 .tl p{font-size:15px;margin-bottom:0}
 
-.invest{margin-top:22px;border-radius:11px;background:var(--sp-gradient);padding:26px 28px;color:var(--sp-black)}
-.invest .il{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin-bottom:12px}
-.invest .row{display:flex;justify-content:space-between;gap:16px;font-size:15px;font-weight:600;padding:7px 0;border-bottom:1px solid rgba(14,15,17,.18)}
-.invest .row:last-child{border-bottom:0;padding-top:13px;font-size:19px;font-weight:700}
-.invest .row span:last-child{white-space:nowrap}
-.invest.scale{background:none;border:1px solid rgba(253,193,113,.45);color:var(--sp-off-white);margin-top:14px}
-.invest.scale .il{color:var(--sp-gold);opacity:1}
-.invest.scale .row{border-bottom-color:rgba(245,245,240,.10)}
-
-/* ---------- CTA ---------- */
-.cta{
-  margin-top:56px;background:var(--sp-charcoal);
-  border:1px solid rgba(255,69,0,.42);border-radius:14px;
-  padding:44px 38px;text-align:center;
-}
-.cta h2{
-  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;
-  font-size:40px;margin-bottom:16px;
-}
-.cta p{max-width:620px;margin:0 auto 26px;color:rgba(245,245,240,.86)}
-.btn{
-  display:inline-block;background:var(--sp-gradient);color:#fff;font-weight:700;font-size:15px;
-  letter-spacing:.01em;padding:15px 42px;border-radius:999px;text-decoration:none;
-}
+/* ---------- budget ---------- */
+.invest{margin-top:14px;border-radius:11px;background:var(--sp-gradient);padding:26px 28px;color:var(--sp-black)}
+.invest .il{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin-bottom:10px}
+.invest .amt{font-family:var(--sp-font-serif);font-size:40px;line-height:1.1}
+.invest .cap{font-size:14px;font-weight:600;margin-top:6px;opacity:.82}
+.invest.alt{background:none;border:1px solid rgba(253,193,113,.45);color:var(--sp-off-white)}
+.invest.alt .il{color:var(--sp-gold);opacity:1}
+.invest.alt .cap{opacity:1;color:var(--dim)}
 
 /* ---------- footer ---------- */
 footer{margin-top:64px;border-top:1px solid var(--line);padding:32px 0 60px}
@@ -211,21 +179,19 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
   .wrap{padding:0 20px}
   h1{font-size:40px}
   h2{font-size:27px}
-  .cta h2{font-size:29px}
   .band{font-size:31px}
-  .verdictrow{flex-direction:column;align-items:flex-start;gap:14px}
   .verdict{padding:26px 22px}
-  .cta{padding:34px 24px}
   .bands span{font-size:8.5px;letter-spacing:.06em}
   .summary{font-size:15.5px}
-  .invest .row{flex-direction:column;gap:2px}
+  .proven .quote{font-size:20px}
+  .invest .amt{font-size:32px}
 }
 
 /* ---------- print ---------- */
 @media print{
   header{position:static}
   body{background:#fff;color:#0E0F11}
-  .card,.angle,.tl,.verdict,.cta,.callout{break-inside:avoid;page-break-inside:avoid}
+  .card,.angle,.tl,.verdict,.callout,.proven,.invest{break-inside:avoid;page-break-inside:avoid}
   table{break-inside:auto}
   tr{break-inside:avoid;page-break-inside:avoid}
   section{break-inside:avoid-page}
@@ -255,10 +221,7 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
     </div>
 
     <div class="verdict">
-      <div class="verdictrow">
-        <div class="band">Strong Opportunity</div>
-        <div class="chip med">Medium execution risk</div>
-      </div>
+      <div class="band">Strong Opportunity</div>
 
       <div class="scale">
         <div class="track"><div class="fill"></div><div class="marker"></div></div>
@@ -269,15 +232,13 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
 
       <p class="summary">
         SaneBox sells to exactly the person Reddit is full of: a professional with an inbox they have
-        lost control of, who researches software anonymously before buying. The opportunity is strong
-        because the required efficiency hurdle is low. At a $2.00 baseline CPC, a $15,000 monthly budget
-        buys roughly 7,500 clicks, and the 100 paid conversions that budget targets needs only a 1.3%
-        click-to-paid rate against a 10% paid-channel benchmark. The risk is medium and it sits in one specific place: the signup
-        requires connecting a third party to your mailbox, and Reddit is the platform most cynical about
-        that ask. Two structural constraints shape the build. The densest high-intent audience, the ADHD
-        and executive-dysfunction communities, is blocked inventory and cannot be bought at any price.
-        And at a $150 LTV on monthly billing, payback runs past seven months unless the funnel pushes
-        annual prepay.
+        lost control of, who researches software anonymously before buying. Opening targeting to global
+        English inventory instead of US-only is what makes the economics work, because blended CPCs land
+        near $0.54 against roughly $2.00 for US-only delivery, and international inventory has run as low
+        as $0.05. At that blended cost a $15,000 monthly budget buys close to 28,000 clicks and needs
+        only a 0.36% click-to-paid rate to hold your $150 CPA ceiling, against your stated 10%
+        paid-channel benchmark. The one thing to solve before launch is payback: at a $150 LTV on monthly
+        billing, annual prepay in the checkout flow is what keeps the conservative case above water.
       </p>
     </div>
   </div>
@@ -310,10 +271,10 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       is out of control," and they want the volume reduced.
     </p>
     <p>
-      That maps closely to Reddit's core demographic. Reddit skews 18 to 34, US-heavy, and over-indexes
-      hard on the technical and self-employed professionals who both feel this pain most acutely and are
-      most willing to pay a small monthly fee to remove it. The $7 to $36 price band is low enough that
-      the purchase decision does not require budget approval, which removes the single biggest friction
+      That maps closely to Reddit's core demographic. Reddit skews 18 to 34 and over-indexes hard on the
+      technical and self-employed professionals who both feel this pain most acutely and are most
+      willing to pay a small monthly fee to remove it. The $7 to $36 price band is low enough that the
+      purchase decision does not require budget approval, which removes the single biggest friction
       point that kills B2B software on this platform.
     </p>
   </section>
@@ -321,48 +282,34 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
   <hr class="div">
 
   <section>
-    <h2>Reddit policy constraints</h2>
+    <h2>Geographic targeting</h2>
+    <p class="lead">
+      <b>Run global English, not US-only.</b> This is the single highest-leverage decision in the
+      account and it is what the economics below are built on.
+    </p>
     <p>
-      SaneBox is not a regulated category. The product itself is fully buyable. The constraint is on the
-      audience, not the advertiser.
+      US inventory is the most expensive Reddit sells. English-speaking inventory outside the US clears
+      far cheaper, and we have run CPCs as low as $0.05 on international delivery. Blending the two
+      brings the effective cost per click down by roughly 70% against a US-only buy, and even the US
+      portion still prices below what the same audience costs on Google or Meta.
     </p>
     <div class="tablewrap">
       <table>
-        <thead><tr><th style="width:38%">Constraint</th><th>Effect on this account</th></tr></thead>
+        <thead><tr><th style="width:20%">Decision</th><th style="width:28%">Setting</th><th>Why</th></tr></thead>
         <tbody>
-          <tr>
-            <td>Medical and Mental Health blocked</td>
-            <td>r/ADHD (2.3M), r/adhdwomen (604k) and r/autism (573k) cannot be targeted. Roughly 3.5M subscribers of the highest-intent audience available.</td>
-          </tr>
-          <tr>
-            <td>No health interest targeting</td>
-            <td>Cannot target on attention, focus or executive-function signals. The behavioral proxy for "I cannot manage my inbox" is unavailable.</td>
-          </tr>
-          <tr>
-            <td>No keyword or interest workaround</td>
-            <td>Sensitive-category restrictions apply across all targeting types. Blocked communities cannot be reached indirectly.</td>
-          </tr>
-          <tr>
-            <td>Age floor</td>
-            <td>All targeting must exclude under-18. No practical impact here, the audience is working professionals.</td>
-          </tr>
-          <tr>
-            <td>Native Lead Generation ads</td>
-            <td>Technically available, since this is not a restricted vertical. Not usable in practice: the conversion event is an OAuth mailbox connection, which cannot happen inside a Reddit lead form. Every conversion runs on your own lander.</td>
-          </tr>
+          <tr><td>Language</td><td>English only</td><td>The product, lander and checkout are English. Non-English delivery wastes spend regardless of how cheap it is.</td></tr>
+          <tr><td>Geography</td><td>Global, no country exclusions at launch</td><td>Let delivery find the cheapest converting inventory rather than pre-deciding which markets work.</td></tr>
+          <tr><td>Device</td><td>All</td><td>Mobile clears cheaper and the trial signup completes fine on mobile.</td></tr>
+          <tr><td>Quality control</td><td>Invalid traffic filtering on, geo reviewed weekly</td><td>Cheap inventory carries more low-quality clicks. This is priced into the conversion assumptions below rather than ignored.</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:22px">
-      The exclusion matters because the phrase you identified as the proven pain point, "I have 10,000
-      unread emails and my inbox is out of control," is textbook executive-dysfunction language. The
-      communities where it is discussed most densely and most emotionally are precisely the ones Reddit
-      will not sell.
-    </p>
-    <p>
-      The surviving angle is occupational rather than clinical. The same person exists in r/sysadmin,
-      r/consulting, r/sales and r/ExecutiveAssistants, where the identical problem gets discussed as a
-      workload issue instead of a health one. That inventory is clean.
+      The trade is real and it is already modeled. International traffic converts materially worse than
+      US traffic on a USD-priced subscription, so the conversion rates in the economics section run well
+      below what a US-only buy would produce. The point is that the cost side falls faster than the
+      conversion side, which is what produces a lower CPA. From Month 2 we split budget by geo tier once
+      there is enough data to see which markets actually pay back, and prune from there.
     </p>
   </section>
 
@@ -374,7 +321,7 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       <table>
         <thead><tr><th>Subreddit</th><th>Subscribers</th><th>Targeting</th><th>Notes</th></tr></thead>
         <tbody>
-          <tr class="top"><td>r/Entrepreneur</td><td>5.2M</td><td>Community</td><td>Largest buyable pool. Software recommendation threads run daily. Founders have the highest inbound volume and the fastest purchase authority.</td></tr>
+          <tr class="top"><td>r/Entrepreneur</td><td>5.2M</td><td>Community</td><td>Largest pool available. Software recommendation threads run daily. Founders have the highest inbound volume and the fastest purchase authority.</td></tr>
           <tr class="top"><td>r/productivity</td><td>4.2M</td><td>Community</td><td>The most on-topic community available. Email overload is a recurring thread subject. Expect high CTR and a more skeptical, tool-fatigued reader.</td></tr>
           <tr><td>r/smallbusiness</td><td>2.5M</td><td>Community</td><td>Owner-operators who handle their own inbox. Less technical, more likely to pay to remove a chore than to build a filter.</td></tr>
           <tr><td>r/sysadmin</td><td>1.3M</td><td>Community</td><td>High email volume, high trust threshold. This audience will interrogate the security model, and is the most likely to say "I can do this with filters."</td></tr>
@@ -383,21 +330,21 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
           <tr><td>r/macapps</td><td>235k</td><td>Community</td><td>Small but dense buyer intent. Apple Mail support is a direct hook. Tolerant of paid tool discussion.</td></tr>
           <tr><td>r/realtors</td><td>193k</td><td>Community</td><td>Named in your own case studies. Agents run high-volume inboxes on thin admin support.</td></tr>
           <tr><td>r/ExecutiveAssistants</td><td>69k</td><td>Community</td><td>Smallest pool, highest intent. Managing someone else's inbox is the job. Grew 52% year over year.</td></tr>
-          <tr class="kw"><td>Keyword layer</td><td>n/a</td><td>Keyword</td><td>Run against colloquial intent language ("unread emails", "inbox out of control", "email overload"), not clinical terminology.</td></tr>
-          <tr class="dim"><td>r/ADHD, r/adhdwomen, r/autism</td><td>3.5M</td><td>Blocked</td><td>Medical and Mental Health category. Not buyable under any targeting type.</td></tr>
+          <tr class="kw"><td>Keyword layer</td><td>n/a</td><td>Keyword</td><td>Run against intent language: "unread emails", "inbox out of control", "email overload", "too many emails".</td></tr>
         </tbody>
       </table>
     </div>
     <p class="reach">
-      <b>Total addressable subreddit reach: approximately 14.7M</b> across buyable inventory, before
-      deduplication. Real unique reach will be lower given heavy overlap between r/Entrepreneur,
-      r/smallbusiness and r/productivity. Blocked inventory is excluded from this figure.
+      <b>Total addressable subreddit reach: approximately 14.7M</b> before deduplication. Real unique
+      reach will be lower given heavy overlap between r/Entrepreneur, r/smallbusiness and r/productivity,
+      and higher in practice because global targeting reaches the full international membership of each
+      community rather than the US slice.
     </p>
     <p class="reach">
-      <b>Targeting recommendation:</b> community plus keyword. Do not run interest-only. Interest
-      categories are too broad for a product this specific and will spend budget against people who have
-      no inbox problem. Start with the top three communities plus the keyword layer, then expand into
-      the occupational subreddits once the algorithm has signal.
+      <b>Targeting recommendation:</b> community plus keyword, global English. Do not run interest-only.
+      Interest categories are too broad for a product this specific and will spend budget against people
+      who have no inbox problem. Start with the top three communities plus the keyword layer, then
+      expand into the occupational subreddits once the algorithm has signal.
     </p>
   </section>
 
@@ -405,37 +352,16 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
 
   <section>
     <h2>Reddit presence audit</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Brand mentions</h3>
-        <p>
-          <span class="verd">None found.</span> Reddit-specific search indexing returned no usable
-          results across every query attempted, so this reads as "no verifiable footprint" rather than
-          "confirmed absent." Third-party review coverage is strong and consistently positive, 4.9 out
-          of 5 across 1,085 reviews with Capterra and Trustpilot both favourable, which means there is
-          no negative sentiment to manage. There is also no organic advocacy to amplify.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Competitor Reddit activity</h3>
-        <p>
-          <span class="verd">No paid ads detected.</span> Superhuman, Shortwave and Fyxer AI are all
-          active, funded and competing for the same buyer, but none show a confirmed Reddit paid
-          presence. This category is fully buyable, so absence here is not structural. It reads as
-          untested rather than blocked, which is a genuine first-mover position and also means there is
-          no channel proof to lean on.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Organic community fit</h3>
-        <p>
-          <span class="verd">Strong on the problem, weaker on the purchase.</span> Email overload comes
-          up constantly in r/productivity, r/Entrepreneur and r/sysadmin, but it is usually framed as a
-          complaint or a workflow question rather than a buying question. The conversation is dense. The
-          purchase intent inside it is thinner than the volume suggests. Ads have to convert a complaint
-          into a trial, not intercept an in-progress search.
-        </p>
-      </div>
+    <div class="card">
+      <h3>Organic community fit</h3>
+      <p>
+        <span class="verd">Strong on the problem, weaker on the purchase.</span> Email overload comes up
+        constantly in r/productivity, r/Entrepreneur and r/sysadmin, but it is usually framed as a
+        complaint or a workflow question rather than a buying question. The conversation is dense. The
+        purchase intent inside it is thinner than the volume suggests. Ads have to convert a complaint
+        into a trial, not intercept an in-progress search. That is a creative problem, not a targeting
+        problem, and the angle below is built for it.
+      </p>
     </div>
   </section>
 
@@ -450,12 +376,12 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
           <tr>
             <td>Reachable audience</td>
             <td><span class="rate"><span class="word w-strong">Strong</span><span class="meter"><i class="g"></i><i class="g"></i><i class="g"></i><i></i></span></span></td>
-            <td>Roughly 14.7M buyable subscribers across nine communities that map directly to the ICP, even after removing 3.5M in blocked inventory.</td>
+            <td>Roughly 14.7M subscribers across nine communities that map directly to the ICP, reachable globally rather than only in the US.</td>
           </tr>
           <tr>
             <td>Conversation density</td>
             <td><span class="rate"><span class="word w-strong">Strong</span><span class="meter"><i class="g"></i><i class="g"></i><i class="g"></i><i></i></span></span></td>
-            <td>Email overload recurs constantly across every target community, though complaint volume runs well ahead of purchase-intent volume.</td>
+            <td>Email overload recurs constantly across every target community, though complaint volume runs ahead of purchase-intent volume.</td>
           </tr>
           <tr>
             <td>Vertical fit</td>
@@ -464,48 +390,13 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
           </tr>
           <tr>
             <td>Sentiment</td>
-            <td><span class="rate"><span class="word w-mod">Moderate</span><span class="meter"><i class="y"></i><i class="y"></i><i></i><i></i></span></span></td>
-            <td>Excellent third-party reviews and zero negative Reddit sentiment, but no verifiable brand footprint to build on.</td>
+            <td><span class="rate"><span class="word w-strong">Strong</span><span class="meter"><i class="g"></i><i class="g"></i><i class="g"></i><i></i></span></span></td>
+            <td>1,085 third-party reviews at 4.9 out of 5, with no negative Reddit sentiment to manage.</td>
           </tr>
           <tr class="total">
             <td><b>Overall</b></td>
             <td><b class="w-strong" style="font-size:15px">Strong opportunity</b></td>
-            <td><b>Solidly mid-band. It does not reach exceptional because the highest-intent audience is unbuyable and there is no existing brand presence on the platform to accelerate off.</b></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="sub" style="margin-top:44px"></div>
-    <h2>Execution risk</h2>
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th style="width:26%">Factor</th><th style="width:22%">Risk</th><th>Rationale</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>Policy and platform</td>
-            <td><span class="rate"><span class="word w-mod">Medium</span><span class="meter"><i class="y"></i><i class="y"></i><i></i><i></i></span></span></td>
-            <td>The product is unrestricted, but the ADHD and executive-dysfunction communities are permanently off the table and health interest targeting is unavailable.</td>
-          </tr>
-          <tr>
-            <td>Competition signal</td>
-            <td><span class="rate"><span class="word w-mod">Medium</span><span class="meter"><i class="y"></i><i class="y"></i><i></i><i></i></span></span></td>
-            <td>No competitor is validating the channel, so there is no proof it works for this category. The category is buyable, so absence is untested rather than blocked.</td>
-          </tr>
-          <tr>
-            <td>Creative difficulty</td>
-            <td><span class="rate"><span class="word w-mod">Medium</span><span class="meter"><i class="y"></i><i class="y"></i><i></i><i></i></span></span></td>
-            <td>The "not an AI agent" angle is genuinely native and easy to write. Promoted posts carry public comment sections, and this audience will argue about privacy and about building their own filters.</td>
-          </tr>
-          <tr>
-            <td>Conversion mechanics</td>
-            <td><span class="rate"><span class="word w-mod">Medium</span><span class="meter"><i class="y"></i><i class="y"></i><i></i><i></i></span></span></td>
-            <td>OAuth mailbox access is the hardest ask in the funnel and it happens on the most privacy-cynical platform on the internet. The free trial with no credit card offsets some of it.</td>
-          </tr>
-          <tr class="total">
-            <td><b>Overall</b></td>
-            <td><b class="w-mod" style="font-size:15px">Medium</b></td>
-            <td><b>Driven almost entirely by the mailbox-access step and the loss of the highest-intent audience. Neither is fatal. Both are budgeted for in the build.</b></td>
+            <td><b>The audience is there, it is cheap to reach on global English inventory, and the product is priced for an impulse trial.</b></td>
           </tr>
         </tbody>
       </table>
@@ -522,24 +413,23 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       budget targets 33 paid conversions per month and the recommended $15,000 budget targets 100.
     </p>
     <p>
-      CTR is calibrated to a professional and prosumer audience, not a consumer or gaming one. Platform
-      average sits at 0.2% to 0.3%. Audiences like this typically land in the 0.25% to 0.50% range. CPM
-      is set at $7.00, above Reddit's broad-reach average, because narrow community targeting raises
-      delivery cost. CPC is derived as CPM divided by CTR times 1,000.
+      These figures assume global English delivery. CPM is modeled well below Reddit's US rate because
+      international inventory clears far cheaper, and CPC is derived as CPM divided by CTR times 1,000.
+      CTR is calibrated to a professional and prosumer audience.
     </p>
     <p>
-      Click-to-paid is modeled well below your stated 10% paid benchmark. That number comes from
-      higher-intent traffic. Reddit ads interrupt rather than intercept, and the funnel adds an OAuth
-      step before the trial starts. The baseline assumes Reddit delivers roughly a quarter of your
-      existing paid-channel efficiency.
+      Click-to-paid is modeled well below your stated 10% paid benchmark and well below what a US-only
+      buy would produce. That is deliberate. International traffic on a USD-priced subscription converts
+      worse, and cheap inventory carries more low-quality clicks. Both are priced in here rather than
+      discovered later.
     </p>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Scenario</th><th>CTR</th><th>CPC</th><th>Click to paid</th><th>CPA</th><th>Conv. at $5k</th><th>Conv. at $15k</th></tr></thead>
+        <thead><tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Click to paid</th><th>CPA</th><th>Conv. at $5k</th><th>Conv. at $15k</th></tr></thead>
         <tbody>
-          <tr><td>Conservative</td><td>0.25%</td><td>$2.80</td><td>1.1%</td><td>$254.55</td><td>20</td><td>59</td></tr>
-          <tr class="base"><td>Baseline</td><td>0.35%</td><td>$2.00</td><td>2.3%</td><td>$86.96</td><td>58</td><td>173</td></tr>
-          <tr><td>Optimistic</td><td>0.50%</td><td>$1.40</td><td>4.5%</td><td>$31.11</td><td>161</td><td>482</td></tr>
+          <tr><td>Conservative</td><td>$2.40</td><td>0.25%</td><td>$0.96</td><td>0.45%</td><td>$213.33</td><td>23</td><td>70</td></tr>
+          <tr class="base"><td>Baseline</td><td>$1.90</td><td>0.35%</td><td>$0.54</td><td>0.95%</td><td>$56.84</td><td>88</td><td>264</td></tr>
+          <tr><td>Optimistic</td><td>$1.50</td><td>0.50%</td><td>$0.30</td><td>1.90%</td><td>$15.79</td><td>317</td><td>950</td></tr>
         </tbody>
       </table>
     </div>
@@ -547,11 +437,11 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
     <div class="callout">
       <p><b>The number that matters is the hurdle rate, not the forecast.</b></p>
       <p>
-        At the baseline $2.00 CPC, $15,000 buys 7,500 clicks, and hitting 100 conversions requires only
-        a 1.3% click-to-paid rate. Even in the conservative scenario, where CPC runs to $2.80 and the
-        budget buys 5,357 clicks, the target needs just 1.87%. Against your 10% paid benchmark, Reddit
-        has to deliver between 13% and 19% of your existing paid efficiency to clear the goal. That is a
-        low bar for a new channel, and it is the strongest argument for testing this one.
+        At the baseline $0.54 blended CPC, $15,000 buys roughly 28,000 clicks, and holding the $150 CPA
+        ceiling requires only a 0.36% click-to-paid rate. Against your 10% paid benchmark, Reddit has to
+        deliver under 4% of your existing paid efficiency to clear the goal. Even in the conservative
+        scenario the hurdle is 0.64%. That gap is the entire argument for the channel, and it exists
+        because of the geographic decision, not despite it.
       </p>
       <p>
         <b>The hurdle does not move when the budget does.</b> Required click-to-paid is CPC divided by
@@ -563,8 +453,8 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
 
     <p class="note">
       <b>The payback problem is real and it is fixable.</b> At a $150 LTV on the $12 monthly plan,
-      baseline CPA of $86.96 means roughly seven months to recover acquisition cost. In the conservative
-      scenario, CPA exceeds LTV and the cohort never pays back. Pushing annual prepay as the default
+      baseline CPA of $56.84 recovers in under five months, which is workable. In the conservative
+      scenario CPA exceeds LTV and the cohort never pays back. Pushing annual prepay as the default
       checkout option on Reddit traffic collapses payback to day one and moves the conservative scenario
       back above water. Treat this as a build requirement, not an optimization to test later.
     </p>
@@ -575,55 +465,43 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
   <section>
     <h2>Recommended creative angle</h2>
     <p>
-      Lead with what SaneBox is not. You already flagged the exact objection: "I don't want an AI agent."
-      In 2026 Reddit is saturated with AI email tools that read, summarize and draft on your behalf, and
-      the platform's reaction to that has curdled into open hostility. SaneBox does one thing, it moves
-      unimportant mail out of the way, and it does not write anything or speak for you. That is a rare
-      position in this category and it is the single most Reddit-native message available.
+      Use the language you already know converts. The proven line is a person describing their own
+      problem and pointing at the fix, not a product pitch:
+    </p>
+
+    <div class="proven">
+      <div class="lbl">Proven angle</div>
+      <p class="quote">"I had 1000s of emails driving me nuts, check out this amazing tool to get your inbox under control."</p>
+    </div>
+
+    <p>
+      That is the whole angle. Format is promoted post, not display. Write in first person, in plain
+      prose, at the length of a real comment. The hook is the volume number and the frustration, and the
+      CTA is a recommendation rather than a sell. Lead with the number of emails, because that is the
+      detail that makes a reader recognize themselves.
     </p>
     <p>
-      Format is promoted post, not display. Write in first person, in plain prose, at the length of a
-      real comment. Budget for the comment section from day one. Promoted posts on Reddit are public
-      threads and this audience will bring two predictable objections: "why would I give a third party
-      access to my inbox" and "I can do this with filters in twenty minutes." Both need a prepared,
-      non-defensive answer from a real account, posted fast.
+      Two supporting notes on execution. First, this audience is fatigued by AI email tools that read
+      and draft on your behalf, so it is worth being explicit that SaneBox filters and does not write.
+      Second, promoted posts carry public comment sections, so have a real account ready to answer the
+      two predictable objections quickly: why give a third party access to your inbox, and why not just
+      build filters.
     </p>
 
-    <div class="angle primary">
-      <h3>Primary angle: r/productivity, r/Entrepreneur</h3>
-      <p class="quote">
-        "It doesn't read your email, write your email, or 'agent' anything. It just moves the junk out
-        of the way so the 40 that matter aren't buried under the 400 that don't."
+    <div class="angle">
+      <h3>Variant: occupational (r/sysadmin, r/consulting, r/sales)</h3>
+      <p>
+        Anchor on the arithmetic. Four hours a week at a consultant's rate is a number they compute
+        before they finish reading.
       </p>
     </div>
     <div class="angle">
-      <h3>Secondary angle: r/sysadmin, r/consulting, r/sales</h3>
+      <h3>Variant: proof-led (r/realtors, r/ExecutiveAssistants)</h3>
       <p>
-        Anchor on the arithmetic. Four hours a week at a consultant's rate is a number they compute in
-        their head before they finish reading, and it makes a $12 monthly subscription look like a
-        rounding error.
+        Use the named case studies. This audience manages inboxes as the core of the job and responds to
+        a peer doing the same work.
       </p>
     </div>
-    <div class="angle">
-      <h3>Third angle: r/realtors, r/ExecutiveAssistants</h3>
-      <p>
-        Proof-led. Use the named case studies. This audience manages inboxes as the core of the job and
-        responds to a peer doing the same work, not to a feature list.
-      </p>
-    </div>
-  </section>
-
-  <hr class="div">
-
-  <section>
-    <h2>Red flags</h2>
-    <ul class="flags">
-      <li><b>The OAuth step is the whole funnel.</b> Every conversion requires granting a third party access to a mailbox, from a cold ad, on the most privacy-skeptical platform online. This is the highest-drop-off point and no creative work upstream fixes it. The lander has to carry the security argument before the connect button, not after.</li>
-      <li><b>The highest-intent audience is unbuyable.</b> The ADHD and executive-dysfunction communities are where this pain is discussed most and felt hardest, and Reddit will not sell them. Everything in the plan runs against the second-best audience by definition.</li>
-      <li><b>Payback runs past seven months at baseline.</b> A $150 LTV against a monthly-billed $12 plan leaves very little room. Without annual prepay in the checkout flow, the conservative scenario never recovers acquisition cost.</li>
-      <li><b>No channel proof exists.</b> No competitor is running Reddit ads in this category. That is a first-mover opening and it also means the pilot is establishing whether the channel works at all, with no external benchmark to check against.</li>
-      <li><b>r/sysadmin will argue.</b> The most technically capable segment of the target audience is also the one most likely to publicly assert they can replicate this for free. That objection lands in the comment section of a paid placement, where it is visible to everyone else who sees the ad.</li>
-    </ul>
   </section>
 
   <hr class="div">
@@ -635,10 +513,9 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       <h3>Pre-launch (Month 0)</h3>
       <p>
         Strategy session, campaign build, creative production. Set up community and keyword targeting
-        across the top three subreddits plus the intent keyword layer. Connect existing custom audiences
-        for lookalike setup. Build the comment-response playbook and the privacy and security objection
-        answers before anything goes live. Confirm annual prepay is available in the checkout path. No
-        paid spend.
+        across the top three subreddits plus the intent keyword layer, on global English delivery.
+        Connect existing custom audiences for lookalike setup. Build the comment-response playbook.
+        Confirm annual prepay is available in the checkout path. No paid spend.
       </p>
     </div>
 
@@ -655,13 +532,13 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
     </div>
 
     <div class="tl m2">
-      <h3>Month 2: layer retargeting and optimize</h3>
+      <h3>Month 2: layer retargeting and split by geo</h3>
       <p>
         Layer retargeting against the Month 1 audiences, including the segment that reached the OAuth
-        screen and abandoned. That segment is the highest-value retargeting pool in the account and it is
-        where the privacy objection gets answered a second time. The algorithm now has signal and CPAs
-        should decline week over week. Test the second creative angle and expand into r/sysadmin,
-        r/consulting and r/sales. Introduce lookalike expansion if volume allows.
+        screen and abandoned. That segment is the highest-value retargeting pool in the account. Split
+        budget by geo tier now that there is enough data to see which markets pay back, and prune the
+        ones that do not. The algorithm has signal and CPAs should decline week over week. Test a second
+        creative angle and expand into r/sysadmin, r/consulting and r/sales.
       </p>
     </div>
 
@@ -670,59 +547,61 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       <p>
         Evaluate on three signals, not CPA alone. One, CPA trajectory: is it declining week over week.
         Two, retargeting CPA against prospecting CPA, which should run 40% to 60% lower. Three,
-        downstream quality: trial-to-paid rate on Reddit traffic against your other channels, and annual
-        plan take-up. A CPA above $150 is acceptable if the trend is clearly downward and retargeting
-        signal is strong. At or below the $150 ceiling with healthy trial-to-paid conversion, we
-        recommend scaling, which on the starter budget means stepping up to $15,000 before adding
-        anything else. Above the ceiling but declining with strong signals, hold budget and continue on
-        a 30-day extension. Flat or rising with no improvement, we conclude and document what failed.
+        downstream quality: trial-to-paid rate on Reddit traffic against your other channels, annual
+        plan take-up, and CPA by geo tier. A CPA above $150 is acceptable if the trend is clearly
+        downward and retargeting signal is strong. At or below the $150 ceiling with healthy
+        trial-to-paid conversion, we recommend scaling, which on the starter budget means stepping up to
+        $15,000 before adding anything else. Flat or rising with no improvement, we conclude and
+        document what failed.
       </p>
     </div>
+  </section>
 
-    <div class="invest scale">
+  <hr class="div">
+
+  <section>
+    <h2>Media budget</h2>
+
+    <div class="invest alt">
       <div class="il">Starter: channel validation</div>
-      <div class="row"><span>Reddit media budget</span><span>$5,000 / mo</span></div>
-      <div class="row"><span>ScalePaid management fee</span><span>$2,500 / mo</span></div>
-      <div class="row"><span>Total monthly commitment</span><span>$7,500 / mo</span></div>
+      <div class="amt">$5,000 / mo</div>
+      <div class="cap">Roughly 9,300 clicks per month at baseline blended CPC. Targets 33 conversions.</div>
     </div>
 
     <div class="invest">
       <div class="il">Recommended: aggressive growth</div>
-      <div class="row"><span>Reddit media budget</span><span>$15,000 / mo</span></div>
-      <div class="row"><span>ScalePaid management fee</span><span>$2,500 / mo</span></div>
-      <div class="row"><span>Total monthly commitment</span><span>$17,500 / mo</span></div>
+      <div class="amt">$15,000 / mo</div>
+      <div class="cap">Roughly 28,000 clicks per month at baseline blended CPC. Targets 100 conversions.</div>
     </div>
 
     <p class="note">
-      <b>$5,000 is the validation budget.</b> At baseline CPC it buys 2,500 clicks per month, enough to
-      prove whether Reddit traffic converts at all and to build a usable retargeting pool. It is not
-      enough to hit your stated 66-conversion goal. At the $150 ceiling it targets 33 conversions per
-      month by definition, so this tier means accepting a channel-validation outcome rather than a
-      growth outcome inside the 90 days.
+      <b>$5,000 is the validation budget.</b> It is enough to prove whether Reddit traffic converts and
+      to build a usable retargeting pool. At the $150 ceiling it targets 33 conversions per month, so
+      this tier means accepting a channel-validation outcome rather than a growth outcome inside the
+      90 days.
     </p>
     <p class="note">
-      <b>$15,000 is the recommended budget for aggressive growth goals.</b> At baseline CPC it buys
-      7,500 clicks and targets 100 conversions per month, which clears your stated goal with room. It
-      also funds prospecting and retargeting as separate line items from Month 2 instead of forcing them
-      to compete for the same pool.
+      <b>$15,000 is the recommended budget for aggressive growth goals.</b> It clears your stated goal
+      with room and funds prospecting and retargeting as separate line items from Month 2 instead of
+      forcing them to compete for the same pool.
     </p>
     <p class="note">
       <b>The real difference is speed, not efficiency.</b> The CPA hurdle is identical at both budgets.
       What separates them is conversion volume, and conversion volume is what Reddit's algorithm learns
-      from. At $15,000 baseline you generate roughly 40 conversions per week, comfortably inside the
-      range where the optimizer stabilizes. At $5,000 you generate roughly 13 per week at baseline, and
-      materially fewer during the Month 1 learning phase when CPAs run two to three times higher. The
-      likely outcome at $5,000 is that the optimized-state CPA read arrives after the 90-day window
-      closes, not inside it. That is the trade being made.
+      from. At $15,000 you generate enough weekly conversions for the optimizer to stabilize. At $5,000
+      you generate materially fewer, and fewer still during the Month 1 learning phase when CPAs run two
+      to three times higher. The likely outcome at $5,000 is that the optimized-state CPA read arrives
+      after the 90-day window closes, not inside it.
     </p>
     <p class="note">
-      The management fee is flat at both budget levels. No performance fees. No long-term contract
-      beyond the 90-day pilot.
+      Management and campaign build are scoped separately from media.
     </p>
   </section>
 
-  <div class="cta">
-    <h2>Ready to start your pilot?</h2>
+  <hr class="div">
+
+  <section>
+    <h2>Timing</h2>
     <p>
       Starting in August means the campaign build, creative production and objection playbook are all
       complete before Q4, and SaneBox enters the January inbox-reset window with a trained algorithm and
@@ -730,8 +609,7 @@ footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
       an email product is the first week of January. Building the audience now is what makes that window
       usable.
     </p>
-    <a class="btn" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
-  </div>
+  </section>
 
 </div>
 
