@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddit Fit Analysis: Anytime Mailbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sp-orange-red:#FF4500;
+  --sp-black:#0E0F11;
+  --sp-charcoal:#18191D;
+  --sp-off-white:#F5F5F0;
+  --sp-gold:#FDC171;
+  --sp-green:#26D100;
+  --sp-gradient:linear-gradient(90deg,#FF4500,#FDC171);
+  --sp-font-serif:'Instrument Serif',Georgia,serif;
+  --sp-font-sans:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --dim:rgba(245,245,240,.62);
+  --dimmer:rgba(245,245,240,.40);
+  --line:rgba(245,245,240,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--sp-black);
+  color:var(--sp-off-white);
+  font-family:var(--sp-font-sans);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+
+/* HEADER */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:var(--sp-charcoal);
+  border-bottom:1px solid rgba(255,69,0,.35);
+  padding:16px 0;
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.wordmark{
+  font-family:var(--sp-font-sans);font-weight:700;font-size:19px;letter-spacing:-.02em;
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);
+}
+.header-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--dimmer);font-weight:600;margin-top:1px;
+}
+.header-meta{text-align:right;font-size:11px;color:var(--dimmer);letter-spacing:.08em;text-transform:uppercase;font-weight:600;line-height:1.7}
+
+/* HERO */
+.hero{padding:64px 0 12px}
+.hero h1{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(44px,7vw,72px);line-height:1.02;letter-spacing:-.015em;
+}
+.hero-meta{
+  margin-top:18px;font-size:14px;color:var(--dim);
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+}
+.hero-meta a{color:var(--sp-orange-red);text-decoration:none;font-weight:600}
+.hero-meta a:hover{text-decoration:underline}
+.hero-meta .sep{color:var(--dimmer)}
+
+/* VERDICT CARD */
+.verdict{
+  margin-top:34px;background:var(--sp-charcoal);
+  border:1px solid var(--line);border-radius:16px;padding:34px 34px 30px;
+}
+.verdict-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.band{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(34px,5.2vw,50px);line-height:1.05;letter-spacing:-.01em;
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);
+}
+.risk-chip{
+  flex-shrink:0;border-radius:999px;padding:8px 18px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.13em;
+  border:1px solid;white-space:nowrap;
+}
+.risk-medium{color:var(--sp-gold);border-color:rgba(253,193,113,.5);background:rgba(253,193,113,.09)}
+
+/* SCALE */
+.scale{margin:30px 0 26px}
+.track{position:relative;height:6px;border-radius:999px;background:rgba(245,245,240,.11)}
+.track-fill{position:absolute;left:0;top:0;height:100%;width:78%;border-radius:999px;background:var(--sp-gradient)}
+.marker{
+  position:absolute;left:78%;top:50%;transform:translate(-50%,-50%);
+  width:18px;height:18px;border-radius:50%;background:var(--sp-gold);
+  border:3px solid var(--sp-charcoal);box-shadow:0 0 0 1px rgba(253,193,113,.6);
+}
+.scale-labels{display:flex;margin-top:12px}
+.scale-labels span{
+  flex:1;text-align:center;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.11em;color:var(--dimmer);
+}
+.scale-labels span.active{color:var(--sp-gold)}
+.summary{font-size:16.5px;line-height:1.72;color:rgba(245,245,240,.88)}
+
+/* SECTIONS */
+section{padding:52px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+h2{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(28px,4vw,38px);line-height:1.12;letter-spacing:-.01em;margin-bottom:22px;
+}
+h3{
+  font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;
+  color:var(--sp-orange-red);margin:30px 0 10px;
+}
+h3:first-child{margin-top:0}
+p{margin-bottom:16px;color:rgba(245,245,240,.86)}
+p:last-child{margin-bottom:0}
+strong{color:var(--sp-off-white);font-weight:600}
+.lede{font-size:17px;color:rgba(245,245,240,.9)}
+
+/* TABLES */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0 18px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+th{
+  text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.13em;
+  font-weight:700;color:var(--dimmer);padding:0 14px 11px 0;border-bottom:1px solid var(--line);
+}
+td{padding:14px 14px 14px 0;border-bottom:1px solid rgba(245,245,240,.06);vertical-align:top;color:rgba(245,245,240,.82)}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--sp-off-white);font-weight:600;white-space:nowrap}
+.row-top td{background:rgba(255,69,0,.05)}
+.row-total td{background:rgba(255,69,0,.08);font-weight:600;color:var(--sp-off-white)}
+.row-base td{background:rgba(38,209,0,.07)}
+.row-dim td{color:var(--dimmer)}
+.mono{font-variant-numeric:tabular-nums}
+.verify{color:var(--dimmer);font-style:italic;font-weight:400!important;white-space:normal!important}
+
+/* METER */
+.rating-cell{white-space:nowrap}
+.meter{display:inline-flex;gap:3px;margin-left:9px;vertical-align:middle}
+.seg{width:13px;height:5px;border-radius:2px;background:rgba(245,245,240,.13)}
+.seg.g{background:var(--sp-green)}
+.seg.y{background:var(--sp-gold)}
+.seg.r{background:var(--sp-orange-red)}
+.rate-word{font-weight:600}
+.r-low{color:var(--sp-green)}
+.r-med{color:var(--sp-gold)}
+.r-high{color:var(--sp-orange-red)}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:8px}
+.card{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:12px;padding:22px}
+.card-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--sp-orange-red);margin-bottom:8px}
+.card-value{font-size:17px;font-weight:600;margin-bottom:7px}
+.card p{font-size:13.5px;color:var(--dim);margin:0;line-height:1.6}
+
+/* ANGLE BLOCKS */
+.angle{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:14px}
+.angle.primary{border-left:3px solid var(--sp-orange-red)}
+.angle-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--sp-orange-red);margin-bottom:9px}
+.angle p{font-size:14.5px;margin-bottom:12px;color:var(--dim)}
+.headline{
+  font-family:var(--sp-font-serif);font-size:20px;line-height:1.35;
+  color:var(--sp-off-white);border-left:2px solid var(--sp-gold);padding-left:16px;
+}
+
+/* CALLOUT */
+.callout{
+  background:rgba(38,209,0,.06);border:1px solid rgba(38,209,0,.3);
+  border-radius:12px;padding:22px 24px;margin-top:20px;
+}
+.callout p{font-size:14.5px;margin-bottom:12px}
+.callout p:last-child{margin-bottom:0}
+
+/* FLAGS */
+.flags{list-style:none}
+.flags li{position:relative;padding-left:24px;margin-bottom:15px;color:rgba(245,245,240,.82);font-size:15px;line-height:1.65}
+.flags li::before{content:"";position:absolute;left:0;top:12px;width:12px;height:2px;background:var(--sp-orange-red)}
+
+/* TIMELINE */
+.phase{background:var(--sp-charcoal);border-radius:12px;padding:22px 24px;margin-bottom:14px;border-left:3px solid rgba(245,245,240,.22)}
+.phase.m1{border-left-color:var(--sp-orange-red)}
+.phase.m2{border-left-color:var(--sp-green)}
+.phase.m3{border-left-color:var(--sp-gold)}
+.phase h4{font-family:var(--sp-font-serif);font-weight:400;font-size:24px;margin-bottom:8px;letter-spacing:-.01em}
+.phase p{font-size:14.5px;color:var(--dim);margin-bottom:0}
+
+.invest{
+  background:var(--sp-gradient);color:var(--sp-black);
+  border-radius:12px;padding:26px 28px;margin-top:22px;
+}
+.invest .l{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;opacity:.72;margin-bottom:7px}
+.invest .v{font-family:var(--sp-font-serif);font-size:30px;line-height:1.2;margin-bottom:9px}
+.invest p{color:rgba(14,15,17,.82);font-size:14px;margin:0;font-weight:500}
+
+/* CTA */
+.cta{
+  background:var(--sp-charcoal);border:1px solid rgba(255,69,0,.4);
+  border-radius:16px;padding:44px 38px;text-align:center;margin:16px 0 8px;
+}
+.cta h2{
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);margin-bottom:16px;
+}
+.cta p{max-width:600px;margin:0 auto 14px;color:var(--dim);font-size:15.5px}
+.btn{
+  display:inline-block;margin-top:16px;background:var(--sp-gradient);
+  color:#fff;font-weight:700;font-size:15px;letter-spacing:.01em;
+  padding:15px 40px;border-radius:999px;text-decoration:none;
+}
+.spots{margin-top:18px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--dimmer);font-weight:600}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:34px 0 52px;text-align:center}
+footer .wordmark{font-size:17px}
+footer p{font-size:11.5px;color:var(--dimmer);margin:8px 0 0;letter-spacing:.06em}
+
+@media (max-width:600px){
+  .wrap{padding:0 20px}
+  .hero{padding:40px 0 8px}
+  .verdict{padding:24px 22px}
+  .verdict-top{flex-direction:column;align-items:flex-start;gap:14px}
+  .scale-labels span{font-size:8.5px;letter-spacing:.06em}
+  section{padding:38px 0}
+  .cta{padding:32px 22px}
+  .header-meta{font-size:9.5px}
+}
+
+@media print{
+  .site-header{position:static}
+  body{background:#fff;color:#111}
+  .card,.angle,.phase,.verdict,.cta{break-inside:avoid;page-break-inside:avoid}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="header-label">Reddit Fit Analysis</div>
+    </div>
+    <div class="header-meta">13 August 2026<br>Confidential</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Anytime Mailbox</h1>
+    <div class="hero-meta">
+      <a href="https://www.anytimemailbox.com">anytimemailbox.com</a>
+      <span class="sep">/</span>
+      <span>Virtual mailbox and business address</span>
+      <span class="sep">/</span>
+      <span>90-day Reddit Ads pilot</span>
+    </div>
+
+    <div class="verdict">
+      <div class="verdict-top">
+        <div class="band">Strong Opportunity</div>
+        <div class="risk-chip risk-medium">Medium execution risk</div>
+      </div>
+
+      <div class="scale">
+        <div class="track">
+          <div class="track-fill"></div>
+          <div class="marker"></div>
+        </div>
+        <div class="scale-labels">
+          <span>Weak</span>
+          <span>Limited</span>
+          <span>Moderate</span>
+          <span class="active">Strong</span>
+          <span>Exceptional</span>
+        </div>
+      </div>
+
+      <p class="summary">You sell a privacy-motivated, high-consideration, anonymously-researched purchase with a low-friction online signup, which is close to the ideal profile for Reddit. Your audience is already on the platform asking the exact question your product answers, and no part of your category is blocked from targeting. The risk is not whether the audience exists. It is that the current program has been built and measured as a bottom-funnel channel for an 8-month-payback subscription, which is the one configuration guaranteed to underreport. Spend producing roughly one click-through conversion per month is evidence of a measurement and angle problem, not evidence that the channel does not work, and scaling before that is diagnosed simply multiplies the same result.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Product and audience</h2>
+
+    <h3>What you sell</h3>
+    <p>A cloud-based virtual mailbox and business address service across 2,500+ locations globally, with plans from $9.99/mo up to roughly $50/mo for premium addresses. Mail is received, photographed, then scanned, forwarded, or shredded on request, so the customer never visits the location. Roughly 80% of use is business-related, with a stated expansion path into virtual phone, meeting space, LLC formation, and registered agent services.</p>
+
+    <h3>Who you sell to</h3>
+    <p>The core customer is early in their business journey: solopreneurs, drop shippers, freelancers, and e-commerce operators who need a street address that is not their home. Secondary segments are location-independent by necessity, including full-time RVers, pilots, digital nomads, and expats, alongside privacy-motivated individuals who will not hand out a home address.</p>
+    <p>This maps unusually well onto Reddit. The platform skews 25 to 40, US-heavy, and disproportionately privacy-conscious. More importantly, the triggering moment for this purchase, the realisation that your home address is now on a public filing, is a question people ask anonymously rather than ask a friend. Reddit is where anonymous questions go.</p>
+  </section>
+
+  <section>
+    <h2>Reddit policy constraints</h2>
+    <p class="lede">Your category is clean. This section exists to confirm that explicitly rather than leave it as an omission, and to name the two real edges.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Constraint</th><th>Effect on this account</th></tr></thead>
+        <tbody>
+          <tr><td>Prohibited category check</td><td>None apply. Virtual mailbox and business address services are not a restricted Reddit category.</td></tr>
+          <tr><td>Community targeting</td><td>No blocked communities. Every relevant business, nomad, RV, expat, and privacy community is buyable.</td></tr>
+          <tr><td>Native Lead Generation</td><td>Available. This is a real advantage and should be used for research-intent offers.</td></tr>
+          <tr><td>Creative review</td><td>Creative implying a customer can misrepresent where their business operates can draw ad review. The prestige framing needs care.</td></tr>
+          <tr><td>Cross-sell products</td><td>LLC formation and registered agent sit nearer Reddit's restricted professional and financial services vetting than the mailbox does. Advertise the mailbox, cross-sell after signup.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Subreddit landscape</h2>
+    <p>Subscriber counts published by third-party trackers for these communities conflict widely, in some cases by a factor of five for the same subreddit in the same year. Rather than quote a figure that will not match Ads Manager, the table below ranks by intent density and marks reach as requiring enumeration at build.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Subreddit</th><th>Subscribers</th><th>Targeting type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr class="row-top"><td>r/smallbusiness</td><td class="verify">Verify in Ads Manager</td><td>Community + Keyword</td><td><strong>Highest intent.</strong> The "how do I avoid putting my home address on my LLC" thread is evergreen here and recurs monthly.</td></tr>
+          <tr><td>r/Entrepreneur</td><td class="verify">Verify in Ads Manager</td><td>Community</td><td>Largest reachable pool in the business cluster. Broad, so use for prospecting scale rather than intent.</td></tr>
+          <tr><td>r/startups</td><td class="verify">Verify in Ads Manager</td><td>Community</td><td>Founders at formation stage, exactly the moment the address decision gets made.</td></tr>
+          <tr><td>r/ecommerce</td><td class="verify">Verify in Ads Manager</td><td>Community + Keyword</td><td>Store owners needing a business address for supplier and platform verification.</td></tr>
+          <tr><td>r/dropship</td><td class="verify">Verify in Ads Manager</td><td>Community</td><td>High need and high fit, but the highest creative sensitivity on this list.</td></tr>
+          <tr><td>r/digitalnomad</td><td class="verify">Approx. 850K, verify</td><td>Community</td><td>Domicile and mail forwarding are recurring topics with genuine purchase intent.</td></tr>
+          <tr><td>r/expats</td><td class="verify">Verify in Ads Manager</td><td>Community</td><td>Cross-border mail is a genuinely unsolved pain. Strong fit with your international footprint.</td></tr>
+          <tr><td>r/vandwellers, r/GoRVing</td><td class="verify">Verify in Ads Manager</td><td>Community</td><td>The domicile-state conversation (South Dakota, Texas, Florida) is constant and purchase-adjacent.</td></tr>
+          <tr class="row-dim"><td>Keyword targeting</td><td>Not community-bound</td><td>Keyword</td><td>"virtual mailbox", "business address", "mail forwarding", "registered agent", "home address LLC". The highest-intent inventory on the platform for this product.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Total addressable reach</h3>
+    <p>Not quoted. Third-party subscriber data for these communities is inconsistent enough that publishing a total would be misleading. Reach gets enumerated in Ads Manager during build, before budget is committed.</p>
+
+    <h3>Targeting recommendation</h3>
+    <p>Keyword targeting first, community targeting second, interest targeting last. This is the reverse of the usual order and it is deliberate. The product has a small number of extremely high-intent search phrases, and Reddit's keyword inventory captures the moment of need better than community membership does. Community targeting should be split into one ad group per subreddit rather than bundled, because the message that works in r/vandwellers is not the message that works in r/ecommerce.</p>
+
+    <h3>Geography</h3>
+    <p>Weight roughly 70% US and 30% UK, Canada, and Australia. Reddit CPMs outside the US run materially cheaper, and your 2,500-location international footprint means that traffic is serviceable rather than wasted. This is a real efficiency lever most advertisers in your category cannot pull.</p>
+  </section>
+
+  <section>
+    <h2>Reddit presence audit</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">Brand mentions</div>
+        <div class="card-value">None found</div>
+        <p>No meaningful organic footprint, positive or negative. Neutral rather than bad, but it means no existing goodwill to borrow and no social proof to point ads at.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Competitor ads</div>
+        <div class="card-value">None found</div>
+        <p>No paid Reddit activity identified for iPostal1, PostScan Mail, Earth Class Mail, Stable, or Virtual Post Mail. Since the category is not blocked, this points to untapped rather than structural, but it also means no external proof the channel converts here.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Organic fit</div>
+        <div class="card-value">Strong</div>
+        <p>"How do I keep my home address off my LLC", "what address do I use for my Shopify store", "which state should I domicile in". These are not adjacent conversations. They are your purchase decision happening in public.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Opportunity rating</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Dimension</th><th>Rating</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Reachable audience</td>
+            <td class="rating-cell"><span class="rate-word">Strong</span><span class="meter"><i class="seg g"></i><i class="seg g"></i><i class="seg g"></i><i class="seg"></i></span></td>
+            <td>Every relevant community is buyable with no category blocks, and keyword inventory covers the high-intent moment directly.</td>
+          </tr>
+          <tr>
+            <td>Conversation density</td>
+            <td class="rating-cell"><span class="rate-word">Strong</span><span class="meter"><i class="seg g"></i><i class="seg g"></i><i class="seg g"></i><i class="seg"></i></span></td>
+            <td>The triggering question recurs across a dozen communities and carries genuine purchase intent rather than passive chatter.</td>
+          </tr>
+          <tr>
+            <td>Vertical fit</td>
+            <td class="rating-cell"><span class="rate-word">Exceptional</span><span class="meter"><i class="seg g"></i><i class="seg g"></i><i class="seg g"></i><i class="seg g"></i></span></td>
+            <td>Anonymous research, privacy motivation, high consideration, community-validated, low-ticket online conversion. Few categories fit Reddit better.</td>
+          </tr>
+          <tr>
+            <td>Sentiment</td>
+            <td class="rating-cell"><span class="rate-word">Moderate</span><span class="meter"><i class="seg y"></i><i class="seg y"></i><i class="seg"></i><i class="seg"></i></span></td>
+            <td>No brand footprint either way. Nothing to overcome, but nothing to build on.</td>
+          </tr>
+          <tr class="row-total">
+            <td>Overall</td>
+            <td>Strong opportunity</td>
+            <td>At the upper end of the band. Vertical fit is exceptional and the audience is provably present. Held below Exceptional by the absent brand footprint and by a live program that has not yet produced.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Execution risk</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Factor</th><th>Risk</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Policy and platform</td><td><span class="rate-word r-low">Low</span></td><td>Nothing in the core offer is restricted, and native Lead Generation is available. Only the cross-sell products sit near a restricted line.</td></tr>
+          <tr><td>Competition signal</td><td><span class="rate-word r-med">Medium</span></td><td>No competitor paid activity found. The opening is real, but it also means no external proof the channel converts here.</td></tr>
+          <tr><td>Creative difficulty</td><td><span class="rate-word r-med">Medium</span></td><td>The instinctive angle for this product is the wrong one for Reddit. Solvable, but it requires overriding the default framing.</td></tr>
+          <tr><td>Conversion mechanics</td><td><span class="rate-word r-med">Medium</span></td><td>Signup is low-friction and lead gen is available, which helps. But an 8-month payback judged on last-click, with no research-intent lander, is the core problem to fix.</td></tr>
+          <tr class="row-total"><td>Overall</td><td>Medium</td><td>Driven entirely by angle and measurement, not by platform or audience. Both are fixable inside the first 30 days, which is why this reads as Medium rather than High.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reddit ad economics</h2>
+    <p>Modeled at $5,000/mo Reddit media. CTR is calibrated to a B2B and professional audience, the 0.2% to 0.5% platform range for this audience type, not to consumer or gaming benchmarks. CPM blends business-community inventory at the higher end with nomad, RV, and expat inventory at the lower end. CVR is modeled against a low-ticket self-serve subscription signup, which converts above a B2B demo request but below an in-feed native form.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Scenario</th><th>CPM</th><th>CTR</th><th>CPC</th><th>Clicks</th><th>CVR</th><th>CPA</th><th>Signups</th></tr></thead>
+        <tbody>
+          <tr><td>Conservative</td><td class="mono">$9.00</td><td class="mono">0.28%</td><td class="mono">$3.21</td><td class="mono">1,558</td><td class="mono">1.2%</td><td class="mono">$268</td><td class="mono">19</td></tr>
+          <tr class="row-base"><td>Baseline</td><td class="mono">$7.50</td><td class="mono">0.40%</td><td class="mono">$1.88</td><td class="mono">2,660</td><td class="mono">2.5%</td><td class="mono">$75</td><td class="mono">67</td></tr>
+          <tr><td>Optimistic</td><td class="mono">$6.00</td><td class="mono">0.55%</td><td class="mono">$1.09</td><td class="mono">4,587</td><td class="mono">5.0%</td><td class="mono">$22</td><td class="mono">229</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p><strong>These are optimized-state figures, not Month 1 figures.</strong> Reddit's algorithm is materially less autonomous than Google's or Meta's, and it starts with no retargeting pool. Expect Month 1 CPA to land in the $180 to $270 range even if the baseline is achievable. That is the cost of building the audience, not the cost of the channel.</p>
+      <p><strong>What this means against your numbers.</strong> A baseline CPA near $75 against an 8-month payback window and an active cross-sell roadmap is comfortably workable. The conservative case at $268 is not, which is why the Month 1 to Month 3 trajectory matters more than any single month's CPA. The precise threshold needs your blended ARPU and cross-sell attach rate to set properly, and that is a first-week input rather than an assumption we should be making on your behalf.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recommended creative angle</h2>
+    <p>The single most important creative decision is to lead with privacy, not prestige. The intuitive pitch for this product is aspirational: a Beverly Hills address makes a one-person business look established. On most channels that works. On Reddit it reads as teaching people to fake credibility, and the community will say so in the comments under the ad, which is a cost no other platform charges you.</p>
+    <p>The angle that works is the same product framed as protection. A solopreneur who registers an LLC discovers their home address is now public record, searchable, and attached to their family. That is a real, specific, frequently-posted anxiety, and it converts because it names a problem the reader already has rather than selling an image they might want.</p>
+
+    <div class="angle primary">
+      <div class="angle-label">Primary angle: home address exposure</div>
+      <p>Targets r/smallbusiness, r/Entrepreneur, r/startups, plus keyword targeting on "home address LLC" and "business address".</p>
+      <div class="headline">"Your LLC filing put your home address on public record. Here is what people use instead."</div>
+    </div>
+
+    <div class="angle">
+      <div class="angle-label">Secondary angle: location independence</div>
+      <p>Targets r/digitalnomad, r/expats, r/vandwellers, r/GoRVing. Leads with the domicile problem rather than the mailbox product.</p>
+      <div class="headline">"You moved. Your mail did not. 2,500 addresses, pick the state that suits you."</div>
+    </div>
+
+    <div class="angle">
+      <div class="angle-label">Tertiary angle: research-intent lead gen</div>
+      <p>A state-by-state domicile and business-address guide, delivered through Reddit's native Lead Generation format. This captures the audience you identified yourselves, the people researching rather than buying, and it builds the retargeting pool that Months 2 and 3 depend on. It also produces a measurable conversion event at the top of the funnel, which is precisely what the current program lacks.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Red flags</h2>
+    <ul class="flags">
+      <li><strong>The live program is the biggest risk, not the biggest asset.</strong> Roughly $5,000/mo currently produces about one click-through conversion per month. Until the cause is isolated, whether measurement, angle, targeting, or landing experience, increasing budget scales the same outcome. The account audit needs to happen before the budget conversation, not after it.</li>
+      <li><strong>Attribution mismatch is the most likely single cause.</strong> A subscription with an 8-month payback, sold to an audience in research mode, judged on last-click conversions. Reddit will lose that comparison every time regardless of whether it is working. Conversion API integrity and view-through windows are prerequisites, not optimizations.</li>
+      <li><strong>No research-intent destination exists.</strong> Every current CTA points into a bottom-funnel signup flow. The middle of the funnel has nowhere to land, which caps what any Reddit campaign can achieve.</li>
+      <li><strong>Prestige framing is a liability here.</strong> The drop-shipping adjacency is real and Reddit is openly hostile to it. r/dropship is high-fit inventory, but the creative that works there cannot sound like it was written for drop shippers.</li>
+      <li><strong>Reach is unverified.</strong> Third-party subscriber data for the target communities is inconsistent enough to be unusable. Ads Manager enumeration is required before budget is committed to a specific community mix.</li>
+      <li><strong>Prior organic activity drew a ban.</strong> Paid and organic must stay strictly separated. No paid work here should touch community posting.</li>
+      <li><strong>Quora is a learning test, not a proven track.</strong> Running $2,000/mo alongside Reddit is reasonable for signal, but it should be scoped and reported as an experiment rather than a second managed channel.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Proposed 90-day pilot</h2>
+
+    <div class="phase">
+      <h4>Pre-launch, Month 0</h4>
+      <p>Account audit against the existing program to isolate why current spend is not converting. Conversion API verification and view-through window configuration. Ads Manager reach enumeration across the target communities. Campaign build with one ad group per subreddit. Import existing customer lists plus Meta and Google audiences for retargeting. Research-intent lander and lead gen asset built. No paid spend.</p>
+    </div>
+
+    <div class="phase m1">
+      <h4>Month 1: audience building and qualified traffic</h4>
+      <p>The goal is not conversions, it is qualified traffic and a retargeting pool. Launch keyword targeting plus the top three communities, with the privacy angle as primary. The algorithm is learning and the retargeting pool is empty, so CPAs will run well above the baseline benchmark. Do not judge the channel on Month 1 CPA. Success metrics: CTR above 0.4% on community placements, cost per lander visit in range, retargeting audience build rate, and lead gen form fills on the research offer.</p>
+    </div>
+
+    <div class="phase m2">
+      <h4>Month 2: layer retargeting and optimize</h4>
+      <p>Retargeting campaigns go live against the Month 1 audiences, including the Meta and Google traffic that did not convert. The algorithm now has signal. Test the location-independence angle as a second creative track and open international inventory for efficiency. CPAs should decline week over week. Target by end of Month 2: trending toward the $75 baseline.</p>
+    </div>
+
+    <div class="phase m3">
+      <h4>Month 3: evaluate</h4>
+      <p>Judge on three signals, not CPA alone. First, CPA trajectory: is it declining week over week? Second, retargeting CPA against prospecting CPA, which should run 40% to 60% lower. Third, downstream quality: activation, retention, and cross-sell attach compared with Google-sourced customers. At or below baseline with strong activation, scale. Above but declining with strong retargeting signal, continue on a 30-day extension. Flat or rising with no improvement signal, conclude and document what failed.</p>
+    </div>
+
+    <div class="invest">
+      <div class="l">Recommended media budget</div>
+      <div class="v">$5,000/mo Reddit, plus $2,000/mo Quora</div>
+      <p>Reddit is the depth channel and where the work goes. Quora runs in parallel as a learning test. The scale trigger to $15,000 to $25,000/mo is a Month 2 CPA declining week over week with retargeting running below prospecting, and it can be pulled inside the 90 days rather than after them. Media budget is paid directly to the platforms. Terms are 30-day rolling with no long-term contract beyond the pilot.</p>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Ready to start your pilot?</h2>
+    <p>The September kickoff window is open now. Starting in September means the audit, Conversion API work, and campaign build are complete before Q4, and Anytime Mailbox enters the January formation surge, the single highest-intent window of the year for new business registrations, with a fully warmed retargeting pool rather than a cold start.</p>
+    <a class="btn" href="https://form.typeform.com/to/lf3pnicO">Apply for a spot</a>
+    <div class="spots">Five founding cohort spots &middot; Hard close 30 June 2026</div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="wordmark">ScalePaid</div>
+    <p>Reddit Ads, done properly &middot; 13 August 2026 &middot; Confidential</p>
+  </div>
+</footer>
+
+</body>
+</html>
