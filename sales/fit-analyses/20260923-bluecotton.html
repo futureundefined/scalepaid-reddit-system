@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddit Fit Analysis: BlueCotton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sp-orange-red:#FF4500;
+  --sp-black:#0E0F11;
+  --sp-charcoal:#18191D;
+  --sp-off-white:#F5F5F0;
+  --sp-gold:#FDC171;
+  --sp-green:#26D100;
+  --sp-gradient:linear-gradient(90deg,#FF4500,#FDC171);
+  --sp-font-serif:'Instrument Serif',Georgia,serif;
+  --sp-font-sans:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --dim:rgba(245,245,240,.62);
+  --dimmer:rgba(245,245,240,.40);
+  --line:rgba(245,245,240,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--sp-black);
+  color:var(--sp-off-white);
+  font-family:var(--sp-font-sans);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 28px}
+
+/* HEADER */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:var(--sp-charcoal);
+  border-bottom:1px solid rgba(255,69,0,.35);
+  padding:16px 0;
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.wordmark{
+  font-family:var(--sp-font-sans);font-weight:700;font-size:19px;letter-spacing:-.02em;
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);
+}
+.header-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--dimmer);font-weight:600;margin-top:1px;
+}
+.header-meta{text-align:right;font-size:11px;color:var(--dimmer);letter-spacing:.08em;text-transform:uppercase;font-weight:600;line-height:1.7}
+
+/* HERO */
+.hero{padding:64px 0 12px}
+.hero h1{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(44px,7vw,72px);line-height:1.02;letter-spacing:-.015em;
+}
+.hero-meta{
+  margin-top:18px;font-size:14px;color:var(--dim);
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+}
+.hero-meta a{color:var(--sp-orange-red);text-decoration:none;font-weight:600}
+.hero-meta a:hover{text-decoration:underline}
+.hero-meta .sep{color:var(--dimmer)}
+
+/* VERDICT CARD */
+.verdict{
+  margin-top:34px;background:var(--sp-charcoal);
+  border:1px solid var(--line);border-radius:16px;padding:34px 34px 30px;
+}
+.verdict-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.band{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(34px,5.2vw,50px);line-height:1.05;letter-spacing:-.01em;
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);
+}
+.risk-chip{
+  flex-shrink:0;border-radius:999px;padding:8px 18px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.13em;
+  border:1px solid;white-space:nowrap;
+}
+.risk-medium{color:var(--sp-gold);border-color:rgba(253,193,113,.5);background:rgba(253,193,113,.09)}
+
+/* SCALE */
+.scale{margin:30px 0 26px}
+.track{position:relative;height:6px;border-radius:999px;background:rgba(245,245,240,.11)}
+.track-fill{position:absolute;left:0;top:0;height:100%;width:78%;border-radius:999px;background:var(--sp-gradient)}
+.marker{
+  position:absolute;left:78%;top:50%;transform:translate(-50%,-50%);
+  width:18px;height:18px;border-radius:50%;background:var(--sp-gold);
+  border:3px solid var(--sp-charcoal);box-shadow:0 0 0 1px rgba(253,193,113,.6);
+}
+.scale-labels{display:flex;margin-top:12px}
+.scale-labels span{
+  flex:1;text-align:center;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.11em;color:var(--dimmer);
+}
+.scale-labels span.active{color:var(--sp-gold)}
+.summary{font-size:16.5px;line-height:1.72;color:rgba(245,245,240,.88)}
+
+/* SECTIONS */
+section{padding:52px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+h2{
+  font-family:var(--sp-font-serif);font-weight:400;
+  font-size:clamp(28px,4vw,38px);line-height:1.12;letter-spacing:-.01em;margin-bottom:22px;
+}
+h3{
+  font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;
+  color:var(--sp-orange-red);margin:30px 0 10px;
+}
+h3:first-child{margin-top:0}
+p{margin-bottom:16px;color:rgba(245,245,240,.86)}
+p:last-child{margin-bottom:0}
+strong{color:var(--sp-off-white);font-weight:600}
+.lede{font-size:17px;color:rgba(245,245,240,.9)}
+
+/* TABLES */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0 18px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+th{
+  text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.13em;
+  font-weight:700;color:var(--dimmer);padding:0 14px 11px 0;border-bottom:1px solid var(--line);
+}
+td{padding:14px 14px 14px 0;border-bottom:1px solid rgba(245,245,240,.06);vertical-align:top;color:rgba(245,245,240,.82)}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--sp-off-white);font-weight:600;white-space:nowrap}
+.row-top td{background:rgba(255,69,0,.05)}
+.row-total td{background:rgba(255,69,0,.08);font-weight:600;color:var(--sp-off-white)}
+.row-base td{background:rgba(38,209,0,.07)}
+.row-dim td{color:var(--dimmer)}
+.mono{font-variant-numeric:tabular-nums}
+.verify{color:var(--dimmer);font-style:italic;font-weight:400!important;white-space:normal!important}
+
+/* METER */
+.rating-cell{white-space:nowrap}
+.meter{display:inline-flex;gap:3px;margin-left:9px;vertical-align:middle}
+.seg{width:13px;height:5px;border-radius:2px;background:rgba(245,245,240,.13)}
+.seg.g{background:var(--sp-green)}
+.seg.y{background:var(--sp-gold)}
+.seg.r{background:var(--sp-orange-red)}
+.rate-word{font-weight:600}
+.r-low{color:var(--sp-green)}
+.r-med{color:var(--sp-gold)}
+.r-high{color:var(--sp-orange-red)}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:8px}
+.card{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:12px;padding:22px}
+.card-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--sp-orange-red);margin-bottom:8px}
+.card-value{font-size:17px;font-weight:600;margin-bottom:7px}
+.card p{font-size:13.5px;color:var(--dim);margin:0;line-height:1.6}
+
+/* ANGLE BLOCKS */
+.angle{background:var(--sp-charcoal);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:14px}
+.angle.primary{border-left:3px solid var(--sp-orange-red)}
+.angle-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--sp-orange-red);margin-bottom:9px}
+.angle p{font-size:14.5px;margin-bottom:12px;color:var(--dim)}
+.headline{
+  font-family:var(--sp-font-serif);font-size:20px;line-height:1.35;
+  color:var(--sp-off-white);border-left:2px solid var(--sp-gold);padding-left:16px;
+}
+
+/* CALLOUT */
+.callout{
+  background:rgba(38,209,0,.06);border:1px solid rgba(38,209,0,.3);
+  border-radius:12px;padding:22px 24px;margin-top:20px;
+}
+.callout p{font-size:14.5px;margin-bottom:12px}
+.callout p:last-child{margin-bottom:0}
+
+/* FLAGS */
+.flags{list-style:none}
+.flags li{position:relative;padding-left:24px;margin-bottom:15px;color:rgba(245,245,240,.82);font-size:15px;line-height:1.65}
+.flags li::before{content:"";position:absolute;left:0;top:12px;width:12px;height:2px;background:var(--sp-orange-red)}
+
+/* TIMELINE */
+.phase{background:var(--sp-charcoal);border-radius:12px;padding:22px 24px;margin-bottom:14px;border-left:3px solid rgba(245,245,240,.22)}
+.phase.m1{border-left-color:var(--sp-orange-red)}
+.phase.m2{border-left-color:var(--sp-green)}
+.phase.m3{border-left-color:var(--sp-gold)}
+.phase h4{font-family:var(--sp-font-serif);font-weight:400;font-size:24px;margin-bottom:8px;letter-spacing:-.01em}
+.phase p{font-size:14.5px;color:var(--dim);margin-bottom:0}
+
+.invest{
+  background:var(--sp-gradient);color:var(--sp-black);
+  border-radius:12px;padding:26px 28px;margin-top:22px;
+}
+.invest .l{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;opacity:.72;margin-bottom:7px}
+.invest .v{font-family:var(--sp-font-serif);font-size:30px;line-height:1.2;margin-bottom:9px}
+.invest p{color:rgba(14,15,17,.82);font-size:14px;margin:0;font-weight:500}
+
+/* CTA */
+.cta{
+  background:var(--sp-charcoal);border:1px solid rgba(255,69,0,.4);
+  border-radius:16px;padding:44px 38px;text-align:center;margin:16px 0 8px;
+}
+.cta h2{
+  background:var(--sp-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--sp-orange-red);margin-bottom:16px;
+}
+.cta p{max-width:600px;margin:0 auto 14px;color:var(--dim);font-size:15.5px}
+.btn{
+  display:inline-block;margin-top:16px;background:var(--sp-gradient);
+  color:#fff;font-weight:700;font-size:15px;letter-spacing:.01em;
+  padding:15px 40px;border-radius:999px;text-decoration:none;
+}
+.spots{margin-top:18px;font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--dimmer);font-weight:600}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:34px 0 52px;text-align:center}
+footer .wordmark{font-size:17px}
+footer p{font-size:11.5px;color:var(--dimmer);margin:8px 0 0;letter-spacing:.06em}
+
+@media (max-width:600px){
+  .wrap{padding:0 20px}
+  .hero{padding:40px 0 8px}
+  .verdict{padding:24px 22px}
+  .verdict-top{flex-direction:column;align-items:flex-start;gap:14px}
+  .scale-labels span{font-size:8.5px;letter-spacing:.06em}
+  section{padding:38px 0}
+  .cta{padding:32px 22px}
+  .header-meta{font-size:9.5px}
+}
+
+@media print{
+  .site-header{position:static}
+  body{background:#fff;color:#111}
+  .card,.angle,.phase,.verdict,.cta{break-inside:avoid;page-break-inside:avoid}
+  section{break-inside:avoid}
+}
+
+.risk-low{color:var(--sp-green);border-color:rgba(38,209,0,.5);background:rgba(38,209,0,.09)}
+.risk-high{color:var(--sp-orange-red);border-color:rgba(255,69,0,.55);background:rgba(255,69,0,.10)}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div>
+      <div class="wordmark">ScalePaid</div>
+      <div class="header-label">Reddit Fit Analysis</div>
+    </div>
+    <div class="header-meta">23 September 2026<br>Confidential</div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="hero">
+    <h1>BlueCotton</h1>
+    <div class="hero-meta">
+      <a href="https://www.bluecotton.com">bluecotton.com</a>
+      <span class="sep">/</span><span>Custom apparel and promotional products</span>
+      <span class="sep">/</span><span>Group orders</span>
+    </div>
+    <div class="verdict">
+      <div class="verdict-top">
+        <div class="band">Strong Opportunity</div>
+      </div>
+      <div class="scale">
+        <div class="track">
+          <div class="track-fill" style="width:70%"></div>
+          <div class="marker" style="left:70%"></div>
+        </div>
+        <div class="scale-labels"><span>Weak</span><span>Limited</span><span>Moderate</span><span class="active">Strong</span><span>Exceptional</span></div>
+      </div>
+      <p class="summary">BlueCotton is a strong Reddit opportunity. BlueCotton sells to groups, and Reddit is organised into groups: bachelor parties, teams, clubs, companies, classrooms, and families each have communities where the question of where to order shirts gets asked in public. The category is unrestricted, and Reddit's native Lead Generation format captures quote requests in-feed. The work is choosing which buyer segments to lead with and building creative for each one.</p>
+    </div>
+  </div>
+
+<section><h2>Audience</h2>
+<p>Not one audience, and that is the central planning fact. BlueCotton serves businesses ordering staff apparel and swag, bachelor and bachelorette parties, weddings, sports teams and clubs, schools and nonprofits, and family gatherings.</p>
+<p>These buyers share a trigger, not a demographic. Someone has just been put in charge of getting shirts made for a group, by a date, and each of these groups has a Reddit community of its own where that ordering question comes up.</p>
+</section>
+
+<section><h2>How We Build the Targeting</h2>
+<p class="lede">Persona first. The subreddit list below is a starting hypothesis. The plan starts from which buyer segments carry the best order value, repeat rate, and margin for BlueCotton.</p>
+<div class="cards">
+<div class="card"><div class="card-label">01 / Pick the segments</div><p>We rank your buyer segments by order value, repeat rate, and seasonality, and choose which to lead with.</p></div>
+<div class="card"><div class="card-label">02 / Build the personas</div><p>Who orders, what triggers the order, what deadline they face, and what makes them pick a vendor.</p></div>
+<div class="card"><div class="card-label">03 / Map and size</div><p>We enumerate matching communities, keywords, and interests in Ads Manager and size the reachable audience before budget is committed.</p></div>
+<div class="card"><div class="card-label">04 / Creative per segment</div><p>Each segment gets its own message and campaign. A bachelor party ad never shares an ad group with a staff uniform ad.</p></div>
+</div>
+</section>
+
+<section><h2>Subreddit Landscape</h2><p class="lede">Is there an audience BlueCotton can target on Reddit? Yes, in two clusters. Business buyers sit in large, active communities today, and consumer groups each have communities of their own.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Subreddit</th><th>Subscribers</th><th>Notes</th></tr></thead><tbody>
+<tr class="row-top"><td><strong>r/smallbusiness</strong></td><td>2,523,885 members, 372,562 weekly active (verified 18 Aug 2026)</td><td><strong>Business cluster, highest intent.</strong> Staff apparel, swag, and vendor recommendation threads come up constantly.</td></tr>
+<tr><td>r/Entrepreneur</td><td>5,259,213 members, 279,702 weekly active (verified 18 Aug 2026)</td><td>Business cluster. The largest pool for corporate swag and branded merchandise.</td></tr>
+<tr class="row-top"><td><strong>Consumer group segments</strong></td><td>Sized per segment in Ads Manager once the lead segments are chosen</td><td>Bachelor and bachelorette parties, weddings, sports teams and rec leagues, gyms and run clubs, schools and teachers, nonprofits and fundraisers, family reunions. Each one supports its own campaign.</td></tr>
+<tr><td>Keyword targeting</td><td>Not community-bound</td><td>"custom t shirts", "bulk t shirt printing", "team shirts", "bachelor party shirts", "family reunion shirts". Captures the request moment across all communities.</td></tr>
+<tr class="row-dim"><td><span style="text-decoration:line-through">r/screenprinting</span></td><td>Excluded</td><td><strong>Do not buy.</strong> Its members are print shops, meaning competitors and suppliers, not customers.</td></tr>
+</tbody></table></div>
+<p><strong>Business or consumer:</strong> the business cluster is large and active, and corporate swag is a clear play there. Corporate may not be BlueCotton's main line, though, and consumer groups are likely the bigger target.</p>
+<p>In both clusters, group orders carry a far higher average cart value than a single custom shirt, so every campaign targets groups.</p>
+<p><strong>Targeting recommendation:</strong> One campaign per buyer segment, plus an always-on keyword campaign. Within each segment, we test broader community and interest groupings against tight targeting, because broader groupings usually lower CPC while segment-specific creative keeps relevance high.</p></section>
+
+<section><h2>Opportunity Rating</h2><div class="table-scroll"><table>
+<thead><tr><th>Dimension</th><th>Rating</th><th>Rationale</th></tr></thead><tbody>
+<tr><td>Reachable audience</td><td class="rating-cell"><span class="rate-word">Strong</span><span class="meter"><span class="seg g"></span><span class="seg g"></span><span class="seg g"></span><span class="seg"></span></span></td><td>Every relevant community is buyable, and the two anchor business communities alone carry over 650,000 weekly actives before any consumer segment is counted.</td></tr>
+<tr><td>Conversation density</td><td class="rating-cell"><span class="rate-word">Strong</span><span class="meter"><span class="seg g"></span><span class="seg g"></span><span class="seg g"></span><span class="seg"></span></span></td><td>The vendor recommendation question recurs predictably across a dozen communities and carries direct purchase intent.</td></tr>
+<tr><td>Vertical fit</td><td class="rating-cell"><span class="rate-word">Strong</span><span class="meter"><span class="seg g"></span><span class="seg g"></span><span class="seg g"></span><span class="seg"></span></span></td><td>Group orders are researched, community-validated, and quote-driven, and native lead gen converts them in-feed.</td></tr>
+<tr class="row-total"><td><strong>Overall</strong></td><td class="rating-cell"><span class="rate-word">Strong opportunity</span></td><td>Mid-band. The audience is present and organised exactly the way BlueCotton sells. Held below Exceptional by seasonal, episodic demand.</td></tr>
+</tbody></table></div></section>
+
+<section><h2>Reddit Ad Economics</h2><p>Published Reddit benchmarks for retail and ecommerce, the closest vertical to custom apparel, set against the Reddit platform average.</p>
+<p>ScalePaid's live consumer campaigns are running above 0.5% CTR in many accounts, which sits inside the retail range.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Metric</th><th>Retail and ecommerce benchmark</th><th>Reddit platform average</th></tr></thead><tbody>
+<tr class="row-base"><td>CPM</td><td class="mono"><strong>$2 to $6</strong></td><td class="mono">$3.50 to $5.00</td></tr>
+<tr class="row-base"><td>CTR</td><td class="mono"><strong>0.4% to 0.8%</strong></td><td class="mono">About 0.5%</td></tr>
+<tr class="row-base"><td>CPC</td><td class="mono"><strong>$0.20 to $0.60</strong></td><td class="mono">About $0.59</td></tr>
+</tbody></table></div>
+<p style="font-size:12.5px;color:var(--dimmer)">Sources: retail and ecommerce ranges from AdBacklog, Reddit Ads Benchmarks Per Industry (January 2026). Platform CPM from Amra and Elma (2025). Platform CTR and CPC from FanIQ (Q4 2024). These are planning ranges, and community mix, geography, and creative move results within them.</p>
+<p>Conversion rate and cost per quote are left out until we have your conversion data and the chosen segments.</p>
+<div class="callout">
+<p><strong>How the spend works:</strong> Month 1 is audience building, traffic generation, and early creative testing. Month 2 moves into conversion-focused optimization against the audiences and creative that Month 1 proves out.</p>
+<p>More budget lets more segments run at once, each with enough spend to exit learning.</p>
+</div></section>
+
+<section><h2>Creative Ideation</h2><p class="lede">Starting ideas for review, not final recommendations. The final angles come out of the persona work.</p>
+<h3>Where the conversation already happens</h3>
+<p>"Where do you get shirts printed" is an evergreen question across business, school, nonprofit, team, and wedding communities, and it recurs on a seasonal cycle. The vendor decision happens in public here, and native-feeling promoted posts fit that conversation.</p>
+<div class="angle primary" style="margin-top:22px"><div class="angle-label">Idea 1: the deadline</div>
+<p>Nobody browses for custom apparel: somebody gets told the group needs shirts by the 15th. Rewritten for each segment, leading with rush shipping and the six-piece minimum.</p>
+<div class="headline"><strong>Bachelor party:</strong> "Groom's party needs matching shirts by Friday and nobody has ordered them. Six piece minimum, Shirts in a Day available, quote in one reply."</div>
+</div>
+<div class="angle"><div class="angle-label">Idea 2: the price break</div>
+<p>For team, club, and nonprofit buyers spending group money who have to justify it.</p>
+<div class="headline"><strong>Rec league:</strong> "Team shirts from $7.60 each at volume. See the full price break before you collect from the team."</div>
+</div>
+<div class="angle"><div class="angle-label">Idea 3: the real print shop</div>
+<p>For the business segment. A real Kentucky print floor and named staff read as credible on a platform that distrusts drop-shipped print-on-demand.</p>
+</div></section>
+
+<section><h2>Red Flags</h2><ul class="flags">
+<li><strong>r/screenprinting is a trap.</strong> It is the most obvious subreddit in the category and its members are competitors, not customers. It is excluded above.</li>
+<li><strong>Demand is seasonal.</strong> Wedding season, graduation, back-to-school, and holiday events carry much of the year. Segment choice and budget should follow those windows.</li>
+<li><strong>Too many segments for the budget.</strong> Each segment needs enough spend to exit learning. The budget sets how many segments run at once.</li>
+<li><strong>Single-piece prices look high out of context.</strong> A $20.95 single-piece price beside a $7.60 volume price invites arithmetic in the comments. Creative should always state the quantity a price applies to.</li>
+</ul></section>
+
+<section><h2>Proposed 90-Day Pilot Structure</h2>
+<div class="phase"><h4>Upon sign-off, build (2 to 4 weeks)</h4><p>Strategy session to rank your buyer segments and choose the lead segments. Persona built for each. Communities, keywords, and interests mapped and sized in Ads Manager. Native Lead Generation forms built and tested, conversion tracking verified through to quote submission, and customer lists imported for lookalikes. No paid spend.</p></div>
+<div class="phase m1"><h4>Month 1, audience building and creative testing</h4><p>Launch the lead segments plus keyword targeting. Drive traffic, build retargeting pools, and test creative ideas against each other, including broad against tight targeting inside each segment. Success metrics: CTR above 0.5%, cost per click, and quote request volume.</p></div>
+<div class="phase m2"><h4>Month 2, conversion-focused optimization</h4><p>Retargeting goes live against the Month 1 pools. Budget shifts toward the winning segments, targeting, and creative. Cost per quote should decline week over week.</p></div>
+<div class="phase m3"><h4>Month 3, evaluate against your CAC</h4><p>Judge on three signals: cost per quote trajectory week over week, retargeting cost per quote running 40% to 60% below prospecting, and quote-to-order rate and order value on Reddit-sourced quotes compared with your other channels. At or below your allowable cost per quote, scale and open the next segment. Above but declining, extend 30 days. Flat or rising, conclude and document what failed.</p></div>
+<p style="margin-top:18px"><strong>Terms:</strong> No long-term contract. Month to month on a 30-day rolling basis after the 90-day pilot. Performance fees, where applicable, are agreed together for the period after the pilot.</p></section>
+
+<section><div class="cta"><h2>Ready to get started?</h2><p>Starting in Q4 puts the build, the personas, and the lead gen forms in place while holiday parties, year-end team orders, and corporate gifting are live.</p><p>BlueCotton then enters the new year with a trained account and a live retargeting pool ahead of spring team seasons, weddings, and graduation, instead of a cold start.</p><a class="btn" href="https://offer.scalepaid.digital/free-strategy/" target="_blank" rel="noopener">Speak with a strategist</a></div></section>
+</div>
+<footer>
+  <div class="wordmark">ScalePaid</div>
+  <p>Reddit Ads, built for brands whose customers are already talking.</p>
+  <p>23 September 2026 &middot; Confidential</p>
+</footer>
+</body>
+</html>
